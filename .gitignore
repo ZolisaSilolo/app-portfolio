@@ -1,0 +1,45 @@
+# Python virtual environments
+venv/
+env/
+ENV/
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Local development settings
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Secrets and credentials
+aws_secrets.py
+*_key.json
+*.pem
+*.key
+
+# Logs
+logs/
+*.log
+
+# Docker
+.docker/
