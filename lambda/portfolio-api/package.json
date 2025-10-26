@@ -1,0 +1,7 @@
+{
+  "name": "portfolio-api",
+  "version": "1.0.0",
+  "description": "Portfolio data API",
+  "main": "index.js",
+  "dependencies": {}
+}
