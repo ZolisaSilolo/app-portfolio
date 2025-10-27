@@ -19,10 +19,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     const root = document.documentElement;
     if (isDark) {
-      root.setAttribute('data-theme', 'dark');
+      root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
-      root.removeAttribute('data-theme');
+      root.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);

@@ -54,25 +54,23 @@ const Home = () => {
                 </h1>
                 
                 <p className="text-xl text-green-300 leading-relaxed font-mono">
-                  [LOADING...] Data & Cloud Professional with hands-on experience designing secure, scalable architectures and driving AI-powered innovation. 
-                  I specialize in solving real-world challenges through cloud-native, data-driven, and machine learning solutions.
+                  [LOADING...] 🚀 Data & Cloud Professional specializing in secure, scalable AWS architectures and AI-powered solutions.
                 </p>
                 
                 <div className="mt-6 space-y-4 text-lg text-cyan-300 font-mono">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <p className="text-green-400">• Cloud → AWS, Serverless Architectures, Cloud Security, IaC</p>
-                      <p className="text-green-400">• Data & AI → Big Data Solutions, Analytics, Amazon SageMaker AI, Bedrock, MLOps</p>
+                      <p className="text-green-400">• ☁️ Cloud → AWS, Serverless, Security, IaC</p>
+                      <p className="text-green-400">• 🤖 AI/ML → SageMaker, Bedrock, MLOps</p>
                     </div>
                     <div>
-                      <p className="text-green-400">• Systems → Distributed, Highly-Available, IoT-enabled infrastructures</p>
-                      <p className="text-green-400">• Business Impact → Translating advanced technologies into solutions that drive efficiency, resilience, and growth</p>
+                      <p className="text-green-400">• ⚙️ Systems → Distributed, IoT-enabled</p>
+                      <p className="text-green-400">• 📈 Impact → Technology-driven business solutions</p>
                     </div>
                   </div>
                   
                   <p className="text-cyan-300 mt-6">
-                    Beyond the tech, I thrive on principles like customer obsession, bias for action, and delivering results. 
-                    My strength lies in bridging complex business challenges with cutting-edge technology, ensuring solutions are not only robust and secure, but also strategically valuable.
+                    💡 Bridging complex business challenges with cutting-edge technology. Customer-obsessed, action-oriented, results-driven.
                   </p>
                 </div>
               </div>
