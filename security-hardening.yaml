@@ -1,0 +1,34 @@
+# Add these properties to existing resources in template.yaml
+
+# For Lambda Functions - add these properties:
+# Properties:
+#   ReservedConcurrencyLimit: 10  # Prevent runaway costs
+#   DeadLetterQueue:
+#     Type: SQS
+#     TargetArn: !GetAtt DeadLetterQueue.Arn
+
+# Add DLQ resource:
+DeadLetterQueue:
+  Type: AWS::SQS::Queue
+  Properties:
+    QueueName: !Sub "${AWS::StackName}-dlq"
+    MessageRetentionPeriod: 1209600  # 14 days
+
+# For API Gateway - add request validation:
+RequestValidator:
+  Type: AWS::ApiGateway::RequestValidator
+  Properties:
+    RestApiId: !Ref ServerlessRestApi
+    ValidateRequestBody: true
+    ValidateRequestParameters: true
+
+# Add to your API methods:
+# Properties:
+#   RequestValidatorId: !Ref RequestValidator
+
+# For S3 buckets (if any) - add encryption:
+# Properties:
+#   BucketEncryption:
+#     ServerSideEncryptionConfiguration:
+#       - ServerSideEncryptionByDefault:
+#           SSEAlgorithm: AES256

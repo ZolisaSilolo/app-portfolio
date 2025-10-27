@@ -118,17 +118,30 @@ const Portfolio = () => {
                     </div>
                   </div>
 
-                  {/* Repository Link */}
+                  {/* Repository and Live Links */}
                   <div className="flex items-center space-x-4">
-                    <a 
-                      href={project.repo_url} 
-                      className="cyber-button px-6 py-3 rounded-xl font-mono font-medium transition-all duration-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="w-5 h-5 inline mr-2" />
-                      ACCESS_REPOSITORY
-                    </a>
+                    {project.repo_url && (
+                      <a 
+                        href={project.repo_url} 
+                        className="cyber-button px-6 py-3 rounded-xl font-mono font-medium transition-all duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github className="w-5 h-5 inline mr-2" />
+                        ACCESS_REPOSITORY
+                      </a>
+                    )}
+                    {project.live_url && (
+                      <a 
+                        href={project.live_url} 
+                        className="cyber-button-secondary px-6 py-3 rounded-xl font-mono font-medium transition-all duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="w-5 h-5 inline mr-2" />
+                        VIEW_LIVE_SITE
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>

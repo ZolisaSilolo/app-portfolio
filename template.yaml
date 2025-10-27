@@ -146,6 +146,38 @@ Resources:
               X-XSS-Protection: '''1; mode=block'''
               Strict-Transport-Security: '''max-age=31536000; includeSubDomains'''
 
+  # Usage Plan for rate limiting (FREE)
+  ApiUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: !Sub "${AWS::StackName}-usage-plan"
+      Description: Rate limiting for portfolio API
+      Throttle:
+        RateLimit: 100    # requests per second
+        BurstLimit: 200   # burst capacity
+      Quota:
+        Limit: 10000      # requests per day
+        Period: DAY
+      ApiStages:
+        - ApiId: !Ref PortfolioApi
+          Stage: !Ref Environment
+
+  # API Key for monitoring (FREE)
+  ApiKey:
+    Type: AWS::ApiGateway::ApiKey
+    Properties:
+      Name: !Sub "${AWS::StackName}-api-key"
+      Description: API key for portfolio monitoring
+      Enabled: true
+
+  # Link usage plan to API key (FREE)
+  UsagePlanKey:
+    Type: AWS::ApiGateway::UsagePlanKey
+    Properties:
+      KeyId: !Ref ApiKey
+      KeyType: API_KEY
+      UsagePlanId: !Ref ApiUsagePlan
+
   # Auth Function for guest access
   AuthFunction:
     Type: AWS::Serverless::Function
@@ -303,3 +335,15 @@ Outputs:
     Value: !Ref PortfolioApi
     Export:
       Name: !Sub ${AWS::StackName}-ApiId
+
+  UsagePlanId:
+    Description: API Gateway Usage Plan ID
+    Value: !Ref ApiUsagePlan
+    Export:
+      Name: !Sub ${AWS::StackName}-UsagePlan
+
+  ApiKeyId:
+    Description: API Gateway Key ID for monitoring
+    Value: !Ref ApiKey
+    Export:
+      Name: !Sub ${AWS::StackName}-ApiKey
