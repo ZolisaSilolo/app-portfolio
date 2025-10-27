@@ -114,6 +114,7 @@ const About = () => {
             </div>
             <h1 className="text-6xl font-bold gradient-text mb-4 tracking-wide">LUNDI ZOLISA</h1>
             <h2 className="text-3xl font-semibold text-blue-600 dark:text-blue-400 mb-12 font-mono">SILOLO.exe</h2>
+            <div className="text-sm text-gray-500 mb-8">v2.0 - Updated Layout</div>
           </div>
           
           <div className="max-w-5xl mx-auto">
