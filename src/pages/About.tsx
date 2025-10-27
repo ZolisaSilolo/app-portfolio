@@ -118,68 +118,68 @@ const About = () => {
           </div>
           
           <div className="max-w-5xl mx-auto">
-            <div className="modern-card p-10 rounded-3xl text-left space-y-8">
+            <div className="matrix-card p-10 rounded-3xl text-left space-y-8">
               <div className="flex items-center mb-8">
                 <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-4"></div>
-                <span className="text-green-600 dark:text-green-400 font-mono text-base">[LOADING...] Professional Profile</span>
+                <span className="text-green-400 font-mono text-base">[LOADING...] Professional Profile</span>
               </div>
               
               <div className="text-center mb-10">
-                <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto">
-                  Data & Cloud Professional with hands-on experience designing secure, scalable architectures and driving AI-powered innovation. I specialize in solving real-world challenges through cloud-native, data-driven, and machine learning solutions.
+                <p className="text-xl text-green-300 leading-relaxed max-w-4xl mx-auto">
+                  🚀 Data & Cloud Professional with hands-on experience designing secure, scalable architectures and driving AI-powered innovation. I specialize in solving real-world challenges through cloud-native, data-driven, and machine learning solutions.
                 </p>
               </div>
               
               <div className="grid md:grid-cols-2 gap-8 mb-10">
                 <div className="space-y-6">
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                  <div className="p-4 matrix-card rounded-xl">
                     <div className="flex items-start space-x-4">
                       <span className="text-2xl">☁️</span>
                       <div>
-                        <h3 className="font-bold text-blue-600 dark:text-blue-400 text-lg mb-2">Cloud</h3>
-                        <p className="text-gray-600 dark:text-gray-400">AWS, Serverless Architectures, Cloud Security, Infrastructure-as-Code</p>
+                        <h3 className="font-bold text-green-400 text-lg mb-2">Cloud</h3>
+                        <p className="text-cyan-300">AWS, Serverless Architectures, Cloud Security, Infrastructure-as-Code</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+                  <div className="p-4 matrix-card rounded-xl">
                     <div className="flex items-start space-x-4">
                       <span className="text-2xl">🤖</span>
                       <div>
-                        <h3 className="font-bold text-purple-600 dark:text-purple-400 text-lg mb-2">Data & AI</h3>
-                        <p className="text-gray-600 dark:text-gray-400">Big Data Solutions, Analytics, Amazon SageMaker AI, Bedrock, MLOps</p>
+                        <h3 className="font-bold text-green-400 text-lg mb-2">Data & AI</h3>
+                        <p className="text-cyan-300">Big Data Solutions, Analytics, Amazon SageMaker AI, Bedrock, MLOps</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 
                 <div className="space-y-6">
-                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                  <div className="p-4 matrix-card rounded-xl">
                     <div className="flex items-start space-x-4">
                       <span className="text-2xl">⚙️</span>
                       <div>
-                        <h3 className="font-bold text-green-600 dark:text-green-400 text-lg mb-2">Systems</h3>
-                        <p className="text-gray-600 dark:text-gray-400">Distributed, Highly-Available, IoT-enabled infrastructures</p>
+                        <h3 className="font-bold text-green-400 text-lg mb-2">Systems</h3>
+                        <p className="text-cyan-300">Distributed, Highly-Available, IoT-enabled infrastructures</p>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
+                  <div className="p-4 matrix-card rounded-xl">
                     <div className="flex items-start space-x-4">
                       <span className="text-2xl">📈</span>
                       <div>
-                        <h3 className="font-bold text-orange-600 dark:text-orange-400 text-lg mb-2">Business Impact</h3>
-                        <p className="text-gray-600 dark:text-gray-400">Translating advanced technologies into solutions that drive efficiency, resilience, and growth</p>
+                        <h3 className="font-bold text-green-400 text-lg mb-2">Business Impact</h3>
+                        <p className="text-cyan-300">Translating advanced technologies into solutions that drive efficiency, resilience, and growth</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
+              <div className="border-t border-green-400/20 pt-8">
                 <div className="text-center">
-                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto">
-                    Beyond the tech, I thrive on principles like <span className="font-semibold text-blue-600 dark:text-blue-400 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded">customer obsession</span>, <span className="font-semibold text-green-600 dark:text-green-400 px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded">bias for action</span>, and <span className="font-semibold text-purple-600 dark:text-purple-400 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 rounded">delivering results</span>. My strength lies in bridging complex business challenges with cutting-edge technology, ensuring solutions are not only robust and secure, but also strategically valuable.
+                  <p className="text-lg text-green-300 leading-relaxed max-w-4xl mx-auto">
+                    💡 Beyond the tech, I thrive on principles like <span className="font-semibold text-cyan-400 px-2 py-1 matrix-card rounded">customer obsession</span>, <span className="font-semibold text-green-400 px-2 py-1 matrix-card rounded">bias for action</span>, and <span className="font-semibold text-cyan-400 px-2 py-1 matrix-card rounded">delivering results</span>. My strength lies in bridging complex business challenges with cutting-edge technology, ensuring solutions are not only robust and secure, but also strategically valuable.
                   </p>
                 </div>
               </div>
@@ -190,40 +190,40 @@ const About = () => {
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Profile Card */}
           <div className="lg:col-span-1">
-            <div className="modern-card p-8 rounded-3xl text-center floating-animation">
+            <div className="matrix-card p-8 rounded-3xl text-center floating-animation">
               <div className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden glow-effect">
                 <img src="/profile.jpg" alt="Lundi Zolisa Silolo" className="w-full h-full object-cover" />
               </div>
               
-              <h2 className="text-2xl font-bold gradient-text mb-2">Lundi Zolisa Silolo</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                AWS Certified Cloud & Data Professional | AI/ML Solutions Architect
+              <h2 className="text-2xl font-bold matrix-text mb-2">Lundi Zolisa Silolo</h2>
+              <p className="text-green-300 mb-6">
+                🏆 AWS Certified Cloud & Data Professional | AI/ML Solutions Architect
               </p>
 
               <div className="space-y-4 mb-8">
-                <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                  <MapPin className="w-5 h-5 icon-3d text-blue-600" />
-                  <span>Johannesburg, South Africa</span>
+                <div className="flex items-center space-x-3 text-cyan-300">
+                  <MapPin className="w-5 h-5 project-icon-3d text-green-400" />
+                  <span>📍 Johannesburg, South Africa</span>
                 </div>
-                <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                  <Mail className="w-5 h-5 icon-3d text-green-600" />
-                  <span>zolisasilolo@gmail.com</span>
+                <div className="flex items-center space-x-3 text-cyan-300">
+                  <Mail className="w-5 h-5 project-icon-3d text-green-400" />
+                  <span>📧 zolisasilolo@gmail.com</span>
                 </div>
-                <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                  <Award className="w-5 h-5 icon-3d text-yellow-600" />
-                  <span>AWS Solutions Architect Associate</span>
+                <div className="flex items-center space-x-3 text-cyan-300">
+                  <Award className="w-5 h-5 project-icon-3d text-green-400" />
+                  <span>🎖️ AWS Solutions Architect Associate</span>
                 </div>
               </div>
 
               <div className="flex justify-center space-x-4">
-                <a href="mailto:zolisasilolo@gmail.com" className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect">
-                  <Mail className="w-5 h-5 icon-3d text-blue-600" />
+                <a href="mailto:zolisasilolo@gmail.com" className="p-3 matrix-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect">
+                  <Mail className="w-5 h-5 project-icon-3d text-green-400" />
                 </a>
-                <a href="http://linkedin.com/in/lundi-zolisa-s-144922163" className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect">
-                  <Linkedin className="w-5 h-5 icon-3d text-blue-600" />
+                <a href="http://linkedin.com/in/lundi-zolisa-s-144922163" className="p-3 matrix-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect">
+                  <Linkedin className="w-5 h-5 project-icon-3d text-cyan-400" />
                 </a>
-                <a href="https://github.com/ZolisaSilolo" className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect">
-                  <Github className="w-5 h-5 icon-3d" />
+                <a href="https://github.com/ZolisaSilolo" className="p-3 matrix-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect">
+                  <Github className="w-5 h-5 project-icon-3d text-green-400" />
                 </a>
               </div>
             </div>
@@ -232,49 +232,49 @@ const About = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-12">
             {/* Professional Experience */}
-            <div className="modern-card p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold gradient-text mb-6">Professional Experience</h3>
+            <div className="matrix-card p-8 rounded-2xl">
+              <h3 className="text-2xl font-bold matrix-text mb-6">💼 Professional Experience</h3>
               
               <div className="mb-8">
-                <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">AWS Professional Services Intern</h4>
-                <p className="text-blue-600 dark:text-blue-400 mb-4">Amazon Web Services | Johannesburg, South Africa | 2025</p>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                  <li>• Designed and deployed MLOps pipelines using Amazon SageMaker and Bedrock for AI/ML workflows</li>
-                  <li>• Automated cloud-native solutions with AWS Lambda, Step Functions, and Infrastructure-as-Code</li>
-                  <li>• Supported workshops for C-level executives on big data, AI/ML strategy, and cloud transformation</li>
-                  <li>• Enhanced client satisfaction by optimizing solution delivery pipelines and addressing technical bottlenecks</li>
+                <h4 className="text-xl font-semibold text-green-400 mb-2">AWS Professional Services Intern</h4>
+                <p className="text-cyan-400 mb-4">Amazon Web Services | 📍 Johannesburg, South Africa | 2025</p>
+                <ul className="space-y-2 text-green-300">
+                  <li>• 🚀 Designed and deployed MLOps pipelines using Amazon SageMaker and Bedrock for AI/ML workflows</li>
+                  <li>• ⚡ Automated cloud-native solutions with AWS Lambda, Step Functions, and Infrastructure-as-Code</li>
+                  <li>• 🎯 Supported workshops for C-level executives on big data, AI/ML strategy, and cloud transformation</li>
+                  <li>• 📈 Enhanced client satisfaction by optimizing solution delivery pipelines and addressing technical bottlenecks</li>
                 </ul>
               </div>
 
-              <div className="p-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Key Focus Areas</h4>
+              <div className="p-6 matrix-card rounded-lg">
+                <h4 className="text-lg font-semibold text-green-400 mb-3">🎯 Key Focus Areas</h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <span className="text-blue-600">•</span>
-                      <span>Cloud Architecture & Serverless Solutions</span>
+                      <span className="text-cyan-400">•</span>
+                      <span className="text-green-300">☁️ Cloud Architecture & Serverless Solutions</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-blue-600">•</span>
-                      <span>AI/ML & Generative AI</span>
+                      <span className="text-cyan-400">•</span>
+                      <span className="text-green-300">🤖 AI/ML & Generative AI</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-blue-600">•</span>
-                      <span>MLOps & Big Data Analytics</span>
+                      <span className="text-cyan-400">•</span>
+                      <span className="text-green-300">📊 MLOps & Big Data Analytics</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <span className="text-blue-600">•</span>
-                      <span>IoT & Cloud Security</span>
+                      <span className="text-cyan-400">•</span>
+                      <span className="text-green-300">🔒 IoT & Cloud Security</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-blue-600">•</span>
-                      <span>Infrastructure-as-Code (IaC)</span>
+                      <span className="text-cyan-400">•</span>
+                      <span className="text-green-300">🏗️ Infrastructure-as-Code (IaC)</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <span className="text-blue-600">•</span>
-                      <span>Enterprise Consulting & Automation</span>
+                      <span className="text-cyan-400">•</span>
+                      <span className="text-green-300">🏢 Enterprise Consulting & Automation</span>
                     </div>
                   </div>
                 </div>
@@ -282,47 +282,47 @@ const About = () => {
             </div>
 
             {/* Personal Skills */}
-            <div className="modern-card p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold gradient-text mb-6">Personal Skills</h3>
+            <div className="matrix-card p-8 rounded-2xl">
+              <h3 className="text-2xl font-bold matrix-text mb-6">🌟 Personal Skills</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Strong communication skills 📣</span>
+                    <span className="text-cyan-400">•</span>
+                    <span className="text-green-300">📣 Strong communication skills</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Analytical problem-solving abilities 🧩</span>
+                    <span className="text-cyan-400">•</span>
+                    <span className="text-green-300">🧩 Analytical problem-solving abilities</span>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Team collaboration and leadership 👥</span>
+                    <span className="text-cyan-400">•</span>
+                    <span className="text-green-300">👥 Team collaboration and leadership</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-blue-600">•</span>
-                    <span>Continuous learning mindset 🌱</span>
+                    <span className="text-cyan-400">•</span>
+                    <span className="text-green-300">🌱 Continuous learning mindset</span>
                   </div>
                 </div>
               </div>
-              <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <p className="text-blue-800 dark:text-blue-200 text-center">
+              <div className="mt-6 p-4 matrix-card rounded-lg">
+                <p className="text-cyan-300 text-center">
                   💡 I'm always looking for new opportunities to learn and grow, so feel free to reach out!
                 </p>
               </div>
             </div>
 
             {/* Technical Expertise */}
-            <div className="modern-card p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold gradient-text mb-8">🛠️ Technical Expertise</h3>
+            <div className="matrix-card p-8 rounded-2xl">
+              <h3 className="text-2xl font-bold matrix-text mb-8">🛠️ Technical Expertise</h3>
               <div className="grid gap-6">
                 {skillCategories.map((category, index) => (
-                  <div key={index} className="border-l-4 border-blue-500 pl-6">
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{category.title}</h4>
+                  <div key={index} className="border-l-4 border-green-400 pl-6">
+                    <h4 className="text-lg font-semibold text-green-400 mb-3">{category.title}</h4>
                     <div className="space-y-2">
                       {category.skills.map((skill, skillIndex) => (
-                        <div key={skillIndex} className="text-gray-600 dark:text-gray-300 text-sm">
+                        <div key={skillIndex} className="text-cyan-300 text-sm">
                           • {skill}
                         </div>
                       ))}
@@ -333,8 +333,8 @@ const About = () => {
             </div>
 
             {/* AWS Certifications */}
-            <div className="modern-card p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold gradient-text mb-8">🏆 Professional Certifications</h3>
+            <div className="matrix-card p-8 rounded-2xl">
+              <h3 className="text-2xl font-bold matrix-text mb-8">🏆 Professional Certifications</h3>
               <div className="grid md:grid-cols-3 gap-6">
                 {certifications.map((cert, index) => (
                   <a
@@ -342,7 +342,7 @@ const About = () => {
                     href={cert.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="modern-card p-6 rounded-xl text-center hover:scale-105 transition-all duration-300 glow-effect"
+                    className="matrix-card p-6 rounded-xl text-center hover:scale-105 transition-all duration-300 glow-effect"
                   >
                     {cert.title === "AWS Certified Solutions Architect – Associate" ? (
                       <div className="w-16 h-16 mx-auto mb-4 rounded-lg overflow-hidden">
@@ -367,8 +367,8 @@ const About = () => {
                     ) : (
                       <div className="text-4xl mb-4">{cert.icon}</div>
                     )}
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm">{cert.title}</h4>
-                    <div className="flex items-center justify-center space-x-1 text-blue-600">
+                    <h4 className="font-semibold text-green-400 mb-2 text-sm">{cert.title}</h4>
+                    <div className="flex items-center justify-center space-x-1 text-cyan-400">
                       <span className="text-sm">View Badge</span>
                       <ExternalLink className="w-3 h-3" />
                     </div>
