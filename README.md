@@ -19,17 +19,26 @@
 
 ## 🏗️ Architecture
 
+For detailed architecture diagrams and technical documentation, see [ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ```
 Frontend (React + Vite)
     ↓
 AWS Amplify (Hosting + CI/CD)
     ↓
-API Gateway (REST API)
+API Gateway (REST API + Security)
     ↓
 Lambda Functions (Python 3.12)
     ↓
 AWS Secrets Manager (API Keys)
 ```
+
+### Key Components
+- **Frontend**: React + TypeScript with Matrix theme
+- **Backend**: Serverless Lambda functions with AI integration
+- **Security**: API Gateway usage plans, rate limiting, WAF protection
+- **Deployment**: Automated CI/CD with GitHub Actions and AWS Amplify
+- **Monitoring**: CloudWatch logs, metrics, and alerting
 
 ## 📁 Project Structure
 

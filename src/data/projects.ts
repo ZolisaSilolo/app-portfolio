@@ -2,6 +2,15 @@ import { Project } from '../types';
 
 export const projects: Project[] = [
   {
+    title: "Matrix-Themed Portfolio System",
+    description: "A full-stack serverless portfolio application featuring React frontend with TypeScript, AWS Lambda backend with AI-powered chatbot using Cohere, automated CI/CD via GitHub Actions and AWS Amplify, comprehensive security with API Gateway usage plans, rate limiting, and AWS Secrets Manager integration. Includes complete infrastructure as code with CloudFormation templates.",
+    technologies: ["React", "TypeScript", "AWS Lambda", "API Gateway", "AWS Amplify", "Cohere AI", "CloudFormation", "GitHub Actions", "AWS Secrets Manager", "CloudWatch"],
+    repo_url: "https://github.com/ZolisaSilolo/app-portfilio",
+    live_url: "https://d1qen9zpw73vjz.amplifyapp.com",
+    emoji: "🎬⚡🌐",
+    icon: "globe"
+  },
+  {
     title: "AI Data Analytics Agent",
     description: "Built an intelligent agent leveraging Pandas, Bedrock, and SageMaker to automate exploratory data analysis (EDA), reducing analysis time by 70% and enabling faster business insights.",
     technologies: ["Amazon Bedrock", "Amazon SageMaker", "Python", "Pandas", "AWS Lambda", "API Gateway"],
