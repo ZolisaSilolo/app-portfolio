@@ -6,7 +6,7 @@ export const projects: Project[] = [
     description: "A full-stack serverless portfolio application featuring React frontend with TypeScript, AWS Lambda backend with AI-powered chatbot using Cohere, automated CI/CD via GitHub Actions and AWS Amplify, comprehensive security with API Gateway usage plans, rate limiting, and AWS Secrets Manager integration. Includes complete infrastructure as code with CloudFormation templates.",
     technologies: ["React", "TypeScript", "AWS Lambda", "API Gateway", "AWS Amplify", "Cohere AI", "CloudFormation", "GitHub Actions", "AWS Secrets Manager", "CloudWatch"],
     repo_url: "https://github.com/ZolisaSilolo/app-portfilio",
-    live_url: "https://d1qen9zpw73vjz.amplifyapp.com",
+    live_url: "https://zolisasilolo.co.za",
     emoji: "🎬⚡🌐",
     icon: "globe"
   },

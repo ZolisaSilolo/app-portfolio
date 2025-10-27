@@ -119,6 +119,19 @@ Resources:
     Properties:
       StageName: !Ref Environment
       TracingEnabled: true
+      CacheClusterEnabled: true
+      CacheClusterSize: '0.5'
+      MethodSettings:
+        - ResourcePath: '/portfolio'
+          HttpMethod: 'GET'
+          CachingEnabled: true
+          CacheTtlInSeconds: 300
+        - ResourcePath: '/auth/guest'
+          HttpMethod: 'POST'
+          CachingEnabled: false
+        - ResourcePath: '/chat'
+          HttpMethod: 'POST'
+          CachingEnabled: false
       AccessLogSetting:
         DestinationArn: !GetAtt ApiAccessLogGroup.Arn
         Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","caller":"$context.identity.caller","user":"$context.identity.user","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","protocol":"$context.protocol","responseLength":"$context.responseLength"}'
