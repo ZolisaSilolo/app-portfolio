@@ -1,4 +1,6 @@
 import json
+import boto3
+import cohere
 
 def lambda_handler(event, context):
     headers = {
@@ -30,22 +32,36 @@ def lambda_handler(event, context):
                 })
             }
         
-        # Mock response for testing
-        mock_response = f"""Hello! I'm the AI assistant for this portfolio. I can tell you about the following projects:
+        # Get Cohere API key from Secrets Manager
+        secrets_client = boto3.client('secretsmanager')
+        secret_response = secrets_client.get_secret_value(SecretId='portfolio-cohere-api-key')
+        secret_data = json.loads(secret_response['SecretString'])
+        api_key = secret_data['COHERE_API_KEY']
+        
+        # Initialize Cohere client
+        co = cohere.ClientV2(api_key=api_key)
+        
+        # Portfolio context
+        portfolio_context = """I am an AI assistant for a portfolio showcasing AWS and cloud engineering projects:
 
-1. **Simple AWS Fraud Detection Pipeline** - An MLOps project showcasing skills in building scalable real-world solutions using AWS Lambda, Kinesis, SageMaker, and more.
+1. Simple AWS Fraud Detection Pipeline - MLOps project with Lambda, Kinesis, SageMaker
+2. Awesome Environment With Backup & Disaster Recovery - AWS architecture with VPC, RDS, CloudFront
+3. Just Serverless Efficiency (JSE) - Cloud-native vector store with Cohere API
+4. Alexa Smart Home Skill - Voice control using Lambda and Alexa Skills Kit
+5. Industrial Predictive Maintenance - ML-powered maintenance with AWS IoT and SageMaker
 
-2. **Awesome Environment With Backup & Disaster Recovery** - A comprehensive AWS architecture with VPC, RDS, CloudFront, and disaster recovery capabilities.
-
-3. **Just Serverless Efficiency (JSE)** - A cloud-native vector store application leveraging Cohere's API for document processing and text summarization.
-
-4. **Alexa Smart Home Skill** - Voice-controlled smart device management using AWS Lambda and Alexa Skills Kit.
-
-5. **Industrial Predictive Maintenance** - ML-powered predictive maintenance for industrial equipment using AWS IoT and SageMaker.
-
-You asked: "{message}"
-
-What would you like to know more about?"""
+The portfolio demonstrates expertise in AWS services, serverless architecture, machine learning, and cloud-native development."""
+        
+        # Generate response using Cohere
+        response = co.chat(
+            model="command-r-plus-08-2024",
+            messages=[
+                {"role": "system", "content": portfolio_context},
+                {"role": "user", "content": message}
+            ],
+            max_tokens=500,
+            temperature=0.7
+        )
         
         return {
             'statusCode': 200,
@@ -53,7 +69,7 @@ What would you like to know more about?"""
             'body': json.dumps({
                 'success': True,
                 'data': {
-                    'response': mock_response
+                    'response': response.message.content[0].text
                 }
             })
         }

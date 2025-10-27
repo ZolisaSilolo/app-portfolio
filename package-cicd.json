@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "build": "tsc && vite build",
+    "build:prod": "NODE_ENV=production npm run build",
+    "preview": "vite preview",
+    "deploy:artifacts": "aws s3 sync dist/ s3://your-deployment-bucket/",
+    "pipeline:start": "aws codepipeline start-pipeline-execution --name portfolio-react-pipeline",
+    "pipeline:status": "aws codepipeline get-pipeline-state --name portfolio-react-pipeline"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@vitest/coverage-v8": "^0.34.6",
+    "jsdom": "^22.1.0",
+    "vitest": "^0.34.6"
+  }
+}
