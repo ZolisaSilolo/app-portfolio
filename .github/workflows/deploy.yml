@@ -19,7 +19,7 @@ jobs:
     - name: Deploy to Amplify
       run: |
         cd dist && zip -r ../build.zip .
-        DEPLOYMENT=$(aws amplify create-deployment --app-id d1qen9zpw73vjz --branch-name main)
+        DEPLOYMENT=$(aws amplify create-deployment --app-id d2ceycjbd5g2jr --branch-name main)
         UPLOAD_URL=$(echo $DEPLOYMENT | jq -r '.zipUploadUrl')
         curl -T build.zip "$UPLOAD_URL"
-        aws amplify start-deployment --app-id d1qen9zpw73vjz --branch-name main --job-id $(echo $DEPLOYMENT | jq -r '.jobId')
+        aws amplify start-deployment --app-id d2ceycjbd5g2jr --branch-name main --job-id $(echo $DEPLOYMENT | jq -r '.jobId')
