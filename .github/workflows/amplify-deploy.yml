@@ -1,0 +1,42 @@
+name: Trigger Amplify Build
+
+on:
+  push:
+    branches: [ new-react-client ]
+  pull_request:
+    branches: [ new-react-client ]
+
+jobs:
+  trigger-amplify:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
+    - name: Trigger Amplify Build
+      run: |
+        # Get the latest Amplify app ID
+        APP_ID=$(aws amplify list-apps --query 'apps[?name==`matrix-portfolio-fresh`].appId' --output text)
+        
+        if [ -z "$APP_ID" ]; then
+          echo "❌ No Amplify app found with name 'matrix-portfolio-fresh'"
+          exit 1
+        fi
+        
+        echo "🚀 Triggering build for app: $APP_ID"
+        
+        # Start a new build job
+        aws amplify start-job \
+          --app-id $APP_ID \
+          --branch-name new-react-client \
+          --job-type RELEASE
+          
+        echo "✅ Build triggered successfully"
