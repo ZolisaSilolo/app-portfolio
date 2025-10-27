@@ -59,7 +59,7 @@ The portfolio demonstrates expertise in AWS services, serverless architecture, m
                 {"role": "system", "content": portfolio_context},
                 {"role": "user", "content": message}
             ],
-            max_tokens=500,
+            max_tokens=250,
             temperature=0.7
         )
         
