@@ -19,10 +19,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     const root = document.documentElement;
     if (isDark) {
+      root.classList.remove('light');
       root.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     } else {
       root.classList.remove('dark');
+      root.classList.add('light');
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
