@@ -13,6 +13,7 @@ function AppContent() {
 
   useEffect(() => {
     document.documentElement.className = isDark ? 'dark' : 'light';
+    document.body.className = isDark ? 'dark' : 'light';
   }, [isDark]);
 
   return (
