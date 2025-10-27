@@ -108,64 +108,79 @@ const About = () => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Hero Section */}
         <div className="text-center mb-20">
-          <div className="mb-8">
-            <div className="inline-block px-4 py-2 bg-green-100 dark:bg-green-900/30 rounded-full text-green-800 dark:text-green-300 text-sm font-medium mb-4">
+          <div className="mb-12">
+            <div className="inline-block px-6 py-3 bg-green-100 dark:bg-green-900/30 rounded-full text-green-800 dark:text-green-300 text-sm font-medium mb-8">
               [SYSTEM_INITIALIZED] ✓
             </div>
-            <h1 className="text-5xl font-bold gradient-text mb-2">LUNDI_ZOLISA</h1>
-            <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-6">SILOLO.exe</h2>
+            <h1 className="text-6xl font-bold gradient-text mb-4 tracking-wide">LUNDI ZOLISA</h1>
+            <h2 className="text-3xl font-semibold text-blue-600 dark:text-blue-400 mb-12 font-mono">SILOLO.exe</h2>
           </div>
           
-          <div className="max-w-4xl mx-auto">
-            <div className="modern-card p-8 rounded-2xl text-left">
-              <div className="flex items-center mb-6">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-3"></div>
-                <span className="text-green-600 dark:text-green-400 font-mono text-sm">[LOADING...] Profile Data</span>
+          <div className="max-w-5xl mx-auto">
+            <div className="modern-card p-10 rounded-3xl text-left space-y-8">
+              <div className="flex items-center mb-8">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-4"></div>
+                <span className="text-green-600 dark:text-green-400 font-mono text-base">[LOADING...] Professional Profile</span>
               </div>
               
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                Data & Cloud Professional with hands-on experience designing secure, scalable architectures and driving AI-powered innovation. I specialize in solving real-world challenges through cloud-native, data-driven, and machine learning solutions.
-              </p>
-              
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div className="space-y-3">
-                  <div className="flex items-start space-x-3">
-                    <span className="text-blue-500 font-bold">•</span>
-                    <div>
-                      <span className="font-semibold text-blue-600 dark:text-blue-400">Cloud</span>
-                      <span className="text-gray-600 dark:text-gray-400"> → AWS, Serverless Architectures, Cloud Security, IaC</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-purple-500 font-bold">•</span>
-                    <div>
-                      <span className="font-semibold text-purple-600 dark:text-purple-400">Data & AI</span>
-                      <span className="text-gray-600 dark:text-gray-400"> → Big Data Solutions, Analytics, Amazon SageMaker AI, Bedrock, MLOps</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex items-start space-x-3">
-                    <span className="text-green-500 font-bold">•</span>
-                    <div>
-                      <span className="font-semibold text-green-600 dark:text-green-400">Systems</span>
-                      <span className="text-gray-600 dark:text-gray-400"> → Distributed, Highly-Available, IoT-enabled infrastructures</span>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <span className="text-orange-500 font-bold">•</span>
-                    <div>
-                      <span className="font-semibold text-orange-600 dark:text-orange-400">Business Impact</span>
-                      <span className="text-gray-600 dark:text-gray-400"> → Translating advanced technologies into solutions that drive efficiency, resilience, and growth</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Beyond the tech, I thrive on principles like <span className="font-semibold text-blue-600 dark:text-blue-400">customer obsession</span>, <span className="font-semibold text-green-600 dark:text-green-400">bias for action</span>, and <span className="font-semibold text-purple-600 dark:text-purple-400">delivering results</span>. My strength lies in bridging complex business challenges with cutting-edge technology, ensuring solutions are not only robust and secure, but also strategically valuable.
+              <div className="text-center mb-10">
+                <p className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto">
+                  Data & Cloud Professional with hands-on experience designing secure, scalable architectures and driving AI-powered innovation. I specialize in solving real-world challenges through cloud-native, data-driven, and machine learning solutions.
                 </p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 mb-10">
+                <div className="space-y-6">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                    <div className="flex items-start space-x-4">
+                      <span className="text-2xl">☁️</span>
+                      <div>
+                        <h3 className="font-bold text-blue-600 dark:text-blue-400 text-lg mb-2">Cloud</h3>
+                        <p className="text-gray-600 dark:text-gray-400">AWS, Serverless Architectures, Cloud Security, Infrastructure-as-Code</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+                    <div className="flex items-start space-x-4">
+                      <span className="text-2xl">🤖</span>
+                      <div>
+                        <h3 className="font-bold text-purple-600 dark:text-purple-400 text-lg mb-2">Data & AI</h3>
+                        <p className="text-gray-600 dark:text-gray-400">Big Data Solutions, Analytics, Amazon SageMaker AI, Bedrock, MLOps</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                    <div className="flex items-start space-x-4">
+                      <span className="text-2xl">⚙️</span>
+                      <div>
+                        <h3 className="font-bold text-green-600 dark:text-green-400 text-lg mb-2">Systems</h3>
+                        <p className="text-gray-600 dark:text-gray-400">Distributed, Highly-Available, IoT-enabled infrastructures</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
+                    <div className="flex items-start space-x-4">
+                      <span className="text-2xl">📈</span>
+                      <div>
+                        <h3 className="font-bold text-orange-600 dark:text-orange-400 text-lg mb-2">Business Impact</h3>
+                        <p className="text-gray-600 dark:text-gray-400">Translating advanced technologies into solutions that drive efficiency, resilience, and growth</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-8">
+                <div className="text-center">
+                  <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed max-w-4xl mx-auto">
+                    Beyond the tech, I thrive on principles like <span className="font-semibold text-blue-600 dark:text-blue-400 px-2 py-1 bg-blue-100 dark:bg-blue-900/30 rounded">customer obsession</span>, <span className="font-semibold text-green-600 dark:text-green-400 px-2 py-1 bg-green-100 dark:bg-green-900/30 rounded">bias for action</span>, and <span className="font-semibold text-purple-600 dark:text-purple-400 px-2 py-1 bg-purple-100 dark:bg-purple-900/30 rounded">delivering results</span>. My strength lies in bridging complex business challenges with cutting-edge technology, ensuring solutions are not only robust and secure, but also strategically valuable.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
