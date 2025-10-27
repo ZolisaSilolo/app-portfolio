@@ -26,18 +26,18 @@
     --cyber-cyan: 0 255 255;
   }
 
-  /* Light Mode - Cyberpunk Inspired */
+  /* Light Mode - Modern Orange/Blue Design */
   .light {
-    --bg-primary: 240 245 255;
-    --bg-secondary: 250 252 255;
+    --bg-primary: 255 255 255;
+    --bg-secondary: 248 250 252;
     --text-primary: 15 23 42;
     --text-secondary: 51 65 85;
-    --accent: 147 51 234;
-    --border: 147 51 234;
+    --accent: 249 115 22;
+    --border: 249 115 22;
     --matrix-green: 34 197 94;
-    --cyber-cyan: 6 182 212;
-    --cyber-purple: 147 51 234;
-    --cyber-pink: 236 72 153;
+    --cyber-cyan: 14 165 233;
+    --cyber-orange: 249 115 22;
+    --cyber-blue: 59 130 246;
   }
 
   * {
@@ -77,7 +77,7 @@
     background: linear-gradient(135deg, 
       rgb(var(--bg-primary)), 
       rgb(var(--bg-secondary)),
-      rgba(var(--cyber-purple), 0.03));
+      rgba(var(--cyber-orange), 0.02));
   }
 
   .light body::before {
@@ -98,14 +98,11 @@
 
   /* Light mode matrix card */
   .light .matrix-card {
-    background: linear-gradient(135deg, 
-      rgba(var(--cyber-purple), 0.08) 0%, 
-      rgba(var(--cyber-cyan), 0.06) 50%, 
-      rgba(var(--cyber-pink), 0.04) 100%);
-    border: 1px solid rgba(var(--cyber-purple), 0.2);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(var(--cyber-orange), 0.3);
     box-shadow: 
-      0 4px 20px rgba(var(--cyber-purple), 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      0 4px 20px rgba(var(--cyber-orange), 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
   .matrix-card:hover {
@@ -117,11 +114,11 @@
   }
 
   .light .matrix-card:hover {
-    border-color: rgba(var(--cyber-purple), 0.5);
+    border-color: rgba(var(--cyber-orange), 0.6);
     box-shadow: 
-      0 8px 30px rgba(var(--cyber-purple), 0.25),
-      0 0 60px rgba(var(--cyber-cyan), 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      0 8px 30px rgba(var(--cyber-orange), 0.2),
+      0 0 40px rgba(var(--cyber-blue), 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
     transform: translateY(-5px) scale(1.02);
   }
 
@@ -237,13 +234,12 @@
 
   .light .matrix-text {
     background: linear-gradient(135deg, 
-      rgb(var(--cyber-purple)), 
-      rgb(var(--cyber-cyan)),
-      rgb(var(--cyber-pink)));
+      rgb(var(--cyber-orange)), 
+      rgb(var(--cyber-blue)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: 0 0 8px rgba(var(--cyber-purple), 0.3);
+    text-shadow: 0 0 8px rgba(var(--cyber-orange), 0.3);
   }
 
   .cyber-button {
@@ -254,14 +250,12 @@
   }
 
   .light .cyber-button {
-    background: linear-gradient(135deg, 
-      rgba(var(--cyber-purple), 0.12), 
-      rgba(var(--cyber-cyan), 0.08));
-    border: 1px solid rgba(var(--cyber-purple), 0.4);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(var(--cyber-orange), 0.5);
     box-shadow: 
-      0 0 10px rgba(var(--cyber-purple), 0.25),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    color: rgb(var(--cyber-purple));
+      0 0 10px rgba(var(--cyber-orange), 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+    color: rgb(var(--text-primary));
   }
 
   .cyber-button:hover {
@@ -272,14 +266,12 @@
   }
 
   .light .cyber-button:hover {
-    background: linear-gradient(135deg, 
-      rgba(var(--cyber-purple), 0.2), 
-      rgba(var(--cyber-cyan), 0.15));
-    border-color: rgba(var(--cyber-purple), 0.7);
+    background: rgba(var(--cyber-orange), 0.1);
+    border-color: rgba(var(--cyber-orange), 0.8);
     box-shadow: 
-      0 0 20px rgba(var(--cyber-purple), 0.4),
-      0 0 40px rgba(var(--cyber-cyan), 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      0 0 20px rgba(var(--cyber-orange), 0.3),
+      0 0 40px rgba(var(--cyber-blue), 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
     transform: scale(1.05);
   }
 
@@ -293,9 +285,9 @@
   }
 
   .light .tech-tag {
-    background: rgba(var(--cyber-purple), 0.1);
-    border: 1px solid rgba(var(--cyber-purple), 0.25);
-    color: rgb(var(--cyber-purple));
+    background: rgba(var(--cyber-orange), 0.1);
+    border: 1px solid rgba(var(--cyber-orange), 0.3);
+    color: rgb(var(--text-primary));
   }
 
   .tech-tag:hover {
@@ -306,9 +298,9 @@
   }
 
   .light .tech-tag:hover {
-    background: rgba(var(--cyber-purple), 0.15);
-    border-color: rgba(var(--cyber-purple), 0.5);
-    box-shadow: 0 0 10px rgba(var(--cyber-purple), 0.3);
+    background: rgba(var(--cyber-orange), 0.2);
+    border-color: rgba(var(--cyber-orange), 0.6);
+    box-shadow: 0 0 10px rgba(var(--cyber-orange), 0.3);
     transform: scale(1.05);
   }
 
@@ -381,8 +373,10 @@
   }
 
   /* Light mode text colors */
-  .light .text-green-400 { color: rgb(var(--cyber-purple)); }
-  .light .text-green-300 { color: rgb(var(--text-secondary)); }
-  .light .text-cyan-400 { color: rgb(var(--cyber-cyan)); }
-  .light .text-cyan-300 { color: rgb(var(--text-primary)); }
+  .light .text-green-400 { color: rgb(var(--cyber-orange)) !important; }
+  .light .text-green-300 { color: rgb(var(--text-primary)) !important; }
+  .light .text-cyan-400 { color: rgb(var(--cyber-blue)) !important; }
+  .light .text-cyan-300 { color: rgb(var(--text-secondary)) !important; }
+  .light h1, .light h2, .light h3, .light h4, .light h5, .light h6 { color: rgb(var(--text-primary)) !important; }
+  .light p, .light span, .light div { color: rgb(var(--text-primary)) !important; }
 }
