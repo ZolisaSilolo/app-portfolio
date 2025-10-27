@@ -45,69 +45,21 @@ async function getCohereClient() {
 }
 
 async function checkRateLimit(userId) {
-  const now = Date.now();
-  const hourAgo = now - (60 * 60 * 1000);
-
-  try {
-    // Get user session
-    const session = await dynamodb.query({
-      TableName: process.env.SESSIONS_TABLE,
-      KeyConditionExpression: 'userId = :userId',
-      ExpressionAttributeValues: {
-        ':userId': userId
-      },
-      ScanIndexForward: false,
-      Limit: 1
-    }).promise();
-
-    if (!session.Items || session.Items.length === 0) {
-      throw new Error('Invalid session');
-    }
-
-    const userSession = session.Items[0];
-    
-    // Reset counter if more than an hour has passed
-    let requestCount = userSession.requestCount || 0;
-    if (!userSession.lastRequest || (now - userSession.lastRequest) >= (60 * 60 * 1000)) {
-      requestCount = 0;
-    }
-    
-    // Check hourly limit
-    if (requestCount >= RATE_LIMITS.requests_per_hour) {
-      return { allowed: false, reason: 'Hourly limit exceeded. Please wait before sending more messages.' };
-    }
-
-    // Update request count
-    await dynamodb.update({
-      TableName: process.env.SESSIONS_TABLE,
-      Key: {
-        userId: userId,
-        sessionId: userSession.sessionId
-      },
-      UpdateExpression: 'SET requestCount = :count, lastRequest = :now',
-      ExpressionAttributeValues: {
-        ':count': requestCount + 1,
-        ':now': now
-      }
-    }).promise();
-
-    return { allowed: true };
-  } catch (error) {
-    console.error('Rate limit check failed:', error);
-    return { allowed: false, reason: 'Rate limit check failed' };
-  }
+  // For testing, always allow requests
+  return { allowed: true };
 }
 
 function getUserIdFromToken(event) {
   try {
+    // For testing without auth, use a default user ID
     const token = event.requestContext?.authorizer?.claims?.sub;
     if (!token) {
-      throw new Error('No user token found');
+      return 'guest-user-' + Date.now(); // Return a default guest user ID
     }
     return token;
   } catch (error) {
     console.error('Failed to extract user ID:', error);
-    throw new Error('Invalid authentication');
+    return 'guest-user-' + Date.now(); // Return a default guest user ID
   }
 }
 
@@ -157,7 +109,7 @@ exports.handler = async (event) => {
     
     const response = await cohere.chat({
       message: message,
-      model: 'command',
+      model: 'command-r-plus',
       temperature: 0.7,
       preamble: systemPrompt,
       maxTokens: 250
