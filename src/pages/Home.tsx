@@ -170,42 +170,54 @@ const Home = () => {
             <div className="flex animate-scroll space-x-6">
               {/* First set of tiles */}
               {skills.map((skill, index) => (
-                <div key={index} className="flex-shrink-0 w-80 matrix-card p-6 rounded-2xl text-center">
-                  <div className="w-16 h-16 matrix-card rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation glow-effect">
-                    <skill.icon className="w-8 h-8 text-green-400 project-icon-3d" />
+                <div key={index} className="flex-shrink-0 w-80 matrix-card p-6 rounded-2xl text-center relative overflow-hidden">
+                  {/* Digital rain background - dark mode only */}
+                  <div className="absolute inset-0 opacity-20 dark:block hidden">
+                    <div className="matrix-rain-bg"></div>
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
-                    [{skill.title}]
-                  </h3>
-                  <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
-                  <a
-                    href={skill.youtubeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
-                  >
-                    📺
-                  </a>
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 matrix-card rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation glow-effect">
+                      <skill.icon className="w-8 h-8 text-green-400 project-icon-3d" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
+                      [{skill.title}]
+                    </h3>
+                    <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
+                    <a
+                      href={skill.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
+                    >
+                      📺
+                    </a>
+                  </div>
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
               {skills.map((skill, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 w-80 matrix-card p-6 rounded-2xl text-center">
-                  <div className="w-16 h-16 matrix-card rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation glow-effect">
-                    <skill.icon className="w-8 h-8 text-green-400 project-icon-3d" />
+                <div key={`duplicate-${index}`} className="flex-shrink-0 w-80 matrix-card p-6 rounded-2xl text-center relative overflow-hidden">
+                  {/* Digital rain background - dark mode only */}
+                  <div className="absolute inset-0 opacity-20 dark:block hidden">
+                    <div className="matrix-rain-bg"></div>
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
-                    [{skill.title}]
-                  </h3>
-                  <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
-                  <a
-                    href={skill.youtubeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
-                  >
-                    📺
-                  </a>
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 matrix-card rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation glow-effect">
+                      <skill.icon className="w-8 h-8 text-green-400 project-icon-3d" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
+                      [{skill.title}]
+                    </h3>
+                    <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
+                    <a
+                      href={skill.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
+                    >
+                      📺
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>

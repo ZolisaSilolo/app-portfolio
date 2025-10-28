@@ -365,6 +365,49 @@
     animation-play-state: paused;
   }
 
+  /* Digital rain background for skill tiles */
+  .matrix-rain-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 255, 65, 0.1) 50%,
+      transparent 100%
+    );
+    background-size: 20px 40px;
+    animation: digitalRain 3s linear infinite;
+  }
+
+  .matrix-rain-bg::before {
+    content: "01010101 11001100 10101010 01110111";
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    font-family: 'Courier New', monospace;
+    font-size: 8px;
+    color: rgba(0, 255, 65, 0.3);
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 12px;
+    animation: rainFall 4s linear infinite;
+  }
+
+  @keyframes digitalRain {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 40px; }
+  }
+
+  @keyframes rainFall {
+    0% { transform: translateY(-20px); }
+    100% { transform: translateY(20px); }
+  }
+
   .glow-effect {
     position: relative;
   }
