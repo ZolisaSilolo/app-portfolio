@@ -24,11 +24,10 @@ function AppContent() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
       <Footer />
