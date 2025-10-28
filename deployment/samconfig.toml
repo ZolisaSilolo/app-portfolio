@@ -1,0 +1,14 @@
+# SAM configuration file
+version = 0.1
+
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "portfolio-backend"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1234567890"
+s3_prefix = "portfolio-backend"
+region = "us-east-1"
+confirm_changeset = false
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=prod"
+image_repositories = []

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
-import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
+import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, AuthUser, fetchUserAttributes, fetchAuthSession } from 'aws-amplify/auth';
 import amplifyconfig from '../amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig);
@@ -42,23 +42,55 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAdminStatus = async (_user: AuthUser) => {
     try {
+      // Method 1: Try to get groups from user attributes
       const attributes = await fetchUserAttributes();
+      console.log('User attributes:', attributes);
+      
+      // Method 2: Try to get groups from JWT token
+      const session = await fetchAuthSession();
+      const idToken = session.tokens?.idToken;
+      
+      if (idToken) {
+        const payload = idToken.payload;
+        console.log('JWT payload:', payload);
+        
+        const groups = payload['cognito:groups'] || [];
+        console.log('Groups from JWT:', groups);
+        
+        const isUserAdmin = Array.isArray(groups) && groups.includes('Admins');
+        console.log('Is admin:', isUserAdmin);
+        setIsAdmin(isUserAdmin);
+        return;
+      }
+      
+      // Fallback to attributes method
       const groups = attributes['cognito:groups'] || '';
-      setIsAdmin(groups.includes('Admins'));
+      const isUserAdmin = typeof groups === 'string' 
+        ? groups.includes('Admins')
+        : Array.isArray(groups) && groups.includes('Admins');
+        
+      setIsAdmin(isUserAdmin);
     } catch (error) {
+      console.error('Error checking admin status:', error);
       setIsAdmin(false);
     }
   };
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      await signIn({ username, password });
+      console.log('Attempting login for:', username);
+      
+      const signInResult = await signIn({ username, password });
+      console.log('SignIn result:', signInResult);
+      
       const currentUser = await getCurrentUser();
+      console.log('Current user:', currentUser);
+      
       setUser(currentUser);
       await checkAdminStatus(currentUser);
       return true;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login error details:', error);
       return false;
     }
   };
