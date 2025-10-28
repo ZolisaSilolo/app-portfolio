@@ -10,10 +10,9 @@ const Header = () => {
 
   const navItems = [
     { path: '/', label: 'HOME', icon: Home },
-    { path: '/about', label: 'ABOUT', icon: User },
-    { path: '/portfolio', label: 'PROJECTS', icon: Briefcase },
     { path: '/blog', label: 'BLOG', icon: BookOpen },
-    { path: '/chat', label: 'ASSISTANT', icon: MessageCircle },
+    { path: '/chat', label: 'AI_BUDDY', icon: MessageCircle },
+    { path: '/about', label: 'ABOUT_ME', icon: User },
   ];
 
   const isActive = (path: string) => location.pathname === path;

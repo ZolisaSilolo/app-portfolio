@@ -56,6 +56,15 @@ const Home = () => {
                 <p className="text-xl text-green-300 leading-relaxed font-mono">
                   Cloud & AI Solutions Architect specializing in AWS serverless architectures and scalable system design.
                 </p>
+                
+                <div className="flex items-center space-x-3 mt-4 p-3 matrix-card rounded-lg border border-green-400/30">
+                  <div className="text-2xl animate-pulse">🧠</div>
+                  <div>
+                    <Link to="/blog" className="text-cyan-400 hover:text-green-400 transition-colors font-mono text-sm">
+                      [THOUGHT_STREAM] → Exploring AI, distributed systems & the future of intelligence
+                    </Link>
+                  </div>
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-4">
