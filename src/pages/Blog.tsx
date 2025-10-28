@@ -29,12 +29,12 @@ const Blog = () => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
-          {/* Thumbnail Image */}
+          {/* Large Thumbnail Image */}
           <div className="mb-8">
             <img 
               src="/THUMBNAIL_IMAGE.jpg" 
               alt="Blog Thumbnail" 
-              className="w-32 h-32 mx-auto rounded-2xl object-cover shadow-lg glow-effect"
+              className="w-full max-w-4xl h-96 mx-auto rounded-3xl object-cover shadow-2xl glow-effect"
             />
           </div>
           
