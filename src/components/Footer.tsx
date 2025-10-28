@@ -29,7 +29,7 @@ const Footer = () => {
                 <Linkedin className="w-5 h-5 icon-3d text-blue-600" />
               </a>
               <a 
-                href="mailto:contact@zolisasilolo.com" 
+                href="https://zolisasilolo.co.za" 
                 className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
               >
                 <Mail className="w-5 h-5 icon-3d text-green-600" />
@@ -63,7 +63,7 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Mail className="w-4 h-4 icon-3d text-green-600" />
-                <span className="text-sm">contact@zolisasilolo.com</span>
+                <span className="text-sm">home:zolisasilolo.co.za</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
                 <Phone className="w-4 h-4 icon-3d text-cyan-600" />
@@ -77,7 +77,7 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-gray-200/20">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
-              <span className="text-sm">© 2024 Zolisa Silolo. Built with</span>
+              <span className="text-sm">© 2025 Zolisa Silolo. Built with</span>
               <Heart className="w-4 h-4 icon-3d text-red-500" />
               <span className="text-sm">using React & AWS</span>
             </div>

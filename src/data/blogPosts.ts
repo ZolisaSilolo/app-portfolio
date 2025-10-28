@@ -62,7 +62,7 @@ The future of distributed systems isn't just about breaking things apart - it's 
 
 What do you think? Are we ready for this shift?
     `,
-    date: '2024-10-25',
+    date: '2025-10-25',
     readTime: 8,
     category: 'distributed-systems',
     tags: ['microservices', 'architecture', 'scalability', 'serverless', 'event-driven'],
@@ -131,7 +131,7 @@ The question isn't whether AGI will happen, but whether we'll be ready for what 
 
 *What do you think? Are we creating tools or minds? And does it matter?*
     `,
-    date: '2024-10-20',
+    date: '2025-10-20',
     readTime: 12,
     category: 'agi-thoughts',
     tags: ['AGI', 'consciousness', 'philosophy', 'future', 'AI-ethics'],
@@ -242,7 +242,7 @@ Start simple, automate everything, and always have a rollback plan.
 
 *What's your biggest MLOps challenge? Let's discuss in the comments.*
     `,
-    date: '2024-10-15',
+    date: '2025-10-15',
     readTime: 6,
     category: 'ai-ml',
     tags: ['MLOps', 'SageMaker', 'production', 'AWS', 'automation'],

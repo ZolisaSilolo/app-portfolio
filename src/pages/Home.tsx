@@ -119,8 +119,8 @@ const Home = () => {
                   
                   <div className="grid grid-cols-2 gap-6">
                     <div className="text-center">
-                      <div className="text-3xl font-bold matrix-text font-mono">AWS</div>
-                      <div className="text-sm text-green-300 font-mono">DUAL_CERT</div>
+                      <div className="text-3xl font-bold matrix-text font-mono hover:animate-spin transform-gpu transition-transform duration-500 cursor-pointer">AWS</div>
+                      <div className="text-sm text-green-300 font-mono hover:scale-110 transition-transform duration-300 cursor-pointer">3x_CERT</div>
                     </div>
                     <div className="text-center">
                       <div className="text-3xl font-bold matrix-text font-mono">MLOPS</div>
@@ -209,7 +209,7 @@ const Home = () => {
                   to="/chat" 
                   className="matrix-card px-8 py-4 rounded-xl font-mono font-medium transition-all duration-300 text-green-400"
                 >
-                  ACTIVATE_ASSISTANT
+                  ACTIVATE_AI_BUDDY
                 </Link>
               </div>
             </div>
