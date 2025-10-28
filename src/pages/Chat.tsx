@@ -1,11 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Sparkles, Zap } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
+import { useAuth } from '../contexts/AuthContext';
+import PublicAuth from '../components/PublicAuth';
 
 const Chat = () => {
+  const { isAuthenticated } = useAuth();
   const { messages, isLoading, sendMessage } = useChat();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  if (!isAuthenticated) {
+    return (
+      <PublicAuth 
+        title="AI_BUDDY Access"
+        description="Sign in or create an account to chat with AI assistant"
+      />
+    );
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

@@ -4,7 +4,9 @@
 
 ## 🚀 Live Demo
 
-- **Portfolio**: [https://d1qen9zpw73vjz.amplifyapp.com](https://d1qen9zpw73vjz.amplifyapp.com)
+- **Portfolio**: [https://zolisasilolo.co.za](https://zolisasilolo.co.za)
+- **AI_BUDDY**: [https://zolisasilolo.co.za/chat](https://zolisasilolo.co.za/chat)
+- **Admin Panel**: [https://zolisasilolo.co.za/admin](https://zolisasilolo.co.za/admin)
 - **API**: [https://ih7tek9ql6.execute-api.us-east-1.amazonaws.com/prod](https://ih7tek9ql6.execute-api.us-east-1.amazonaws.com/prod)
 
 ## ✨ Features
