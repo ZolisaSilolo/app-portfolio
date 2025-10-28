@@ -29,6 +29,15 @@ const Blog = () => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
+          {/* Thumbnail Image */}
+          <div className="mb-8">
+            <img 
+              src="/THUMBNAIL_IMAGE.jpg" 
+              alt="Blog Thumbnail" 
+              className="w-32 h-32 mx-auto rounded-2xl object-cover shadow-lg glow-effect"
+            />
+          </div>
+          
           <div className="inline-block px-6 py-3 bg-green-100 dark:bg-green-900/30 rounded-full text-green-800 dark:text-green-300 text-sm font-medium mb-8">
             [NEURAL_NETWORK_ACTIVE] ✓
           </div>
