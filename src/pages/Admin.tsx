@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, FileText, Image, Video, Music, Lock, Check, X, Eye } from 'lucide-react';
+import { Upload, FileText, Image, Video, Music, Check, X, Eye, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import Login from '../components/Login';
 
 interface ContentItem {
   id: string;
@@ -11,32 +13,16 @@ interface ContentItem {
 }
 
 const Admin = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
+  const { isAuthenticated, isAdmin, logout } = useAuth();
   const [content, setContent] = useState<ContentItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
-  // Simple admin authentication (in production, use proper auth)
-  const ADMIN_PASSWORD = 'ZolisaAdmin2025!'; // Change this to your secure password
-
-  const handleAuth = () => {
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      localStorage.setItem('admin_session', 'true');
-    } else {
-      alert('Invalid password');
-    }
-  };
-
   useEffect(() => {
-    // Check if already authenticated
-    if (localStorage.getItem('admin_session') === 'true') {
-      setIsAuthenticated(true);
+    if (isAuthenticated && isAdmin) {
+      loadContent();
     }
-    // Load existing content from S3 (implement this with your backend)
-    loadContent();
-  }, []);
+  }, [isAuthenticated, isAdmin]);
 
   const loadContent = async () => {
     // This would call your Lambda function to list S3 objects
@@ -148,30 +134,25 @@ const Admin = () => {
 
   if (!isAuthenticated) {
     return (
+      <Login 
+        title="Admin Access"
+        description="Enter admin credentials to manage content"
+      />
+    );
+  }
+
+  if (!isAdmin) {
+    return (
       <div className="py-20 min-h-screen flex items-center justify-center">
-        <div className="matrix-card p-8 rounded-2xl max-w-md w-full mx-6">
-          <div className="text-center mb-6">
-            <Lock className="w-12 h-12 text-green-400 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold matrix-text">Admin Access</h1>
-            <p className="text-cyan-300 mt-2">Enter password to manage content</p>
-          </div>
-          
-          <div className="space-y-4">
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleAuth()}
-              placeholder="Admin password"
-              className="w-full px-4 py-3 bg-black/50 border border-green-400/30 rounded-lg text-green-300 placeholder-green-400/50 focus:border-green-400 focus:outline-none"
-            />
-            <button
-              onClick={handleAuth}
-              className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-            >
-              Access Admin Panel
-            </button>
-          </div>
+        <div className="matrix-card p-8 rounded-2xl max-w-md w-full mx-6 text-center">
+          <h1 className="text-2xl font-bold matrix-text mb-4">Access Denied</h1>
+          <p className="text-cyan-300 mb-6">You don't have admin privileges to access this area.</p>
+          <button
+            onClick={logout}
+            className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Sign Out
+          </button>
         </div>
       </div>
     );
@@ -186,13 +167,11 @@ const Admin = () => {
             <p className="text-cyan-300 mt-2">Upload and manage your blog posts and media</p>
           </div>
           <button
-            onClick={() => {
-              setIsAuthenticated(false);
-              localStorage.removeItem('admin_session');
-            }}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+            onClick={logout}
+            className="flex items-center space-x-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
           >
-            Logout
+            <LogOut className="w-4 h-4" />
+            <span>Logout</span>
           </button>
         </div>
 
