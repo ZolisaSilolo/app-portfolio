@@ -137,7 +137,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signup = async (username: string, password: string, email: string): Promise<boolean> => {
     try {
-      await signUp({
+      console.log('📝 Attempting signup for:', { username, email });
+      
+      const signUpResult = await signUp({
         username,
         password,
         options: {
@@ -145,16 +147,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       });
       
-      // Log analytics for signup
-      await sessionService.logAnalytics({
-        eventType: 'signup_attempt',
-        userId: username,
-        metadata: { email }
-      });
+      console.log('✅ Signup result:', signUpResult);
+      
+      // Log analytics for signup (non-blocking)
+      try {
+        await sessionService.logAnalytics({
+          eventType: 'signup_attempt',
+          userId: username,
+          metadata: { email }
+        });
+      } catch (analyticsError) {
+        console.warn('⚠️ Analytics logging failed during signup:', analyticsError);
+      }
       
       return true;
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error('💥 Signup error details:', error);
       return false;
     }
   };
@@ -163,11 +171,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       await confirmSignUp({ username, confirmationCode: code });
       
-      // Log analytics for successful signup
-      await sessionService.logAnalytics({
-        eventType: 'signup_confirmed',
-        userId: username
-      });
+      // Log analytics for successful signup (non-blocking)
+      try {
+        await sessionService.logAnalytics({
+          eventType: 'signup_confirmed',
+          userId: username
+        });
+      } catch (analyticsError) {
+        console.warn('⚠️ Analytics logging failed during confirmation:', analyticsError);
+      }
       
       return true;
     } catch (error) {

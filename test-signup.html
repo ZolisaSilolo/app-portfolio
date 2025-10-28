@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Signup</title>
+    <script src="https://unpkg.com/@aws-amplify/core@6.0.0/dist/umd/aws-amplify-core.min.js"></script>
+    <script src="https://unpkg.com/@aws-amplify/auth@6.0.0/dist/umd/aws-amplify-auth.min.js"></script>
+</head>
+<body>
+    <h1>Test Cognito Signup</h1>
+    <div>
+        <input type="email" id="email" placeholder="Email" value="test@example.com">
+        <input type="password" id="password" placeholder="Password" value="TestPass123!">
+        <button onclick="testSignup()">Test Signup</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        // Configure Amplify
+        const { Amplify } = window.aws_amplify_core;
+        const { signUp } = window.aws_amplify_auth;
+
+        Amplify.configure({
+            Auth: {
+                Cognito: {
+                    userPoolId: 'us-east-1_t3MIm0E5r',
+                    userPoolClientId: '6ogs5m1vq8sme0o7tf7ndj06qj',
+                    region: 'us-east-1'
+                }
+            }
+        });
+
+        async function testSignup() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('result');
+
+            try {
+                resultDiv.innerHTML = 'Testing signup...';
+                
+                const result = await signUp({
+                    username: email,
+                    password: password,
+                    options: {
+                        userAttributes: { email: email }
+                    }
+                });
+                
+                resultDiv.innerHTML = `<div style="color: green;">Signup successful! Check email for confirmation code.</div>`;
+                console.log('Signup result:', result);
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div style="color: red;">Signup failed: ${error.message}</div>`;
+                console.error('Signup error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
