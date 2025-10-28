@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
-import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, AuthUser, fetchUserAttributes, fetchAuthSession } from 'aws-amplify/auth';
+import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
 import amplifyconfig from '../amplifyconfiguration.json';
 
 console.log('🔧 Amplify config:', amplifyconfig);
@@ -20,6 +20,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Session persistence keys
+const SESSION_KEYS = {
+  USER: 'amplify_user_session',
+  IS_ADMIN: 'amplify_is_admin'
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -34,6 +40,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
     console.log('🗄️ Auth-related localStorage keys:', localStorageKeys);
     
+    // Check our custom session storage
+    const storedUser = localStorage.getItem(SESSION_KEYS.USER);
+    const storedIsAdmin = localStorage.getItem(SESSION_KEYS.IS_ADMIN);
+    console.log('💾 Stored session data:', { storedUser: !!storedUser, storedIsAdmin });
+    
     checkAuthState();
   }, []);
 
@@ -44,10 +55,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Try to get current user (this will work if session exists)
       const currentUser = await getCurrentUser();
       console.log('✅ Current user found on refresh:', currentUser);
+      
       setUser(currentUser);
-      await checkAdminStatus(currentUser);
+      
+      // Restore admin status from localStorage if available
+      const storedIsAdmin = localStorage.getItem(SESSION_KEYS.IS_ADMIN);
+      if (storedIsAdmin === 'true') {
+        console.log('🛡️ Restored admin status from localStorage');
+        setIsAdmin(true);
+      } else {
+        await checkAdminStatus(currentUser);
+      }
+      
+      // Store user session
+      localStorage.setItem(SESSION_KEYS.USER, JSON.stringify({
+        username: currentUser.username,
+        userId: currentUser.userId
+      }));
+      
     } catch (error) {
       console.log('❌ No current user on refresh:', error);
+      
+      // Clear stored session data
+      localStorage.removeItem(SESSION_KEYS.USER);
+      localStorage.removeItem(SESSION_KEYS.IS_ADMIN);
+      
       setUser(null);
       setIsAdmin(false);
     } finally {
@@ -60,33 +92,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔍 Checking admin status...');
       
-      // Use fetchUserAttributes instead of fetchAuthSession to avoid Identity Pool
+      // Use fetchUserAttributes instead of fetchAuthSession to avoid Identity Pool issues
       const attributes = await fetchUserAttributes();
       console.log('📋 User attributes:', attributes);
       
-      // Check if user is in admin group by checking Cognito directly
-      try {
-        const userPoolId = 'us-east-1_t3MIm0E5r';
-        const username = _user.username;
-        
-        // For now, we'll check if the email matches the admin email
-        const email = attributes.email;
-        const isUserAdmin = email === 'zolisasilolo@gmail.com';
-        
-        console.log('📧 User email:', email);
-        console.log('🛡️ Is admin (by email):', isUserAdmin);
-        setIsAdmin(isUserAdmin);
-        
-      } catch (error) {
-        console.log('⚠️ Fallback admin check failed, using email match');
-        const email = attributes.email;
-        const isUserAdmin = email === 'zolisasilolo@gmail.com';
-        setIsAdmin(isUserAdmin);
-      }
+      // Check if user is admin by email
+      const email = attributes.email;
+      const isUserAdmin = email === 'zolisasilolo@gmail.com';
+      
+      console.log('📧 User email:', email);
+      console.log('🛡️ Is admin (by email):', isUserAdmin);
+      
+      setIsAdmin(isUserAdmin);
+      
+      // Store admin status
+      localStorage.setItem(SESSION_KEYS.IS_ADMIN, isUserAdmin.toString());
       
     } catch (error) {
       console.error('💥 Error checking admin status:', error);
       setIsAdmin(false);
+      localStorage.setItem(SESSION_KEYS.IS_ADMIN, 'false');
     }
   };
 
@@ -102,6 +127,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       setUser(currentUser);
       await checkAdminStatus(currentUser);
+      
+      // Store successful login
+      localStorage.setItem(SESSION_KEYS.USER, JSON.stringify({
+        username: currentUser.username,
+        userId: currentUser.userId
+      }));
+      
       return true;
     } catch (error) {
       console.error('💥 Login error details:', error);
@@ -140,6 +172,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = async () => {
     try {
       await signOut();
+      
+      // Clear all session data
+      localStorage.removeItem(SESSION_KEYS.USER);
+      localStorage.removeItem(SESSION_KEYS.IS_ADMIN);
+      
       setUser(null);
       setIsAdmin(false);
     } catch (error) {
