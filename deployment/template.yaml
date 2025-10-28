@@ -122,15 +122,15 @@ Resources:
       CacheClusterEnabled: true
       CacheClusterSize: '0.5'
       MethodSettings:
-        - ResourcePath: '/portfolio'
-          HttpMethod: 'GET'
+        - ResourcePath: /portfolio
+          HttpMethod: GET
           CachingEnabled: true
           CacheTtlInSeconds: 300
-        - ResourcePath: '/auth/guest'
-          HttpMethod: 'POST'
+        - ResourcePath: /auth/guest
+          HttpMethod: POST
           CachingEnabled: false
-        - ResourcePath: '/chat'
-          HttpMethod: 'POST'
+        - ResourcePath: /chat
+          HttpMethod: POST
           CachingEnabled: false
       AccessLogSetting:
         DestinationArn: !GetAtt ApiAccessLogGroup.Arn
@@ -163,13 +163,13 @@ Resources:
   ApiUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
     Properties:
-      UsagePlanName: !Sub "${AWS::StackName}-usage-plan"
+      UsagePlanName: !Sub ${AWS::StackName}-usage-plan
       Description: Rate limiting for portfolio API
       Throttle:
-        RateLimit: 100    # requests per second
-        BurstLimit: 200   # burst capacity
+        RateLimit: 100 # requests per second
+        BurstLimit: 200 # burst capacity
       Quota:
-        Limit: 10000      # requests per day
+        Limit: 10000 # requests per day
         Period: DAY
       ApiStages:
         - ApiId: !Ref PortfolioApi
@@ -179,7 +179,7 @@ Resources:
   ApiKey:
     Type: AWS::ApiGateway::ApiKey
     Properties:
-      Name: !Sub "${AWS::StackName}-api-key"
+      Name: !Sub ${AWS::StackName}-api-key
       Description: API key for portfolio monitoring
       Enabled: true
 
