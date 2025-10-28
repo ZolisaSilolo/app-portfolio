@@ -21,7 +21,7 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
   const [loading, setLoading] = useState(false);
   const [needsConfirmation, setNeedsConfirmation] = useState(false);
   const [needsPasswordReset, setNeedsPasswordReset] = useState(false);
-  const { login, signup, confirmSignup, forgotPassword, resetPassword } = useAuth();
+  const { login, signup, confirmSignup, forgotPassword, resetPassword, user } = useAuth();
 
   const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
@@ -55,7 +55,14 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
     const success = await signup(username, password, email);
     
     if (success) {
-      setNeedsConfirmation(true);
+      // Check if user needs confirmation or is auto-logged in
+      if (user) {
+        // Auto-logged in, call success callback
+        onSuccess?.();
+      } else {
+        // Needs confirmation
+        setNeedsConfirmation(true);
+      }
     } else {
       setError('Signup failed. Please try again.');
     }

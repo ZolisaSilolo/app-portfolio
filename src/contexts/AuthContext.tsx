@@ -151,6 +151,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       console.log('✅ Signup result:', signUpResult);
       
+      // Check if user is auto-confirmed (no email verification needed)
+      if (signUpResult.isSignUpComplete) {
+        console.log('🎉 User auto-confirmed, logging in...');
+        // Auto-login after successful signup
+        return await login(username, password);
+      }
+      
       // Log analytics for signup (non-blocking)
       try {
         await sessionService.logAnalytics({
