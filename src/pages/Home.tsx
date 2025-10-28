@@ -10,25 +10,47 @@ const Home = () => {
       icon: Brain,
       title: 'AI_SYSTEMS',
       description: 'Machine Learning Operations and SageMaker expertise',
-      animationClass: 'fraud-detection'
+      animationClass: 'fraud-detection',
+      youtubeUrls: [
+        'https://www.youtube.com/watch?v=Le-A72NjaWs',
+        'https://www.youtube.com/watch?v=M5tFyhdNj40',
+        'https://www.youtube.com/watch?v=Ld2oTLY47sA',
+        'https://www.youtube.com/watch?v=1eQC259cVcI'
+      ]
     },
     {
       icon: Cloud,
       title: 'CLOUD_ARCH',
       description: 'AWS cloud-native solutions and serverless architecture',
-      animationClass: 'cloud-infra'
+      animationClass: 'cloud-infra',
+      youtubeUrls: [
+        'https://www.youtube.com/watch?v=1aTQI-Kqs2U',
+        'https://www.youtube.com/watch?v=5TBzdDV60wE',
+        'https://www.youtube.com/watch?v=bhAWEAKV_eI',
+        'https://www.youtube.com/watch?v=vj3vaqnbgbI'
+      ]
     },
     {
       icon: Code,
       title: 'DATA_SCI',
       description: 'Cloud-native data science solutions and analytics',
-      animationClass: 'ai-efficiency'
+      animationClass: 'ai-efficiency',
+      youtubeUrls: [
+        'https://www.youtube.com/playlist?list=PLhr1KZpdzukfdjsOHZ-BazZt1iK1J8UUw',
+        'https://www.youtube.com/watch?v=THUrXS-ioA0',
+        'https://www.youtube.com/watch?v=-oDJmbPfSQs'
+      ]
     },
     {
       icon: Cpu,
       title: 'INFRA_CODE',
       description: 'Infrastructure-as-Code and automation',
-      animationClass: 'predictive-maintenance'
+      animationClass: 'predictive-maintenance',
+      youtubeUrls: [
+        'https://www.youtube.com/watch?v=rmXI_kd_owQ',
+        'https://www.youtube.com/watch?v=PFsK6TyFfpQ',
+        'https://www.youtube.com/playlist?list=PL9nWRykSBSFixRAcjN2yUmi8lSN6J8lby'
+      ]
     }
   ];
 
@@ -180,7 +202,21 @@ const Home = () => {
                 <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
                   [{skill.title}]
                 </h3>
-                <p className="text-green-300 text-sm font-mono">{skill.description}</p>
+                <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
+                
+                <div className="space-y-2">
+                  {skill.youtubeUrls.map((url, urlIndex) => (
+                    <a
+                      key={urlIndex}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full py-2 px-3 bg-red-600 hover:bg-red-700 text-white text-xs rounded-lg transition-colors font-mono"
+                    >
+                      📺 Video {urlIndex + 1}
+                    </a>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
