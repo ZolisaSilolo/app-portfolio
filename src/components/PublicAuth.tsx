@@ -55,14 +55,7 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
     const success = await signup(username, password, email);
     
     if (success) {
-      // Check if user needs confirmation or is auto-logged in
-      if (user) {
-        // Auto-logged in, call success callback
-        onSuccess?.();
-      } else {
-        // Needs confirmation
-        setNeedsConfirmation(true);
-      }
+      setNeedsConfirmation(true);
     } else {
       setError('Signup failed. Please try again.');
     }
