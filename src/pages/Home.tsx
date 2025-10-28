@@ -57,10 +57,6 @@ const Home = () => {
                   <span className="text-green-400">&gt; SILOLO.exe</span>
                 </h1>
                 
-                <p className="text-xl text-green-300 leading-relaxed font-mono">
-                  Cloud & AI Solutions Architect specializing in AWS serverless architectures and scalable system design.
-                </p>
-                
                 <div className="flex items-center space-x-3 mt-4 p-3 matrix-card rounded-lg border border-green-400/30">
                   <div className="text-2xl animate-pulse">🧠</div>
                   <div>
