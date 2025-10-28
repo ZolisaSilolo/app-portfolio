@@ -104,14 +104,8 @@ const About = () => {
   ];
 
   return (
-    <div className="py-20 relative">
-      {/* Fading background image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
-        style={{ backgroundImage: 'url(/THUMBNAIL_IMAGE.jpg)' }}
-      ></div>
-      
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
+    <div className="py-20">
+      <div className="max-w-6xl mx-auto px-6">
         {/* Hero Section */}
         <div className="text-center mb-20">
           <div className="mb-12">
