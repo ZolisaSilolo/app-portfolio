@@ -42,11 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAdminStatus = async (_user: AuthUser) => {
     try {
-      // Method 1: Try to get groups from user attributes
-      const attributes = await fetchUserAttributes();
-      console.log('User attributes:', attributes);
-      
-      // Method 2: Try to get groups from JWT token
+      // Get the current session and extract JWT token
       const session = await fetchAuthSession();
       const idToken = session.tokens?.idToken;
       
@@ -54,22 +50,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const payload = idToken.payload;
         console.log('JWT payload:', payload);
         
-        const groups = payload['cognito:groups'] || [];
+        // Check for groups in the JWT token
+        const groups = payload['cognito:groups'] as string[] || [];
         console.log('Groups from JWT:', groups);
         
-        const isUserAdmin = Array.isArray(groups) && groups.includes('Admins');
+        const isUserAdmin = groups.includes('Admins');
         console.log('Is admin:', isUserAdmin);
         setIsAdmin(isUserAdmin);
         return;
       }
       
-      // Fallback to attributes method
-      const groups = attributes['cognito:groups'] || '';
-      const isUserAdmin = typeof groups === 'string' 
-        ? groups.includes('Admins')
-        : Array.isArray(groups) && groups.includes('Admins');
-        
-      setIsAdmin(isUserAdmin);
+      console.log('No ID token found');
+      setIsAdmin(false);
     } catch (error) {
       console.error('Error checking admin status:', error);
       setIsAdmin(false);

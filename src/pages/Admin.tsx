@@ -13,7 +13,7 @@ interface ContentItem {
 }
 
 const Admin = () => {
-  const { isAuthenticated, isAdmin, logout } = useAuth();
+  const { isAuthenticated, isAdmin, logout, loading } = useAuth();
   const [content, setContent] = useState<ContentItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -23,6 +23,17 @@ const Admin = () => {
       loadContent();
     }
   }, [isAuthenticated, isAdmin]);
+
+  if (loading) {
+    return (
+      <div className="py-20 min-h-screen flex items-center justify-center">
+        <div className="matrix-card p-8 rounded-2xl max-w-md w-full mx-6 text-center">
+          <div className="w-8 h-8 border-2 border-green-400/30 border-t-green-400 rounded-full animate-spin mx-auto mb-4"></div>
+          <h1 className="text-xl font-bold matrix-text">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   const loadContent = async () => {
     // This would call your Lambda function to list S3 objects
