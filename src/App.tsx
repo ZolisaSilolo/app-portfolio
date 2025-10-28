@@ -26,6 +26,7 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/about" element={<About />} />
         </Routes>

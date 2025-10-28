@@ -11,6 +11,7 @@ const Header = () => {
   const navItems = [
     { path: '/', label: 'HOME', icon: Home },
     { path: '/blog', label: 'BLOG', icon: BookOpen },
+    { path: '/portfolio', label: 'PROJECTS', icon: Briefcase },
     { path: '/chat', label: 'AI_BUDDY', icon: MessageCircle },
     { path: '/about', label: 'ABOUT_ME', icon: User },
   ];
