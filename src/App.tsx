@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Portfolio from './pages/Portfolio';
 import Chat from './pages/Chat';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 function AppContent() {
   const { isDark } = useTheme();
@@ -24,6 +26,8 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/chat" element={<Chat />} />
         </Routes>
       </main>

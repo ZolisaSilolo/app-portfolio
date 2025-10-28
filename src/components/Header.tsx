@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon, Home, User, Briefcase, MessageCircle, Terminal } from 'lucide-react';
+import { Menu, X, Sun, Moon, Home, User, Briefcase, MessageCircle, Terminal, BookOpen } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Header = () => {
@@ -12,6 +12,7 @@ const Header = () => {
     { path: '/', label: 'HOME', icon: Home },
     { path: '/about', label: 'ABOUT', icon: User },
     { path: '/portfolio', label: 'PROJECTS', icon: Briefcase },
+    { path: '/blog', label: 'BLOG', icon: BookOpen },
     { path: '/chat', label: 'ASSISTANT', icon: MessageCircle },
   ];
 
