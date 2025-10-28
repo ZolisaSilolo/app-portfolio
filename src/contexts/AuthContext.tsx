@@ -69,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Create DynamoDB session for existing Cognito session
       const attributes = await fetchUserAttributes();
       const email = attributes.email || '';
-      const adminStatus = email === 'zolisasilolo@gmail.com';
+      const adminStatus = email === (process.env.REACT_APP_ADMIN_EMAIL || 'admin@example.com');
       
       await sessionService.createSession(currentUser.userId, email, adminStatus);
       console.log('🆕 Created DynamoDB session for existing Cognito user');
@@ -90,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       const attributes = await fetchUserAttributes();
       const email = attributes.email;
-      const isUserAdmin = email === 'zolisasilolo@gmail.com';
+      const isUserAdmin = email === (process.env.REACT_APP_ADMIN_EMAIL || 'admin@example.com');
       
       console.log('📧 User email:', email);
       console.log('🛡️ Is admin:', isUserAdmin);
@@ -114,7 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const attributes = await fetchUserAttributes();
       
       const email = attributes.email || username;
-      const adminStatus = email === 'zolisasilolo@gmail.com';
+      const adminStatus = email === (process.env.REACT_APP_ADMIN_EMAIL || 'admin@example.com');
       
       setUser(currentUser);
       setIsAdmin(adminStatus);

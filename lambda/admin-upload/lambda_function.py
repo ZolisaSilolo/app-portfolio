@@ -6,7 +6,9 @@ import os
 
 s3_client = boto3.client('s3')
 BUCKET_NAME = os.environ.get('CONTENT_BUCKET', 'your-portfolio-content')
-ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'ZolisaAdmin2025!')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
+if not ADMIN_PASSWORD:
+    raise ValueError("ADMIN_PASSWORD environment variable must be set")
 
 def lambda_handler(event, context):
     try:

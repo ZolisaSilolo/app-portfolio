@@ -11,7 +11,6 @@ import Chat from './pages/Chat';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Admin from './pages/Admin';
-import AuthTest from './pages/AuthTest';
 
 function AppContent() {
   const { isDark } = useTheme();
@@ -33,7 +32,6 @@ function AppContent() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/about" element={<About />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/auth-test" element={<AuthTest />} />
         </Routes>
       </main>
       <Footer />
