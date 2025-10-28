@@ -54,8 +54,10 @@ const Home = () => {
                 </h1>
                 
                 <p className="text-xl text-green-300 leading-relaxed font-mono">
-                  [LOADING...] 🚀 Data & Cloud Professional specializing in secure, scalable AWS architectures and AI-powered solutions.
-                </p>
+                  [LOADING...] 🚀 joke.
+                  <p className="text-xl text-green-300 leading-relaxed font-mono">
+  [LOADING...] hey there! 
+</p>                </p>
                 
                 <div className="mt-6 space-y-4 text-lg text-cyan-300 font-mono">
                   <div className="grid md:grid-cols-2 gap-4">
