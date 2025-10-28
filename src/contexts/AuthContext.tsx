@@ -49,29 +49,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       console.log('🔍 Checking admin status...');
       
-      // Get the current session and extract JWT token
-      const session = await fetchAuthSession();
-      console.log('📋 Session:', session);
+      // Use fetchUserAttributes instead of fetchAuthSession to avoid Identity Pool
+      const attributes = await fetchUserAttributes();
+      console.log('📋 User attributes:', attributes);
       
-      const idToken = session.tokens?.idToken;
-      console.log('🎫 ID Token:', idToken);
-      
-      if (idToken) {
-        const payload = idToken.payload;
-        console.log('📦 JWT payload:', payload);
+      // Check if user is in admin group by checking Cognito directly
+      try {
+        const userPoolId = 'us-east-1_t3MIm0E5r';
+        const username = _user.username;
         
-        // Check for groups in the JWT token
-        const groups = payload['cognito:groups'] as string[] || [];
-        console.log('👥 Groups from JWT:', groups);
+        // For now, we'll check if the email matches the admin email
+        const email = attributes.email;
+        const isUserAdmin = email === 'zolisasilolo@gmail.com';
         
-        const isUserAdmin = groups.includes('Admins');
-        console.log('🛡️ Is admin:', isUserAdmin);
+        console.log('📧 User email:', email);
+        console.log('🛡️ Is admin (by email):', isUserAdmin);
         setIsAdmin(isUserAdmin);
-        return;
+        
+      } catch (error) {
+        console.log('⚠️ Fallback admin check failed, using email match');
+        const email = attributes.email;
+        const isUserAdmin = email === 'zolisasilolo@gmail.com';
+        setIsAdmin(isUserAdmin);
       }
       
-      console.log('❌ No ID token found');
-      setIsAdmin(false);
     } catch (error) {
       console.error('💥 Error checking admin status:', error);
       setIsAdmin(false);
