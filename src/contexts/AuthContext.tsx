@@ -3,7 +3,9 @@ import { Amplify } from 'aws-amplify';
 import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, AuthUser, fetchUserAttributes, fetchAuthSession } from 'aws-amplify/auth';
 import amplifyconfig from '../amplifyconfiguration.json';
 
+console.log('🔧 Amplify config:', amplifyconfig);
 Amplify.configure(amplifyconfig);
+console.log('✅ Amplify configured');
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -29,10 +31,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAuthState = async () => {
     try {
+      console.log('🔍 Checking auth state...');
       const currentUser = await getCurrentUser();
+      console.log('✅ Current user found:', currentUser);
       setUser(currentUser);
       await checkAdminStatus(currentUser);
     } catch (error) {
+      console.log('❌ No current user:', error);
       setUser(null);
       setIsAdmin(false);
     } finally {
@@ -42,47 +47,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const checkAdminStatus = async (_user: AuthUser) => {
     try {
+      console.log('🔍 Checking admin status...');
+      
       // Get the current session and extract JWT token
       const session = await fetchAuthSession();
+      console.log('📋 Session:', session);
+      
       const idToken = session.tokens?.idToken;
+      console.log('🎫 ID Token:', idToken);
       
       if (idToken) {
         const payload = idToken.payload;
-        console.log('JWT payload:', payload);
+        console.log('📦 JWT payload:', payload);
         
         // Check for groups in the JWT token
         const groups = payload['cognito:groups'] as string[] || [];
-        console.log('Groups from JWT:', groups);
+        console.log('👥 Groups from JWT:', groups);
         
         const isUserAdmin = groups.includes('Admins');
-        console.log('Is admin:', isUserAdmin);
+        console.log('🛡️ Is admin:', isUserAdmin);
         setIsAdmin(isUserAdmin);
         return;
       }
       
-      console.log('No ID token found');
+      console.log('❌ No ID token found');
       setIsAdmin(false);
     } catch (error) {
-      console.error('Error checking admin status:', error);
+      console.error('💥 Error checking admin status:', error);
       setIsAdmin(false);
     }
   };
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      console.log('Attempting login for:', username);
+      console.log('🔐 Attempting login for:', username);
       
       const signInResult = await signIn({ username, password });
-      console.log('SignIn result:', signInResult);
+      console.log('✅ SignIn result:', signInResult);
       
       const currentUser = await getCurrentUser();
-      console.log('Current user:', currentUser);
+      console.log('👤 Current user after login:', currentUser);
       
       setUser(currentUser);
       await checkAdminStatus(currentUser);
       return true;
     } catch (error) {
-      console.error('Login error details:', error);
+      console.error('💥 Login error details:', error);
       return false;
     }
   };

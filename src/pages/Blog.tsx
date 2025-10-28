@@ -34,7 +34,7 @@ const Blog = () => {
             <img 
               src="/THUMBNAIL_IMAGE.jpg" 
               alt="Blog Thumbnail" 
-              className="w-full max-w-4xl h-96 mx-auto rounded-3xl object-cover shadow-2xl glow-effect"
+              className="w-full max-w-3xl h-64 mx-auto rounded-2xl object-contain shadow-2xl glow-effect bg-black/20"
             />
           </div>
           
