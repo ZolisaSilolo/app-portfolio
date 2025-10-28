@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const checkAdminStatus = async (user: AuthUser) => {
+  const checkAdminStatus = async (_user: AuthUser) => {
     try {
       const attributes = await fetchUserAttributes();
       const groups = attributes['cognito:groups'] || '';
