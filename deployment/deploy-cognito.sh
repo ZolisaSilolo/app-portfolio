@@ -3,8 +3,9 @@
 # Deploy Cognito User Pool for Portfolio Authentication
 echo "🚀 Deploying Cognito Authentication..."
 
-# Set your admin email
-ADMIN_EMAIL="zolisasilolo@gmail.com"
+# Set your admin email - USE ENVIRONMENT VARIABLES FOR PRODUCTION
+ADMIN_EMAIL="${ADMIN_EMAIL:-admin@example.com}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-ChangeMe123!}"
 
 # Deploy Cognito stack
 echo "📦 Creating Cognito User Pool..."
@@ -69,7 +70,7 @@ echo "Region: $REGION"
 echo ""
 echo "🔐 Admin Credentials:"
 echo "Username: $ADMIN_EMAIL"
-echo "Password: ZolisaAdmin2025!"
+echo "Password: [Set via ADMIN_PASSWORD environment variable]"
 echo ""
 echo "📝 Next steps:"
 echo "1. Install dependencies: npm install"

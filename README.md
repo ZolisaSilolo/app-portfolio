@@ -94,8 +94,8 @@ npm run build
 ## 🔐 Authentication
 
 ### Admin Access
-- **Username**: `zolisasilolo@gmail.com`
-- **Password**: `ZolisaAdmin2025!`
+- **Username**: Set via `ADMIN_EMAIL` environment variable
+- **Password**: Set via `ADMIN_PASSWORD` environment variable
 - **Access**: Admin panel + AI_BUDDY
 
 ### Public Access
