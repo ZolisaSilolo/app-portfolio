@@ -26,21 +26,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('🚀 AuthProvider mounted, checking auth state...');
+    
+    // Check localStorage for any existing session info
+    const localStorageKeys = Object.keys(localStorage).filter(key => 
+      key.includes('amplify') || key.includes('cognito') || key.includes('aws')
+    );
+    console.log('🗄️ Auth-related localStorage keys:', localStorageKeys);
+    
     checkAuthState();
   }, []);
 
   const checkAuthState = async () => {
     try {
-      console.log('🔍 Checking auth state...');
+      console.log('🔍 Checking auth state on app load...');
+      
+      // Try to get current user (this will work if session exists)
       const currentUser = await getCurrentUser();
-      console.log('✅ Current user found:', currentUser);
+      console.log('✅ Current user found on refresh:', currentUser);
       setUser(currentUser);
       await checkAdminStatus(currentUser);
     } catch (error) {
-      console.log('❌ No current user:', error);
+      console.log('❌ No current user on refresh:', error);
       setUser(null);
       setIsAdmin(false);
     } finally {
+      console.log('🏁 Auth state check complete');
       setLoading(false);
     }
   };
