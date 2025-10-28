@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Amplify } from 'aws-amplify';
-import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
+import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, resetPassword, confirmResetPassword, AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
 import { sessionService } from '../services/sessionService';
 import amplifyconfig from '../amplifyconfiguration.json';
 
@@ -15,6 +15,8 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<boolean>;
   signup: (username: string, password: string, email: string) => Promise<boolean>;
   confirmSignup: (username: string, code: string) => Promise<boolean>;
+  forgotPassword: (username: string) => Promise<boolean>;
+  resetPassword: (username: string, code: string, newPassword: string) => Promise<boolean>;
   logout: () => Promise<void>;
   loading: boolean;
 }
@@ -188,6 +190,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const forgotPassword = async (username: string): Promise<boolean> => {
+    try {
+      await resetPassword({ username });
+      return true;
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      return false;
+    }
+  };
+
+  const resetPassword = async (username: string, code: string, newPassword: string): Promise<boolean> => {
+    try {
+      await confirmResetPassword({ username, confirmationCode: code, newPassword });
+      return true;
+    } catch (error) {
+      console.error('Reset password error:', error);
+      return false;
+    }
+  };
+
   const logout = async () => {
     try {
       // Log analytics before logout
@@ -220,6 +242,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     login,
     signup,
     confirmSignup,
+    forgotPassword,
+    resetPassword,
     logout,
     loading
   };
