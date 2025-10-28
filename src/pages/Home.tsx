@@ -54,27 +54,8 @@ const Home = () => {
                 </h1>
                 
                 <p className="text-xl text-green-300 leading-relaxed font-mono">
-                  [LOADING...] 🚀 joke.
-                  <p className="text-xl text-green-300 leading-relaxed font-mono">
-  [LOADING...] hey there! 
-</p>                </p>
-                
-                <div className="mt-6 space-y-4 text-lg text-cyan-300 font-mono">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-green-400">• ☁️ Cloud → AWS, Serverless, Security, IaC</p>
-                      <p className="text-green-400">• 🤖 AI/ML → SageMaker, Bedrock, MLOps</p>
-                    </div>
-                    <div>
-                      <p className="text-green-400">• ⚙️ Systems → Distributed, IoT-enabled</p>
-                      <p className="text-green-400">• 📈 Impact → Technology-driven business solutions</p>
-                    </div>
-                  </div>
-                  
-                  <p className="text-cyan-300 mt-6">
-                    💡 Bridging complex business challenges with cutting-edge technology. Customer-obsessed, action-oriented, results-driven.
-                  </p>
-                </div>
+                  Cloud & AI Solutions Architect specializing in AWS serverless architectures and scalable system design.
+                </p>
               </div>
 
               <div className="flex flex-wrap gap-4">
