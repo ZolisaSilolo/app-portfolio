@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Github, Linkedin, Mail, Terminal, Zap, Target, Brain, Cloud, Code, Cpu } from 'lucide-react';
 
 const Home = () => {
-  const [hoveredSkill, setHoveredSkill] = useState<number | null>(null);
 
   const skills = [
     {

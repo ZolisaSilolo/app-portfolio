@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, Tag, ArrowRight, Search, Filter } from 'lucide-react';
-import { blogPosts, getBlogPostsByCategory, getFeaturedPosts, searchBlogPosts, BlogPost } from '../data/blogPosts';
+import { Calendar, Clock, ArrowRight, Search, Filter } from 'lucide-react';
+import { getBlogPostsByCategory, getFeaturedPosts, searchBlogPosts } from '../data/blogPosts';
 
 const Blog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');

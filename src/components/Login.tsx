@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Eye, EyeOff, User, Mail } from 'lucide-react';
+import { Lock, Eye, EyeOff, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface LoginProps {
