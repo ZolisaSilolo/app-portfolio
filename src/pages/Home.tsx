@@ -190,7 +190,7 @@ const Home = () => {
                   href={skill.youtubeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block w-full py-2 px-3 bg-red-600 hover:bg-red-700 text-white text-xs rounded-lg transition-colors font-mono"
+                  className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
                 >
                   📺
                 </a>
