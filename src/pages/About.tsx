@@ -104,8 +104,14 @@ const About = () => {
   ];
 
   return (
-    <div className="py-20">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="py-20 relative">
+      {/* Fading background image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+        style={{ backgroundImage: 'url(/THUMBNAIL_IMAGE.jpg)' }}
+      ></div>
+      
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
         {/* Hero Section */}
         <div className="text-center mb-20">
           <div className="mb-12">
@@ -358,7 +364,7 @@ const About = () => {
                       </div>
                     ) : cert.title === "AWS Well-Architected Proficient" ? (
                       <div className="w-16 h-16 mx-auto mb-4 rounded-lg overflow-hidden">
-                        <img src="/well-architected-cert.jpg" alt="Well-Architected Certificate" className="w-full h-full object-cover" />
+                        <img src="/WELL-ARCHITECTED.jpg" alt="Well-Architected Certificate" className="w-full h-full object-cover" />
                       </div>
                     ) : cert.title === "AWS AI Practitioner" ? (
                       <div className="w-16 h-16 mx-auto mb-4 rounded-lg overflow-hidden">

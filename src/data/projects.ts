@@ -5,7 +5,7 @@ export const projects: Project[] = [
     title: "Matrix-Themed Portfolio System",
     description: "A full-stack serverless portfolio application featuring React frontend with TypeScript, AWS Lambda backend with AI-powered chatbot using Cohere, automated CI/CD via GitHub Actions and AWS Amplify, comprehensive security with API Gateway usage plans, rate limiting, and AWS Secrets Manager integration. Includes complete infrastructure as code with CloudFormation templates.",
     technologies: ["React", "TypeScript", "AWS Lambda", "API Gateway", "AWS Amplify", "Cohere AI", "CloudFormation", "GitHub Actions", "AWS Secrets Manager", "CloudWatch"],
-    repo_url: "https://github.com/ZolisaSilolo/app-portfilio",
+    repo_url: "https://github.com/ZolisaSilolo/app-portfolio/tree/new-react-client",
     live_url: "https://zolisasilolo.co.za",
     emoji: "🎬⚡🌐",
     icon: "globe"
@@ -27,10 +27,10 @@ export const projects: Project[] = [
     icon: "shield"
   },
   {
-    title: "Intelligent Document Processing Pipeline",
+    title: "JustServerlessEfficiency (JSE) - Intelligent Document Processing",
     description: "Designed a serverless solution with AWS Lambda, Step Functions, and Bedrock to automate document ingestion and classification, cutting manual processing by 60% and improving accuracy to 95%.",
     technologies: ["AWS Lambda", "Step Functions", "Amazon Bedrock", "S3", "API Gateway", "DynamoDB"],
-    repo_url: "https://github.com/ZolisaSilolo/intelligent-document-processing",
+    repo_url: "https://github.com/ZolisaSilolo/JustServelessEfficiency-JSE",
     emoji: "📄🤖⚡",
     icon: "file-text"
   },
