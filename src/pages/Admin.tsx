@@ -1,13 +1,87 @@
-import React from 'react';
-import { FileText, Code, BookOpen } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FileText, Code, BookOpen, Lock } from 'lucide-react';
 
 const Admin = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Check if already authenticated in session
+    const auth = sessionStorage.getItem('admin_auth');
+    if (auth === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simple password check - change this to your password
+    if (password === 'admin123') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin_auth', 'true');
+      setError('');
+    } else {
+      setError('Invalid password');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem('admin_auth');
+    setPassword('');
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="py-20 min-h-screen flex items-center justify-center">
+        <div className="matrix-card p-8 rounded-2xl max-w-md w-full mx-6">
+          <div className="text-center mb-6">
+            <Lock className="w-12 h-12 text-green-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold matrix-text">Admin Access</h1>
+            <p className="text-cyan-300 mt-2">Enter password to continue</p>
+          </div>
+          
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              className="w-full px-4 py-3 bg-black/50 border border-green-400/30 rounded-lg text-green-300 placeholder-green-400/50 focus:border-green-400 focus:outline-none"
+              autoFocus
+            />
+            
+            {error && (
+              <p className="text-red-400 text-sm text-center">{error}</p>
+            )}
+            
+            <button
+              type="submit"
+              className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              Login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-20">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold matrix-text">Blog Manager</h1>
-          <p className="text-cyan-300 mt-2">Add and manage blog posts</p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-4xl font-bold matrix-text">Blog Manager</h1>
+            <p className="text-cyan-300 mt-2">Add and manage blog posts</p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Logout
+          </button>
         </div>
 
         {/* Instructions */}
@@ -133,6 +207,13 @@ More content...
               </code>
             </div>
           </div>
+        </div>
+
+        {/* Security Note */}
+        <div className="matrix-card p-4 rounded-lg mt-8 bg-yellow-900/20 border border-yellow-400/30">
+          <p className="text-yellow-300 text-sm">
+            <strong>Security Note:</strong> To change the admin password, edit line 18 in <code className="bg-black/50 px-2 py-1 rounded">src/pages/Admin.tsx</code>
+          </p>
         </div>
       </div>
     </div>
