@@ -1,0 +1,125 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Blog Content Storage with S3 and Lambda
+
+Parameters:
+  CognitoUserPoolId:
+    Type: String
+    Description: Cognito User Pool ID for authentication
+
+Resources:
+  # S3 Bucket for Blog Content
+  BlogContentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-blog-content
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+            AllowedOrigins:
+              - '*'
+            MaxAge: 3600
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      VersioningConfiguration:
+        Status: Enabled
+
+  # Bucket Policy for Public Read Access
+  BlogContentBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref BlogContentBucket
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: '*'
+            Action: s3:GetObject
+            Resource: !Sub ${BlogContentBucket.Arn}/published/*
+
+  # Lambda Function for Blog Admin Operations
+  BlogAdminFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-blog-admin
+      CodeUri: ../lambda/blog-admin/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      Timeout: 30
+      MemorySize: 512
+      Environment:
+        Variables:
+          BLOG_BUCKET: !Ref BlogContentBucket
+          USER_POOL_ID: !Ref CognitoUserPoolId
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref BlogContentBucket
+        - Statement:
+            - Effect: Allow
+              Action:
+                - cognito-idp:GetUser
+                - cognito-idp:AdminGetUser
+                - cognito-idp:AdminListGroupsForUser
+              Resource: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}
+      Events:
+        UploadUrl:
+          Type: Api
+          Properties:
+            Path: /admin/blog/upload-url
+            Method: post
+            RestApiId: !Ref BlogAdminApi
+        ListContent:
+          Type: Api
+          Properties:
+            Path: /admin/blog/list
+            Method: get
+            RestApiId: !Ref BlogAdminApi
+        PublishContent:
+          Type: Api
+          Properties:
+            Path: /admin/blog/publish
+            Method: post
+            RestApiId: !Ref BlogAdminApi
+        DeleteContent:
+          Type: Api
+          Properties:
+            Path: /admin/blog/delete
+            Method: delete
+            RestApiId: !Ref BlogAdminApi
+
+  # API Gateway
+  BlogAdminApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: '''GET,POST,DELETE,OPTIONS'''
+        AllowHeaders: '''Content-Type,Authorization'''
+        AllowOrigin: '''*'''
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}
+
+Outputs:
+  BlogBucketName:
+    Description: S3 Bucket for blog content
+    Value: !Ref BlogContentBucket
+    Export:
+      Name: !Sub ${AWS::StackName}-BlogBucket
+
+  BlogAdminApiUrl:
+    Description: API Gateway endpoint for blog admin
+    Value: !Sub https://${BlogAdminApi}.execute-api.${AWS::Region}.amazonaws.com/prod
+    Export:
+      Name: !Sub ${AWS::StackName}-BlogAdminApiUrl
