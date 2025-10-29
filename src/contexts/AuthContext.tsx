@@ -1,12 +1,9 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { Amplify } from 'aws-amplify';
-import { getCurrentUser, signIn, signOut, signUp, confirmSignUp, resetPassword, confirmResetPassword, AuthUser, fetchUserAttributes } from 'aws-amplify/auth';
-import { sessionService } from '../services/sessionService';
+import { signUp, confirmSignUp, signIn, signOut, getCurrentUser, AuthUser } from 'aws-amplify/auth';
 import amplifyconfig from '../amplifyconfiguration.json';
 
-console.log('🔧 Amplify config:', amplifyconfig);
 Amplify.configure(amplifyconfig);
-console.log('✅ Amplify configured');
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -26,120 +23,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    console.log('🚀 AuthProvider mounted, checking auth state...');
-    checkAuthState();
-  }, []);
-
-  const checkAuthState = async () => {
-    try {
-      console.log('🔍 Checking auth state...');
-      
-      // First try to validate existing DynamoDB session
-      const sessionData = await sessionService.validateSession();
-      if (sessionData) {
-        console.log('✅ Valid DynamoDB session found:', sessionData);
-        
-        // Try to get Cognito user to sync
-        try {
-          const currentUser = await getCurrentUser();
-          setUser(currentUser);
-          setIsAdmin(sessionData.isAdmin);
-          
-          // Update session activity
-          await sessionService.updateSession({ lastActivity: new Date().toISOString() });
-          
-          console.log('🔄 Synced Cognito + DynamoDB session');
-          return;
-        } catch (cognitoError) {
-          console.log('⚠️ Cognito session expired, but DynamoDB session valid');
-          // DynamoDB session exists but Cognito expired - could re-authenticate or clear session
-        }
-      }
-      
-      // Fallback to Cognito-only session check
-      const currentUser = await getCurrentUser();
-      console.log('✅ Cognito user found:', currentUser);
-      
-      setUser(currentUser);
-      await checkAdminStatus(currentUser);
-      
-      // Create DynamoDB session for existing Cognito session
-      const attributes = await fetchUserAttributes();
-      const email = attributes.email || '';
-      const adminStatus = email === (process.env.REACT_APP_ADMIN_EMAIL || 'admin@example.com');
-      
-      await sessionService.createSession(currentUser.userId, email, adminStatus);
-      console.log('🆕 Created DynamoDB session for existing Cognito user');
-      
-    } catch (error) {
-      console.log('❌ No valid session found:', error);
-      setUser(null);
-      setIsAdmin(false);
-    } finally {
-      console.log('🏁 Auth state check complete');
-      setLoading(false);
-    }
-  };
-
-  const checkAdminStatus = async (_user: AuthUser) => {
-    try {
-      console.log('🔍 Checking admin status...');
-      
-      const attributes = await fetchUserAttributes();
-      const email = attributes.email;
-      const isUserAdmin = email === (process.env.REACT_APP_ADMIN_EMAIL || 'admin@example.com');
-      
-      console.log('📧 User email:', email);
-      console.log('🛡️ Is admin:', isUserAdmin);
-      
-      setIsAdmin(isUserAdmin);
-      
-    } catch (error) {
-      console.error('💥 Error checking admin status:', error);
-      setIsAdmin(false);
-    }
-  };
-
-  const login = async (username: string, password: string): Promise<boolean> => {
-    try {
-      console.log('🔐 Attempting login for:', username);
-      
-      const signInResult = await signIn({ username, password });
-      console.log('✅ Cognito SignIn successful:', signInResult);
-      
-      const currentUser = await getCurrentUser();
-      const attributes = await fetchUserAttributes();
-      
-      const email = attributes.email || username;
-      const adminStatus = email === (process.env.REACT_APP_ADMIN_EMAIL || 'admin@example.com');
-      
-      setUser(currentUser);
-      setIsAdmin(adminStatus);
-      
-      // Create DynamoDB session
-      await sessionService.createSession(currentUser.userId, email, adminStatus);
-      
-      // Log analytics
-      await sessionService.logAnalytics({
-        eventType: 'login',
-        userId: currentUser.userId,
-        metadata: { isAdmin: adminStatus, loginMethod: 'cognito' }
-      });
-      
-      console.log('✅ Complete login with DynamoDB session created');
-      return true;
-    } catch (error) {
-      console.error('💥 Login error:', error);
-      return false;
-    }
-  };
+  const [loading, setLoading] = useState(false);
 
   const signup = async (username: string, password: string, email: string): Promise<boolean> => {
     try {
       console.log('📝 Attempting signup for:', { username, email });
+      console.log('📝 Password length:', password.length);
       
       const signUpResult = await signUp({
         username,
@@ -154,6 +43,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
     } catch (error) {
       console.error('💥 Signup error details:', error);
+      console.error('💥 Error name:', error.name);
+      console.error('💥 Error message:', error.message);
+      return false;
+    }
+  };
+
+  const login = async (username: string, password: string): Promise<boolean> => {
+    try {
+      await signIn({ username, password });
+      const currentUser = await getCurrentUser();
+      setUser(currentUser);
+      return true;
+    } catch (error) {
+      console.error('Login error:', error);
       return false;
     }
   };
@@ -161,17 +64,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const confirmSignup = async (username: string, code: string): Promise<boolean> => {
     try {
       await confirmSignUp({ username, confirmationCode: code });
-      
-      // Log analytics for successful signup (non-blocking)
-      try {
-        await sessionService.logAnalytics({
-          eventType: 'signup_confirmed',
-          userId: username
-        });
-      } catch (analyticsError) {
-        console.warn('⚠️ Analytics logging failed during confirmation:', analyticsError);
-      }
-      
       return true;
     } catch (error) {
       console.error('Confirmation error:', error);
@@ -180,45 +72,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const forgotPassword = async (username: string): Promise<boolean> => {
-    try {
-      await resetPassword({ username });
-      return true;
-    } catch (error) {
-      console.error('Forgot password error:', error);
-      return false;
-    }
+    return true; // Placeholder
   };
 
   const resetPassword = async (username: string, code: string, newPassword: string): Promise<boolean> => {
-    try {
-      await confirmResetPassword({ username, confirmationCode: code, newPassword });
-      return true;
-    } catch (error) {
-      console.error('Reset password error:', error);
-      return false;
-    }
+    return true; // Placeholder
   };
 
   const logout = async () => {
     try {
-      // Log analytics before logout
-      if (user) {
-        await sessionService.logAnalytics({
-          eventType: 'logout',
-          userId: user.userId
-        });
-      }
-      
-      // Delete DynamoDB session
-      await sessionService.deleteSession();
-      
-      // Sign out from Cognito
       await signOut();
-      
       setUser(null);
-      setIsAdmin(false);
-      
-      console.log('✅ Complete logout from both Cognito and DynamoDB');
     } catch (error) {
       console.error('Logout error:', error);
     }
