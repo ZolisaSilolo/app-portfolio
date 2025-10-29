@@ -6,6 +6,7 @@ const Admin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [generatedCode, setGeneratedCode] = useState('');
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
     const auth = sessionStorage.getItem('admin_auth');
@@ -27,11 +28,15 @@ const Admin = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const content = await file.text();
-    const title = file.name.replace('.md', '').replace('.txt', '');
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    
-    const code = `{
+    setProcessing(true);
+    setGeneratedCode('');
+
+    try {
+      const content = await file.text();
+      const title = file.name.replace('.md', '').replace('.txt', '');
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      
+      const code = `{
   id: '${Date.now()}',
   title: '${title}',
   excerpt: 'Add your excerpt here',
@@ -43,8 +48,13 @@ const Admin = () => {
   author: 'Zolisa Silolo',
   slug: '${slug}'
 }`;
-    
-    setGeneratedCode(code);
+      
+      setGeneratedCode(code);
+    } catch (error) {
+      console.error('Error processing file:', error);
+    } finally {
+      setProcessing(false);
+    }
   };
 
   if (!isAuthenticated) {
@@ -100,6 +110,15 @@ const Admin = () => {
             onChange={handleFileUpload}
             className="w-full px-4 py-3 bg-black/50 border border-green-400/30 rounded-lg text-green-300 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-green-600 file:text-white hover:file:bg-green-700 file:cursor-pointer"
           />
+          
+          {processing && (
+            <div className="mt-4 text-center">
+              <div className="inline-flex items-center space-x-2 text-green-400">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-400"></div>
+                <span>Processing file...</span>
+              </div>
+            </div>
+          )}
           
           {generatedCode && (
             <div className="mt-4">
