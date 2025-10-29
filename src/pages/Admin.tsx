@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, BookOpen, Code } from 'lucide-react';
+import { Lock, BookOpen, Upload } from 'lucide-react';
 
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [generatedCode, setGeneratedCode] = useState('');
 
   useEffect(() => {
     const auth = sessionStorage.getItem('admin_auth');
@@ -20,6 +21,30 @@ const Admin = () => {
     } else {
       setError('Invalid password');
     }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const content = await file.text();
+    const title = file.name.replace('.md', '').replace('.txt', '');
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    
+    const code = `{
+  id: '${Date.now()}',
+  title: '${title}',
+  excerpt: 'Add your excerpt here',
+  content: \`${content}\`,
+  date: '${new Date().toISOString().split('T')[0]}',
+  readTime: ${Math.ceil(content.split(' ').length / 200)},
+  category: 'tech-musings',
+  tags: ['tag1', 'tag2'],
+  author: 'Zolisa Silolo',
+  slug: '${slug}'
+}`;
+    
+    setGeneratedCode(code);
   };
 
   if (!isAuthenticated) {
@@ -61,6 +86,39 @@ const Admin = () => {
           </button>
         </div>
 
+        {/* File Converter */}
+        <div className="matrix-card p-8 rounded-2xl mb-8">
+          <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
+            <Upload className="w-6 h-6 mr-2" />
+            Convert Markdown File
+          </h2>
+          <p className="text-cyan-300 mb-4">Upload a .md file to generate the code</p>
+          
+          <input
+            type="file"
+            accept=".md,.txt"
+            onChange={handleFileUpload}
+            className="w-full px-4 py-3 bg-black/50 border border-green-400/30 rounded-lg text-green-300 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-green-600 file:text-white hover:file:bg-green-700 file:cursor-pointer"
+          />
+          
+          {generatedCode && (
+            <div className="mt-4">
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-green-400 text-sm">Copy this code:</p>
+                <button
+                  onClick={() => navigator.clipboard.writeText(generatedCode)}
+                  className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+                >
+                  Copy
+                </button>
+              </div>
+              <div className="bg-black/50 p-4 rounded-lg border border-green-400/30 overflow-x-auto max-h-96">
+                <pre className="text-sm text-green-300">{generatedCode}</pre>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="matrix-card p-8 rounded-2xl space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center">
@@ -68,32 +126,13 @@ const Admin = () => {
               How to Add Posts
             </h2>
             <ol className="space-y-3 text-cyan-300">
-              <li>1. Edit <code className="bg-black/50 px-2 py-1 rounded text-green-400">src/data/blogPosts.ts</code></li>
-              <li>2. Add your post to the array</li>
-              <li>3. Commit and push to GitHub</li>
-              <li>4. Amplify auto-deploys</li>
+              <li>1. Upload your .md file above to generate code</li>
+              <li>2. Copy the generated code</li>
+              <li>3. Edit <code className="bg-black/50 px-2 py-1 rounded text-green-400">src/data/blogPosts.ts</code></li>
+              <li>4. Paste the code into the array</li>
+              <li>5. Update excerpt, category, and tags</li>
+              <li>6. Commit and push to GitHub</li>
             </ol>
-          </div>
-
-          <div className="border-t border-green-400/20 pt-6">
-            <h3 className="text-xl font-bold text-green-400 mb-3 flex items-center">
-              <Code className="w-5 h-5 mr-2" />
-              Template
-            </h3>
-            <div className="bg-black/50 p-4 rounded-lg border border-green-400/30 overflow-x-auto">
-              <pre className="text-sm text-green-300">{`{
-  id: '2',
-  title: 'Your Title',
-  excerpt: 'Brief summary',
-  content: \`# Your Title\\n\\nContent here...\`,
-  date: '2025-10-29',
-  readTime: 5,
-  category: 'tech-musings',
-  tags: ['tag1'],
-  author: 'Zolisa Silolo',
-  slug: 'your-slug'
-}`}</pre>
-            </div>
           </div>
 
           <div className="border-t border-green-400/20 pt-6">
