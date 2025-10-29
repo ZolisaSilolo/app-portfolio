@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Amplify } from 'aws-amplify';
-import { signUp, confirmSignUp, signIn, signOut, getCurrentUser, AuthUser } from 'aws-amplify/auth';
+import { signUp, confirmSignUp, signIn, signOut, getCurrentUser, AuthUser, resetPassword, confirmResetPassword } from 'aws-amplify/auth';
 import amplifyconfig from '../amplifyconfiguration.json';
 
 Amplify.configure(amplifyconfig);
@@ -73,10 +73,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const forgotPassword = async (username: string): Promise<boolean> => {
     try {
-      await resetPassword({ username });
+      console.log('🔄 Starting forgot password for:', username);
+      const result = await resetPassword({ username });
+      console.log('✅ Forgot password result:', result);
+      console.log('📧 Code should be sent to email');
       return true;
     } catch (error) {
-      console.error('Forgot password error:', error);
+      console.error('💥 Forgot password error:', error);
+      console.error('💥 Error name:', error.name);
+      console.error('💥 Error message:', error.message);
       return false;
     }
   };
