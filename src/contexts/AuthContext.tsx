@@ -72,11 +72,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const forgotPassword = async (username: string): Promise<boolean> => {
-    return true; // Placeholder
+    try {
+      await resetPassword({ username });
+      return true;
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      return false;
+    }
   };
 
   const resetPassword = async (username: string, code: string, newPassword: string): Promise<boolean> => {
-    return true; // Placeholder
+    try {
+      await confirmResetPassword({ username, confirmationCode: code, newPassword });
+      return true;
+    } catch (error) {
+      console.error('Reset password error:', error);
+      return false;
+    }
   };
 
   const logout = async () => {
