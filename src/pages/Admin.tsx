@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, FileText, Image, Video, Music, Check, X, Eye, LogOut } from 'lucide-react';
+import { Upload, FileText, Check, X, Eye, LogOut, Trash2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { blogService, BlogPost } from '../services/blogService';
 import Login from '../components/Login';
-
-interface ContentItem {
-  id: string;
-  title: string;
-  type: 'blog' | 'image' | 'video' | 'audio' | 'document';
-  url: string;
-  uploadDate: string;
-  status: 'draft' | 'published';
-}
 
 const Admin = () => {
   const { isAuthenticated, isAdmin, logout, loading } = useAuth();
-  const [content, setContent] = useState<ContentItem[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (isAuthenticated && isAdmin) {
-      loadContent();
+      loadPosts();
     }
   }, [isAuthenticated, isAdmin]);
 
@@ -35,102 +28,59 @@ const Admin = () => {
     );
   }
 
-  const loadContent = async () => {
-    // This would call your Lambda function to list S3 objects
-    // For now, using mock data
-    const mockContent: ContentItem[] = [
-      {
-        id: '1',
-        title: 'Sample Blog Post',
-        type: 'blog',
-        url: 's3://your-bucket/blogs/sample-post.md',
-        uploadDate: '2025-10-28',
-        status: 'published'
-      }
-    ];
-    setContent(mockContent);
+  const loadPosts = async () => {
+    try {
+      const data = await blogService.listPosts();
+      setPosts(data);
+    } catch (err) {
+      setError('Failed to load posts');
+      console.error(err);
+    }
   };
 
   const handleFileUpload = async (files: FileList) => {
     setUploading(true);
+    setError('');
     
     for (const file of Array.from(files)) {
       try {
-        // Generate presigned URL from your Lambda function
-        const response = await fetch('/api/admin/upload-url', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            contentType: getContentType(file)
-          })
-        });
-
-        const { uploadUrl, fileUrl } = await response.json();
-
-        // Upload to S3 using presigned URL
-        await fetch(uploadUrl, {
-          method: 'PUT',
-          body: file,
-          headers: { 'Content-Type': file.type }
-        });
-
-        // Add to content list
-        const newItem: ContentItem = {
-          id: Date.now().toString(),
-          title: file.name,
-          type: getContentType(file),
-          url: fileUrl,
-          uploadDate: new Date().toISOString().split('T')[0],
-          status: 'draft'
-        };
-
-        setContent(prev => [...prev, newItem]);
-      } catch (error) {
-        console.error('Upload failed:', error);
-        alert(`Failed to upload ${file.name}`);
+        await blogService.uploadFile(file);
+      } catch (err) {
+        setError(`Failed to upload ${file.name}`);
+        console.error(err);
       }
     }
     
     setUploading(false);
+    await loadPosts();
   };
 
-  const getContentType = (file: File): ContentItem['type'] => {
-    if (file.name.endsWith('.md') || file.name.endsWith('.txt')) return 'blog';
-    if (file.type.startsWith('image/')) return 'image';
-    if (file.type.startsWith('video/')) return 'video';
-    if (file.type.startsWith('audio/')) return 'audio';
-    return 'document';
-  };
-
-  const getIcon = (type: ContentItem['type']) => {
-    switch (type) {
-      case 'blog': return <FileText className="w-5 h-5" />;
-      case 'image': return <Image className="w-5 h-5" />;
-      case 'video': return <Video className="w-5 h-5" />;
-      case 'audio': return <Music className="w-5 h-5" />;
-      default: return <FileText className="w-5 h-5" />;
+  const handlePublish = async (s3Key: string) => {
+    try {
+      await blogService.publishPost(s3Key);
+      await loadPosts();
+    } catch (err) {
+      setError('Failed to publish post');
+      console.error(err);
     }
   };
 
-  const toggleStatus = async (id: string) => {
-    setContent(prev => prev.map(item => 
-      item.id === id 
-        ? { ...item, status: item.status === 'draft' ? 'published' : 'draft' }
-        : item
-    ));
-    // Update status in S3/database via API call
+  const handleDelete = async (s3Key: string) => {
+    if (!confirm('Are you sure you want to delete this post?')) return;
+    
+    try {
+      await blogService.deletePost(s3Key);
+      await loadPosts();
+    } catch (err) {
+      setError('Failed to delete post');
+      console.error(err);
+    }
   };
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true);
-    } else if (e.type === 'dragleave') {
-      setDragActive(false);
-    }
+    setDragActive(e.type === 'dragenter' || e.type === 'dragover');
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -138,7 +88,7 @@ const Admin = () => {
     e.stopPropagation();
     setDragActive(false);
     
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+    if (e.dataTransfer.files?.[0]) {
       handleFileUpload(e.dataTransfer.files);
     }
   };
@@ -157,7 +107,7 @@ const Admin = () => {
       <div className="py-20 min-h-screen flex items-center justify-center">
         <div className="matrix-card p-8 rounded-2xl max-w-md w-full mx-6 text-center">
           <h1 className="text-2xl font-bold matrix-text mb-4">Access Denied</h1>
-          <p className="text-cyan-300 mb-6">You don't have admin privileges to access this area.</p>
+          <p className="text-cyan-300 mb-6">You don't have admin privileges.</p>
           <button
             onClick={logout}
             className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
@@ -174,8 +124,8 @@ const Admin = () => {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold matrix-text">Content Manager</h1>
-            <p className="text-cyan-300 mt-2">Upload and manage your blog posts and media</p>
+            <h1 className="text-4xl font-bold matrix-text">Blog Manager</h1>
+            <p className="text-cyan-300 mt-2">Upload and publish blog posts</p>
           </div>
           <button
             onClick={logout}
@@ -186,9 +136,15 @@ const Admin = () => {
           </button>
         </div>
 
+        {error && (
+          <div className="matrix-card p-4 rounded-lg mb-6 bg-red-900/20 border border-red-400/30">
+            <p className="text-red-400">{error}</p>
+          </div>
+        )}
+
         {/* Upload Area */}
         <div className="matrix-card p-8 rounded-2xl mb-8">
-          <h2 className="text-2xl font-bold text-green-400 mb-6">Upload Content</h2>
+          <h2 className="text-2xl font-bold text-green-400 mb-6">Upload Blog Post</h2>
           
           <div
             className={`border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
@@ -203,10 +159,10 @@ const Admin = () => {
           >
             <Upload className="w-12 h-12 text-green-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-green-400 mb-2">
-              Drop files here or click to upload
+              Drop markdown files here
             </h3>
             <p className="text-cyan-300 mb-4">
-              Supports: .md, .txt (blogs), images, videos, audio files
+              Supports: .md, .txt files
             </p>
             
             <input
@@ -215,7 +171,7 @@ const Admin = () => {
               onChange={(e) => e.target.files && handleFileUpload(e.target.files)}
               className="hidden"
               id="file-upload"
-              accept=".md,.txt,.jpg,.jpeg,.png,.gif,.mp4,.mov,.mp3,.wav,.pdf"
+              accept=".md,.txt"
             />
             <label
               htmlFor="file-upload"
@@ -235,47 +191,48 @@ const Admin = () => {
           )}
         </div>
 
-        {/* Content List */}
+        {/* Posts List */}
         <div className="matrix-card p-8 rounded-2xl">
-          <h2 className="text-2xl font-bold text-green-400 mb-6">Content Library</h2>
+          <h2 className="text-2xl font-bold text-green-400 mb-6">Blog Posts</h2>
           
           <div className="space-y-4">
-            {content.map((item) => (
-              <div key={item.id} className="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-green-400/20">
+            {posts.map((post) => (
+              <div key={post.id} className="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-green-400/20">
                 <div className="flex items-center space-x-4">
-                  <div className="text-green-400">
-                    {getIcon(item.type)}
-                  </div>
+                  <FileText className="w-5 h-5 text-green-400" />
                   <div>
-                    <h3 className="font-semibold text-green-400">{item.title}</h3>
+                    <h3 className="font-semibold text-green-400">{post.title}</h3>
                     <p className="text-sm text-cyan-300">
-                      {item.type.toUpperCase()} • {item.uploadDate}
+                      {new Date(post.uploadDate).toLocaleDateString()} • {(post.size / 1024).toFixed(2)} KB
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex items-center space-x-3">
                   <span className={`px-2 py-1 rounded-full text-xs ${
-                    item.status === 'published' 
+                    post.status === 'published' 
                       ? 'bg-green-600 text-white' 
                       : 'bg-yellow-600 text-white'
                   }`}>
-                    {item.status}
+                    {post.status}
                   </span>
                   
-                  <button
-                    onClick={() => toggleStatus(item.id)}
-                    className="p-2 hover:bg-green-400/20 rounded-lg transition-colors"
-                  >
-                    {item.status === 'published' ? (
-                      <X className="w-4 h-4 text-red-400" />
-                    ) : (
+                  {post.status === 'draft' && (
+                    <button
+                      onClick={() => handlePublish(post.s3Key)}
+                      className="p-2 hover:bg-green-400/20 rounded-lg transition-colors"
+                      title="Publish"
+                    >
                       <Check className="w-4 h-4 text-green-400" />
-                    )}
-                  </button>
+                    </button>
+                  )}
                   
-                  <button className="p-2 hover:bg-green-400/20 rounded-lg transition-colors">
-                    <Eye className="w-4 h-4 text-cyan-400" />
+                  <button
+                    onClick={() => handleDelete(post.s3Key)}
+                    className="p-2 hover:bg-red-400/20 rounded-lg transition-colors"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-400" />
                   </button>
                 </div>
               </div>

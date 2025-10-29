@@ -58,7 +58,7 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
       setUsername(email);
       setNeedsConfirmation(true);
     } else {
-      setError('Signup failed. Please try again.');
+      setError('This email is already registered. Please sign in instead.');
     }
     
     setLoading(false);
@@ -78,8 +78,11 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
     if (success) {
       // Auto-login after confirmation
       const loginSuccess = await login(email || username, password);
-      if (loginSuccess && onSuccess) {
-        onSuccess();
+      if (loginSuccess) {
+        if (onSuccess) {
+          onSuccess();
+        }
+        // If no onSuccess callback, component will re-render with isAuthenticated=true
       }
     } else {
       setError('Invalid confirmation code');
@@ -97,15 +100,20 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
     setLoading(true);
     setError('');
 
-    const success = await forgotPassword(username);
-    
-    if (success) {
-      setNeedsPasswordReset(true);
-    } else {
+    try {
+      const success = await forgotPassword(username);
+      
+      if (success) {
+        setNeedsPasswordReset(true);
+        setError(''); // Clear any previous errors
+      } else {
+        setError('Failed to send reset code');
+      }
+    } catch (err) {
       setError('Failed to send reset code');
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   const handleResetPassword = async () => {
