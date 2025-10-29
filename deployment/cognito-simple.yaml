@@ -9,7 +9,8 @@ Resources:
       UserPoolName: !Sub "${AWS::StackName}-user-pool"
       UsernameAttributes:
         - email
-      # Remove AutoVerifiedAttributes to skip email verification
+      AutoVerifiedAttributes:
+        - email
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -20,7 +21,6 @@ Resources:
       MfaConfiguration: "OFF"
       EmailConfiguration:
         EmailSendingAccount: COGNITO_DEFAULT
-      # Allow users to sign up without email verification
       AdminCreateUserConfig:
         AllowAdminCreateUserOnly: false
 
