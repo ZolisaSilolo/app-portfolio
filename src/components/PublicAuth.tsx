@@ -44,7 +44,7 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
   };
 
   const handleSignup = async () => {
-    if (!username.trim() || !email.trim() || !password.trim()) {
+    if (!email.trim() || !password.trim()) {
       setError('Please fill in all fields');
       return;
     }
@@ -52,9 +52,10 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
     setLoading(true);
     setError('');
 
-    const success = await signup(username, password, email);
+    const success = await signup(email, password, email);
     
     if (success) {
+      setUsername(email);
       setNeedsConfirmation(true);
     } else {
       setError('Signup failed. Please try again.');
@@ -72,12 +73,14 @@ const PublicAuth: React.FC<PublicAuthProps> = ({ title, description, onSuccess }
     setLoading(true);
     setError('');
 
-    const success = await confirmSignup(username, confirmationCode);
+    const success = await confirmSignup(email || username, confirmationCode);
     
     if (success) {
       // Auto-login after confirmation
-      await login(username, password);
-      onSuccess?.();
+      const loginSuccess = await login(email || username, password);
+      if (loginSuccess && onSuccess) {
+        onSuccess();
+      }
     } else {
       setError('Invalid confirmation code');
     }
