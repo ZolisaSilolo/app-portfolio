@@ -1,34 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Sparkles, Zap } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
-import { useAuth } from '../contexts/AuthContext';
-import PublicAuth from '../components/PublicAuth';
 
 const Chat = () => {
-  const { isAuthenticated, loading } = useAuth();
   const { messages, isLoading, sendMessage } = useChat();
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  if (loading) {
-    return (
-      <div className="py-20 min-h-screen flex items-center justify-center">
-        <div className="matrix-card p-8 rounded-2xl max-w-md w-full mx-6 text-center">
-          <div className="w-8 h-8 border-2 border-green-400/30 border-t-green-400 rounded-full animate-spin mx-auto mb-4"></div>
-          <h1 className="text-xl font-bold matrix-text">Loading AI_BUDDY...</h1>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <PublicAuth 
-        title="AI_BUDDY Access"
-        description="Sign in or create an account to chat with AI assistant"
-      />
-    );
-  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
