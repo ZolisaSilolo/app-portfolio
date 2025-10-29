@@ -10,28 +10,32 @@ const Home = () => {
       title: 'AI_SYSTEMS',
       description: 'Machine Learning Operations and SageMaker expertise',
       animationClass: 'fraud-detection',
-      youtubeUrl: 'https://www.youtube.com/watch?v=Le-A72NjaWs'
+      youtubeUrl: 'https://www.youtube.com/watch?v=ZGElhJmN_8o',
+      emoji: '🤖'
     },
     {
       icon: Cloud,
       title: 'CLOUD_ARCH',
       description: 'AWS cloud-native solutions and serverless architecture',
       animationClass: 'cloud-infra',
-      youtubeUrl: 'https://www.youtube.com/watch?v=1aTQI-Kqs2U'
+      youtubeUrl: 'https://www.youtube.com/watch?v=1aTQI-Kqs2U',
+      emoji: '☁️'
     },
     {
       icon: Code,
       title: 'DATA_SCI',
       description: 'Cloud-native data science solutions and analytics',
       animationClass: 'ai-efficiency',
-      youtubeUrl: 'https://www.youtube.com/playlist?list=PLhr1KZpdzukfdjsOHZ-BazZt1iK1J8UUw'
+      youtubeUrl: 'https://www.youtube.com/playlist?list=PLhr1KZpdzukfdjsOHZ-BazZt1iK1J8UUw',
+      emoji: '📊'
     },
     {
       icon: Cpu,
       title: 'INFRA_CODE',
       description: 'Infrastructure-as-Code and automation',
       animationClass: 'predictive-maintenance',
-      youtubeUrl: 'https://www.youtube.com/watch?v=rmXI_kd_owQ'
+      youtubeUrl: 'https://www.youtube.com/watch?v=rmXI_kd_owQ',
+      emoji: '⚙️'
     }
   ];
 
@@ -184,7 +188,7 @@ const Home = () => {
                       rel="noopener noreferrer"
                       className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
                     >
-                      📺
+                      {skill.emoji}
                     </a>
                   </div>
                 </div>
@@ -210,7 +214,7 @@ const Home = () => {
                       rel="noopener noreferrer"
                       className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
                     >
-                      📺
+                      {skill.emoji}
                     </a>
                   </div>
                 </div>

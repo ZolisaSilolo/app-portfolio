@@ -51,6 +51,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
+      // Check if user is already signed in
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          setUser(currentUser);
+          return true;
+        }
+      } catch (error) {
+        // User not signed in, proceed with login
+      }
+      
       await signIn({ username, password });
       const currentUser = await getCurrentUser();
       setUser(currentUser);
