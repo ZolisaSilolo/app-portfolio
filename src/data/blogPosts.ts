@@ -14,6 +14,76 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: '4',
+    title: 'Building in Public: Taking Workers_AI from Hackathon Prototype to Enterprise Scale',
+    excerpt: 'Transforming a caffeine-fueled hackathon sprint into production-grade AI infrastructure using the 2026 AWS and NVIDIA stack.',
+    content: `
+# Building in Public: Taking Workers_AI from Hackathon Prototype to Enterprise Scale
+
+If you've been following my journey, you know that Workers_AI was born out of a caffeine-fueled sprint for the AWS AI Agents Hackathon. The goal was simple: make it work, make it impressive, and ship it before the deadline.
+
+And we did it. But as the dust settles from re:Invent 2025, I'm looking at the codebase with fresh eyes.
+
+Right now, Workers_AI is what I call "Hackathon Production." It runs, it solves the problem, but underneath the hood, it's holding on by a thread of custom loops and manual prompt tuning. If I want this to be relevant in 2026, I need to bridge the chasm between a prototype and a scalable, secure system.
+
+Here is how I am analyzing my own repo and refactoring it in public using the newly announced stack from AWS and NVIDIA.
+
+![Workers_AI Architecture Diagram](/workers-ai-architecture.png)
+*Current Workers_AI architecture - the foundation we're building upon*
+
+## 1. The Orchestration Refactor: Adopting Strands
+
+### The Current State:
+Currently, my agent logic in Workers_AI is likely tightly coupled. The prompts, the tools, and the execution logic are mashed together. If I want to add a new capability, I have to rewrite the core loop.
+
+### The 2026 Upgrade:
+I am moving the core architecture to the Strands Agents framework.
+
+**Why:** Strands separates the "brain" (Foundation Models like Amazon Nova or Anthropic Claude) from the "hands" (Tools).
+
+**The Change:** You will see a new directory structure in the repo soon where tools are defined using clean Python decorators, and the agent behavior is driven by the Strands model-driven approach. This makes the code modular and testable.
+
+## 2. Ending "Vibe-Based" Tuning with NeMo
+
+### The Current State:
+If you look at my config files, you'll see specific values for temperature and top_p. How did I pick those? Honestly? I guessed, ran it, and if it "felt" right, I kept it. This is "vibe-based" engineering, and it doesn't scale.
+
+### The 2026 Upgrade:
+I am integrating the NVIDIA NeMo Agent Toolkit to replace my guesswork with math.
+
+**Automated Optimization:** Instead of manually tweaking numbers, I will use NeMo's automated hyperparameter optimizer. It profiles the agent workflows to find the exact settings that maximize accuracy and context relevance while minimizing token usage.
+
+**GPU Sizing:** I will also be sharing the results of the NeMo GPU sizing calculator, which will tell us exactly what infrastructure this agent needs to handle 1,000 concurrent users—no more guessing if the system will crash under load.
+
+## 3. Deployment: Moving to Amazon Bedrock AgentCore
+
+### The Current State:
+Right now, the deployment strategy is... minimal. State is handled loosely, and there is no real "memory" across sessions aside from what is passed in the context window.
+
+### The 2026 Upgrade:
+I am containerizing the application to run on the Amazon Bedrock AgentCore Runtime.
+
+**Persistent Memory:** I'll be hooking into AgentCore Memory to give the agents long-term context retention.
+
+**Security:** By using AgentCore Guardrails, I can ensure that even if the LLM hallucinates, the agent won't execute unsafe code or go off-rails. This is the difference between a cool demo and software you can trust with enterprise data.
+
+## Follow the Build
+
+I am committing these changes live. You can watch the transformation happen in real-time at [github.com/ZolisaSilolo/Workers_AI](https://github.com/ZolisaSilolo/Workers_AI).
+
+In my next update, I'll share the benchmark comparisons showing the performance difference between my manual hackathon code and the optimized NeMo version.
+
+Let's build the future of agents, one commit at a time.
+    `,
+    date: '2025-12-19',
+    readTime: 7,
+    category: 'ai-ml',
+    tags: ['AWS', 'BuildingInPublic', 'AI', 'reInvent2025', 'OpenSource', 'Hackathon', 'AgentCore', 'NeMo'],
+    featured: true,
+    author: 'Lundi Zolisa Silolo',
+    slug: 'workers-ai-hackathon-to-enterprise'
+  },
+  {
     id: '1',
     title: 'The Future of Distributed Systems: Beyond Microservices',
     excerpt: 'Exploring the evolution from monoliths to microservices and what comes next in distributed architecture.',
