@@ -28,10 +28,10 @@ Right now, Workers_AI is what I call "Hackathon Production." It runs, it solves 
 
 Here is how I am analyzing my own repo and refactoring it in public using the newly announced stack from AWS and NVIDIA.
 
-![Workers_AI Architecture Diagram](/workers-ai-architecture.png)
+![Workers_AI Architecture Diagram](https://d1r2odd1kwsjkr.cloudfront.net/diagrams/workers-ai-architecture.png)
 *Current Workers_AI architecture - the foundation we're building upon*
 
-![Workers_AI Transformation](/workers-ai-transformation.png)
+![Workers_AI Transformation](https://d1r2odd1kwsjkr.cloudfront.net/diagrams/workers-ai-transformation.png)
 *The transformation roadmap from hackathon prototype to enterprise scale*
 
 The Orchestration Refactor: Adopting Strands
@@ -113,7 +113,7 @@ What's Next?
 
 I believe the future lies in Event-Driven Architectures combined with Serverless Computing. Here's why:
 
-![Distributed Systems Evolution](/distributed-systems-evolution.png)
+![Distributed Systems Evolution](https://d1r2odd1kwsjkr.cloudfront.net/diagrams/distributed-systems-evolution.png)
 *The evolution from monoliths to microservices to event-driven serverless architectures*
 
 Event Sourcing as the Foundation
@@ -193,7 +193,7 @@ I don't think AGI will arrive as a single breakthrough. Instead, I see it emergi
 - Quantum computing enabling new forms of parallel processing
 - Brain-computer interfaces bridging biological and digital cognition
 
-![AGI Convergence Timeline](/agi-convergence-timeline.png)
+![AGI Convergence Timeline](https://d1r2odd1kwsjkr.cloudfront.net/diagrams/agi-convergence-timeline.png)
 *The convergence path from current AI to AGI and potentially ASI*
 
 The Timeline Question
@@ -261,7 +261,7 @@ The AWS SageMaker Experience
 
 Working with SageMaker has taught me to think in terms of:
 
-![MLOps Production Pipeline](/mlops-production-pipeline.png)
+![MLOps Production Pipeline](https://d1r2odd1kwsjkr.cloudfront.net/diagrams/mlops-production-pipeline.png)
 *A complete MLOps pipeline from data sources to production monitoring*
 
 Pipelines, Not Scripts
