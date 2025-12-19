@@ -113,6 +113,7 @@ const BlogPost = () => {
               dangerouslySetInnerHTML={{ 
                 __html: post.content
                   .replace(/\n/g, '<br>')
+                  .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="w-full max-w-4xl mx-auto my-8 rounded-lg border border-green-400/30" />')
                   .replace(/#{3}\s(.+)/g, '<h3 class="text-xl font-bold text-green-400 mt-8 mb-4">$1</h3>')
                   .replace(/#{2}\s(.+)/g, '<h2 class="text-2xl font-bold text-green-400 mt-10 mb-6">$1</h2>')
                   .replace(/#{1}\s(.+)/g, '<h1 class="text-3xl font-bold matrix-text mt-12 mb-8">$1</h1>')
