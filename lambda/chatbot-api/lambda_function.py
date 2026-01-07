@@ -32,11 +32,10 @@ def lambda_handler(event, context):
                 })
             }
         
-        # Get Cohere API key from Secrets Manager
-        secrets_client = boto3.client('secretsmanager')
-        secret_response = secrets_client.get_secret_value(SecretId='portfolio-cohere-api-key')
-        secret_data = json.loads(secret_response['SecretString'])
-        api_key = secret_data['COHERE_API_KEY']
+        # Get Cohere API key from SSM Parameter Store (cost optimized)
+        ssm_client = boto3.client('ssm')
+        param_response = ssm_client.get_parameter(Name='/portfolio/cohere-api-key', WithDecryption=True)
+        api_key = param_response['Parameter']['Value']
         
         # Initialize Cohere client
         co = cohere.ClientV2(api_key=api_key)
