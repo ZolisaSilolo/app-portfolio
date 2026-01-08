@@ -14,6 +14,95 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: '4',
+    title: '2026: The Year I Stop Dreaming and Start Proving',
+    excerpt: 'My certification roadmap, career vision, and the relentless pursuit of becoming the engineer I know I can be.',
+    content: `
+# 2026: The Year I Stop Dreaming and Start Proving
+
+There's a moment every engineer faces—when the gap between what you *know* you can do and what you can *prove* you can do becomes unbearable. For me, that moment is now.
+
+2026 isn't just another year. It's the year I validate everything I've been building in the shadows.
+
+## The Obsession
+
+I'll be honest: I'm obsessed. Not in the toxic, burnout-inducing way, but in the way that makes you wake up at 5 AM because you *want* to understand how gradient descent actually converges, or why that Lambda function cold-starts the way it does.
+
+This obsession has given me skills. Real, battle-tested skills from late nights debugging production systems, from building ML pipelines that actually work, from architecting solutions that scale. But skills without validation are just stories you tell yourself.
+
+This year, I turn stories into credentials.
+
+## The Certification Roadmap
+
+I've mapped out a deliberate path—each certification building on the last, each one filling a gap in my professional narrative:
+
+### Q1: AWS Machine Learning Engineer – Associate
+**Why this first?** Because ML is where my heart is. I've been building models, deploying them, watching them fail spectacularly, and learning from every failure. This certification isn't about learning something new—it's about proving I already know it.
+
+*Focus areas:* SageMaker pipelines, model deployment patterns, MLOps best practices, feature engineering at scale.
+
+### Q2: Azure Data Scientist Associate
+**Why Azure?** Because the cloud wars are real, and being cloud-agnostic makes you dangerous. Understanding how Microsoft approaches ML—their tools, their philosophies, their quirks—makes me a more complete engineer.
+
+*Focus areas:* Azure ML Studio, responsible AI practices, cross-platform ML deployment strategies.
+
+### Q3: AWS Data Engineer – Associate
+**Why data engineering?** Because the best ML engineers understand that models are only as good as the data feeding them. I want to own the entire pipeline—from raw data ingestion to model inference.
+
+*Focus areas:* Glue, Athena, Redshift, data lake architectures, real-time streaming with Kinesis.
+
+### Q4: AWS Developer & Cloud Practitioner
+**Why end with fundamentals?** Because mastery means understanding the foundations deeply, not just the advanced topics. These certifications round out my AWS expertise and ensure there are no gaps in my cloud knowledge.
+
+*Focus areas:* Lambda deep-dives, API Gateway patterns, IAM best practices, cost optimization.
+
+## The Bigger Picture
+
+Certifications are waypoints, not destinations. Here's what I'm actually building toward:
+
+### The Engineer I Want to Be
+- Someone who can take a business problem and architect an end-to-end solution        
+- Someone who speaks fluently across ML, data engineering, and cloud infrastructure   
+- Someone whose code ships, scales, and survives production
+
+### The Work That Reflects the Learning
+Every certification will be accompanied by real projects—documented here on this blog. You'll see:
+- The ML models I build and deploy
+- The data pipelines I architect
+- The systems I break and fix
+- The lessons I learn the hard way
+
+This isn't about collecting badges. It's about building a body of work that speaks louder than any resume.
+
+## Why I'm Sharing This
+
+Because accountability matters. Because maybe someone reading this is in the same place—skilled but unvalidated, capable but uncredentialed.
+
+If that's you, here's what I've learned: the gap between where you are and where you want to be isn't as wide as it feels. It's just a series of deliberate steps, taken consistently, over time.
+
+## The Promise
+
+By December 2026, I will have:
+- 5 cloud certifications across AWS and Azure
+- A portfolio of production-grade projects demonstrating each skill
+- A deeper understanding of how all these pieces fit together
+- The confidence to call myself what I already am: a cloud ML engineer
+
+This is my line in the sand. My public commitment. My refusal to let another year pass wondering "what if."
+
+2026: The year I stop dreaming and start proving.
+
+*Follow my journey on [LinkedIn](https://linkedin.com/in/zolisa-silolo) and here on this blog. I'll be documenting every step, every failure, every breakthrough.*
+    `,
+    date: '2026-01-08',
+    readTime: 4,
+    category: 'tech-musings',
+    tags: ['career', 'certifications', 'AWS', 'Azure', 'machine-learning', '2026-goals'],
+    featured: true,
+    author: 'Lundi Zolisa Silolo',
+    slug: '2026-year-stop-dreaming-start-proving'
+  },
+  {
     id: '1',
     title: 'The Future of Distributed Systems: Beyond Microservices',
     excerpt: 'Exploring the evolution from monoliths to microservices and what comes next in distributed architecture.',
