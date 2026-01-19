@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, ArrowRight, Search, Filter } from 'lucide-react';
 import { getBlogPostsByCategory, getFeaturedPosts, searchBlogPosts } from '../data/blogPosts';
 
@@ -26,6 +27,11 @@ const Blog = () => {
 
   return (
     <div className="py-20">
+      <Helmet>
+        <title>Thought Stream | Lundi Zolisa Silolo</title>
+        <meta name="description" content="Exploring distributed systems, AI/ML, and cloud architecture. Read my latest thoughts and technical deep dives." />
+        <link rel="canonical" href="https://zolisasilolo.co.za/blog" />
+      </Helmet>
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
