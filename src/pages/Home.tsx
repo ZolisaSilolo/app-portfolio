@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight, Github, Linkedin, Mail, Terminal, Zap, Target, Brain, Cloud, Code, Cpu } from 'lucide-react';
 
 const Home = () => {
@@ -41,6 +42,11 @@ const Home = () => {
 
   return (
     <div className="min-h-screen matrix-grid">
+      <Helmet>
+        <title>Lundi Zolisa Silolo - Portfolio</title>
+        <meta name="description" content="Cloud & AI Solutions Architect specializing in AWS serverless architectures and scalable system design." />
+        <link rel="canonical" href="https://zolisasilolo.co.za" />
+      </Helmet>
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 lg:py-32">
         <div className="absolute inset-0 bg-gradient-to-br from-green-900/10 via-cyan-900/5 to-green-900/10"></div>

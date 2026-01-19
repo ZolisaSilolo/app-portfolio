@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,7 +11,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Admin from './pages/Admin';
 
-function AppContent() {
+export function AppContent() {
   const { isDark } = useTheme();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function AppContent() {
   );
 }
 
-function App() {
+function App({ Router = BrowserRouter }: { Router?: any }) {
   return (
     <ThemeProvider>
       <Router>

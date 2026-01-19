@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, Tag, ArrowLeft, Share2 } from 'lucide-react';
 import { getBlogPost } from '../data/blogPosts';
 
@@ -10,6 +11,10 @@ const BlogPost = () => {
   if (!post) {
     return (
       <div className="py-20 text-center">
+        <Helmet>
+          <title>Post Not Found | Lundi Zolisa Silolo</title>
+          <meta name="robots" content="noindex" />
+        </Helmet>
         <div className="max-w-2xl mx-auto px-6">
           <h1 className="text-4xl font-bold matrix-text mb-4">404: Post Not Found</h1>
           <p className="text-cyan-300 mb-8">The thought you're looking for doesn't exist in this reality.</p>
@@ -37,6 +42,16 @@ const BlogPost = () => {
 
   return (
     <div className="py-20">
+      <Helmet>
+        <title>{post.title} | Lundi Zolisa Silolo</title>
+        <meta name="description" content={post.excerpt} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:type" content="article" />
+        <meta property="article:published_time" content={post.date} />
+        <meta property="article:author" content={post.author} />
+        <link rel="canonical" href={`https://zolisasilolo.co.za/blog/${slug}`} />
+      </Helmet>
       <div className="max-w-4xl mx-auto px-6">
         {/* Back Button */}
         <Link 

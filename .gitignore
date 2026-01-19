@@ -3,25 +3,83 @@ node_modules/
 .pnp
 .pnp.js
 
+# Python (Lambda Functions)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 # Production builds
 dist/
 build/
 
-# Environment variables
+# Environment variables (Critical for Security)
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+.env.example # Keep example but ensure real envs are ignored
 
-# AWS SAM
+# Security / Secrets (Generic)
+*.pem
+*.key
+*.pfx
+*.p12
+*.asc
+*.gpg
+id_rsa
+id_rsa.pub
+secrets.json
+secrets.yaml
+secrets.yml
+credentials.json
+credentials.yaml
+credentials.yml
+token.json
+.npmrc
+.yarnrc
+
+# AWS
 .aws-sam/
+aws-credentials
+# Exclude samconfig.toml if it contains personal deployment targets
+# samconfig.toml
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+*.log
+logs/
+*.log.*
 
 # Runtime data
 pids
@@ -85,6 +143,8 @@ temp/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
 .idea
 .DS_Store
 *.suo
@@ -98,3 +158,21 @@ generated-diagrams/
 
 # OS generated files
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+.Spotlight-V100
+.Trashes
+
+# Terraform (if applicable)
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Serverless Framework
+.serverless/
