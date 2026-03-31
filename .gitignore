@@ -176,3 +176,6 @@ $RECYCLE.BIN/
 
 # Serverless Framework
 .serverless/
+# Temporary / ad-hoc test scripts (may contain env-specific identifiers)
+test-*.js
+test-*.html

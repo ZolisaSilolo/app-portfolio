@@ -37,9 +37,15 @@ const PORTFOLIO_PROJECTS = [
 ];
 
 exports.handler = async (event) => {
+  const allowedOrigin = process.env.CORS_ORIGIN || '';
+  const requestOrigin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
+  const corsOrigin = allowedOrigin
+    ? (requestOrigin === allowedOrigin ? allowedOrigin : 'null')
+    : requestOrigin || '*';
+
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
   };
