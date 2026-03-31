@@ -44,9 +44,56 @@ async function getCohereClient() {
   return cohereClient;
 }
 
+const MESSAGE_MAX_LENGTH = 1000;
+
 async function checkRateLimit(userId) {
-  // For testing, always allow requests
-  return { allowed: true };
+  const rateLimitTable = process.env.RATE_LIMIT_TABLE || 'portfolio-rate-limits';
+  const now = Date.now();
+  const hourWindow = Math.floor(now / 3600000);
+  const dayWindow = Math.floor(now / 86400000);
+  const hourKey = `${userId}#hour#${hourWindow}`;
+  const dayKey = `${userId}#day#${dayWindow}`;
+
+  try {
+    const [hourResult, dayResult] = await Promise.all([
+      dynamodb.get({ TableName: rateLimitTable, Key: { pk: hourKey } }).promise(),
+      dynamodb.get({ TableName: rateLimitTable, Key: { pk: dayKey } }).promise(),
+    ]);
+
+    const hourCount = hourResult.Item ? hourResult.Item.count : 0;
+    const dayCount = dayResult.Item ? dayResult.Item.count : 0;
+
+    if (hourCount >= RATE_LIMITS.requests_per_hour) {
+      return { allowed: false, reason: 'Hourly request limit exceeded. Please try again later.' };
+    }
+    if (dayCount >= RATE_LIMITS.requests_per_day) {
+      return { allowed: false, reason: 'Daily request limit exceeded. Please try again tomorrow.' };
+    }
+
+    // Increment counters atomically
+    await Promise.all([
+      dynamodb.update({
+        TableName: rateLimitTable,
+        Key: { pk: hourKey },
+        UpdateExpression: 'ADD #c :inc SET #ttl = :ttl',
+        ExpressionAttributeNames: { '#c': 'count', '#ttl': 'ttl' },
+        ExpressionAttributeValues: { ':inc': 1, ':ttl': Math.floor(now / 1000) + 7200 },
+      }).promise(),
+      dynamodb.update({
+        TableName: rateLimitTable,
+        Key: { pk: dayKey },
+        UpdateExpression: 'ADD #c :inc SET #ttl = :ttl',
+        ExpressionAttributeNames: { '#c': 'count', '#ttl': 'ttl' },
+        ExpressionAttributeValues: { ':inc': 1, ':ttl': Math.floor(now / 1000) + 172800 },
+      }).promise(),
+    ]);
+
+    return { allowed: true };
+  } catch (error) {
+    console.error('Rate limit check failed:', error);
+    // Fail open only in development; in production you may want to fail closed
+    return { allowed: true };
+  }
 }
 
 function getUserIdFromToken(event) {
@@ -64,9 +111,15 @@ function getUserIdFromToken(event) {
 }
 
 exports.handler = async (event) => {
+  const allowedOrigin = process.env.CORS_ORIGIN || '';
+  const requestOrigin = (event.headers && (event.headers.origin || event.headers.Origin)) || '';
+  const corsOrigin = allowedOrigin
+    ? (requestOrigin === allowedOrigin ? allowedOrigin : 'null')
+    : requestOrigin || '*';
+
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Headers': 'Content-Type,Authorization',
     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
   };
@@ -86,6 +139,17 @@ exports.handler = async (event) => {
         body: JSON.stringify({
           success: false,
           error: 'Message is required and must be a string'
+        })
+      };
+    }
+
+    if (message.length > MESSAGE_MAX_LENGTH) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: `Message must not exceed ${MESSAGE_MAX_LENGTH} characters`
         })
       };
     }
