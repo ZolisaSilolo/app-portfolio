@@ -15,7 +15,12 @@ const Admin = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') {
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+    if (!adminPassword) {
+      setError('Admin password not configured. Set VITE_ADMIN_PASSWORD.');
+      return;
+    }
+    if (password === adminPassword) {
       setIsAuthenticated(true);
       sessionStorage.setItem('admin_auth', 'true');
       setError('');
@@ -165,7 +170,7 @@ const Admin = () => {
 
           <div className="bg-yellow-900/20 border border-yellow-400/30 rounded-lg p-4">
             <p className="text-yellow-300 text-sm">
-              💡 Change password: Edit line 16 in <code className="bg-black/50 px-2 py-1 rounded">src/pages/Admin.tsx</code>
+              💡 Set the <code className="bg-black/50 px-2 py-1 rounded">VITE_ADMIN_PASSWORD</code> environment variable to configure admin access.
             </p>
           </div>
         </div>

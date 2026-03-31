@@ -1,7 +1,15 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const MESSAGE_MAX_LENGTH = 1000;
 
 export const chatService = {
   async sendMessage(message: string): Promise<string> {
+    if (!message || typeof message !== 'string') {
+      throw new Error('Message is required');
+    }
+    if (message.length > MESSAGE_MAX_LENGTH) {
+      throw new Error(`Message must not exceed ${MESSAGE_MAX_LENGTH} characters`);
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',

@@ -1,27 +1,41 @@
 import json
 import boto3
 import uuid
-from datetime import datetime, timedelta
 import os
+from datetime import datetime, timedelta
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ.get('SESSION_TABLE', 'portfolio-sessions'))
 
+SESSION_DURATION_DAYS = 7  # Reduced from 30 days for better security
+
+
+def _get_cors_headers(event):
+    allowed_origin = os.environ.get('CORS_ORIGIN', '')
+    request_origin = (event.get('headers') or {}).get('origin') or \
+                     (event.get('headers') or {}).get('Origin') or ''
+    if allowed_origin:
+        cors_origin = allowed_origin if request_origin == allowed_origin else 'null'
+    else:
+        cors_origin = request_origin or '*'
+    return {
+        'Access-Control-Allow-Origin': cors_origin,
+        'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+        'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
+    }
+
+
 def lambda_handler(event, context):
+    headers = _get_cors_headers(event)
+
     try:
-        headers = {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS'
-        }
-        
         if event['httpMethod'] == 'OPTIONS':
             return {'statusCode': 200, 'headers': headers, 'body': ''}
-        
+
         method = event['httpMethod']
         path = event['pathParameters']['proxy'] if event.get('pathParameters') else ''
         body = json.loads(event.get('body', '{}'))
-        
+
         if method == 'POST':
             if path == 'create':
                 return create_session(body, headers)
@@ -37,30 +51,32 @@ def lambda_handler(event, context):
         elif method == 'DELETE':
             if path == 'logout':
                 return delete_session(body, headers)
-                
+
         return {
             'statusCode': 404,
             'headers': headers,
             'body': json.dumps({'error': 'Not found'})
         }
-        
+
     except Exception as e:
+        print(f"Unhandled error: {e}")
         return {
             'statusCode': 500,
             'headers': headers,
-            'body': json.dumps({'error': str(e)})
+            'body': json.dumps({'error': 'Internal server error'})
         }
+
 
 def create_session(body, headers):
     """Create new session with analytics tracking"""
     user_id = body['userId']
     email = body['email']
     is_admin = body.get('isAdmin', False)
-    
+
     session_id = str(uuid.uuid4())
     now = datetime.utcnow()
-    expires_at = now + timedelta(days=30)  # 30-day session
-    
+    expires_at = now + timedelta(days=SESSION_DURATION_DAYS)
+
     session_data = {
         'sessionId': session_id,
         'userId': user_id,
@@ -75,16 +91,15 @@ def create_session(body, headers):
         'deviceType': get_device_type(body.get('userAgent', '')),
         'ttl': int(expires_at.timestamp())
     }
-    
+
     table.put_item(Item=session_data)
-    
-    # Log analytics event
+
     log_event('login', user_id, {
         'sessionId': session_id,
         'isAdmin': is_admin,
         'deviceType': session_data['deviceType']
     })
-    
+
     return {
         'statusCode': 200,
         'headers': headers,
@@ -94,47 +109,46 @@ def create_session(body, headers):
         })
     }
 
+
 def validate_session(params, headers):
     """Validate session and update last activity"""
     session_id = params.get('sessionId')
-    
+
     if not session_id:
         return {
             'statusCode': 400,
             'headers': headers,
             'body': json.dumps({'error': 'Session ID required'})
         }
-    
+
     try:
         response = table.get_item(Key={'sessionId': session_id})
-        
+
         if 'Item' not in response:
             return {
                 'statusCode': 404,
                 'headers': headers,
                 'body': json.dumps({'valid': False, 'error': 'Session not found'})
             }
-        
+
         session = response['Item']
         now = datetime.utcnow()
         expires_at = datetime.fromisoformat(session['expiresAt'])
-        
+
         if now > expires_at:
-            # Session expired, delete it
             table.delete_item(Key={'sessionId': session_id})
             return {
                 'statusCode': 200,
                 'headers': headers,
                 'body': json.dumps({'valid': False, 'error': 'Session expired'})
             }
-        
-        # Update last activity
+
         table.update_item(
             Key={'sessionId': session_id},
             UpdateExpression='SET lastActivity = :now',
             ExpressionAttributeValues={':now': now.isoformat()}
         )
-        
+
         return {
             'statusCode': 200,
             'headers': headers,
@@ -145,79 +159,77 @@ def validate_session(params, headers):
                 'isAdmin': session['isAdmin']
             })
         }
-        
+
     except Exception as e:
+        print(f"validate_session error: {e}")
         return {
             'statusCode': 500,
             'headers': headers,
-            'body': json.dumps({'error': str(e)})
+            'body': json.dumps({'error': 'Internal server error'})
         }
+
 
 def update_session(body, headers):
     """Update session metadata"""
     session_id = body['sessionId']
     updates = body.get('updates', {})
-    
+
     update_expression = []
     expression_values = {}
-    
+
     for key, value in updates.items():
         if key in ['lastActivity', 'loginCount', 'userAgent', 'ipAddress']:
             update_expression.append(f"{key} = :{key}")
             expression_values[f":{key}"] = value
-    
+
     if update_expression:
         table.update_item(
             Key={'sessionId': session_id},
             UpdateExpression='SET ' + ', '.join(update_expression),
             ExpressionAttributeValues=expression_values
         )
-    
+
     return {
         'statusCode': 200,
         'headers': headers,
         'body': json.dumps({'success': True})
     }
 
+
 def delete_session(body, headers):
     """Delete session (logout)"""
     session_id = body['sessionId']
     user_id = body.get('userId')
-    
+
     table.delete_item(Key={'sessionId': session_id})
-    
-    # Log analytics event
+
     if user_id:
         log_event('logout', user_id, {'sessionId': session_id})
-    
+
     return {
         'statusCode': 200,
         'headers': headers,
         'body': json.dumps({'success': True})
     }
+
 
 def log_analytics(body, headers):
     """Log analytics event"""
     event_type = body['eventType']
     user_id = body['userId']
     metadata = body.get('metadata', {})
-    
+
     log_event(event_type, user_id, metadata)
-    
+
     return {
         'statusCode': 200,
         'headers': headers,
         'body': json.dumps({'success': True})
     }
 
+
 def get_analytics(params, headers):
     """Get analytics data"""
-    user_id = params.get('userId')
-    event_type = params.get('eventType')
-    
-    # Query analytics events (you'd implement based on your analytics table structure)
-    # This is a simplified version
-    
     return {
         'statusCode': 200,
         'headers': headers,
@@ -226,20 +238,22 @@ def get_analytics(params, headers):
         })
     }
 
+
 def log_event(event_type, user_id, metadata):
     """Log analytics event to separate analytics table/partition"""
     analytics_table = dynamodb.Table(os.environ.get('ANALYTICS_TABLE', 'portfolio-analytics'))
-    
+
     event_data = {
         'eventId': str(uuid.uuid4()),
         'eventType': event_type,
         'userId': user_id,
         'timestamp': datetime.utcnow().isoformat(),
         'metadata': metadata,
-        'ttl': int((datetime.utcnow() + timedelta(days=365)).timestamp())  # Keep for 1 year
+        'ttl': int((datetime.utcnow() + timedelta(days=365)).timestamp())
     }
-    
+
     analytics_table.put_item(Item=event_data)
+
 
 def get_device_type(user_agent):
     """Determine device type from user agent"""
