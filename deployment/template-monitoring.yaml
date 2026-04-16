@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Portfolio React Application Backend - With Datadog & Sentry Monitoring
+
+Parameters:
+  Environment:
+    Type: String
+    Default: prod
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+  CohereSecretName:
+    Type: String
+    Default: portfolio-cohere-api-key
+    Description: Name of the secret in AWS Secrets Manager containing Cohere API key
+  
+  DatadogApiKeySecret:
+    Type: String
+    Default: datadog-api-key
+    Description: Name of the secret in AWS Secrets Manager containing Datadog API key
+  
+  SentryDsnSecret:
+    Type: String
+    Default: sentry-dsn
+    Description: Name of the secret in AWS Secrets Manager containing Sentry DSN
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.12
+    MemorySize: 256
+    Layers:
+      # Datadog Lambda Extension for Python 3.12
+      - !Sub "arn:aws:lambda:${AWS::Region}:464622532012:layer:Datadog-Python312:95"
+    Environment:
+      Variables:
+        # Existing
+        COHERE_SECRET_NAME: !Ref CohereSecretName
+        ENVIRONMENT: !Ref Environment
+        SESSIONS_TABLE: !Ref SessionsTable
+        USER_POOL_ID: !Ref UserPool
+        USER_POOL_CLIENT_ID: !Ref UserPoolClient
+        
+        # Datadog Configuration
+        DD_API_KEY_SECRET_ARN: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${DatadogApiKeySecret}"
+        DD_SITE: "datadoghq.com"
+        DD_SERVICE: "portfolio-api"
+        DD_ENV: !Ref Environment
+        DD_VERSION: "1.0.0"
+        DD_TRACE_ENABLED: "true"
+        DD_LOGS_INJECTION: "true"
+        DD_SERVERLESS_LOGS_ENABLED: "true"
+        DD_CAPTURE_LAMBDA_PAYLOAD: "true"
+        
+        # Sentry Configuration
+        SENTRY_DSN_SECRET_ARN: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${SentryDsnSecret}"
+    Tags:
+      Project: Portfolio
+      Environment: !Ref Environment
+      Monitoring: Datadog-Sentry
+
+# Rest of your template remains the same...
+# (Keep all existing Resources, Outputs, etc.)

@@ -1,0 +1,4 @@
+boto3>=1.26.0
+sentry-sdk[aws_lambda]==2.0.0
+datadog-lambda==6.0.0
+ddtrace==2.0.0

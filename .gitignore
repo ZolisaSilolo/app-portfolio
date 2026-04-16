@@ -45,7 +45,7 @@ build/
 .env.development
 .env.test
 .env.production
-.env.example # Keep example but ensure real envs are ignored
+# Keep .env.example for documentation
 
 # Security / Secrets (Generic)
 *.pem
@@ -66,11 +66,33 @@ token.json
 .npmrc
 .yarnrc
 
-# AWS
+# Monitoring & APM Secrets
+sentry.properties
+datadog.yaml
+datadog.yml
+newrelic.ini
+.sentryclirc
+
+# AWS Secrets & Credentials
 .aws-sam/
 aws-credentials
-# Exclude samconfig.toml if it contains personal deployment targets
-# samconfig.toml
+samconfig.toml
+.aws/
+aws-exports.js
+amplifyconfiguration.json
+awsconfiguration.json
+
+# API Keys & Tokens (Pattern Matching)
+**/api-keys.json
+**/api-keys.yaml
+**/*-secret.json
+**/*-secret.yaml
+**/*-credentials.json
+**/*-credentials.yaml
+**/*token*.json
+**/*token*.yaml
+**/*apikey*.json
+**/*apikey*.yaml
 
 # Logs
 npm-debug.log*
