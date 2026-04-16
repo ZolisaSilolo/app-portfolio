@@ -1,0 +1,199 @@
+<article>
+  <h1>Building a Self-Healing Portfolio with AWS Agents</h1>
+  
+  <p class="meta">April 16, 2026 · 15 min read · Zolisa Silolo</p>
+
+  <img src="/blog/diagrams/aws_agents_architecture.png" alt="AWS Agents Architecture" class="hero-image">
+
+  <p class="lead">So I just spent the last week setting up AWS Security Agent and DevOps Agent for my portfolio site. The result? My application now finds its own security vulnerabilities, fixes them automatically, and monitors itself 24/7. All while I sleep. And it cost me exactly $0 during the free trial.</p>
+
+  <p>Let me show you how I did it.</p>
+
+  <h2>The Problem I Was Trying to Solve</h2>
+
+  <p>Here's the thing about running a portfolio site in 2026: you want it to look professional, but you don't have the budget for a full security team or 24/7 ops monitoring. Traditional penetration testing costs $5,000-$15,000 per engagement. Security consultants charge $150/hour. And manual log analysis? That's a full-time job.</p>
+
+  <p>I needed something smarter. Something that could:</p>
+
+  <ul>
+    <li>Find security vulnerabilities automatically</li>
+    <li>Actually understand my code (not just run generic scans)</li>
+    <li>Fix issues by generating pull requests</li>
+    <li>Monitor operations and investigate problems on its own</li>
+    <li>Not bankrupt me in the process</li>
+  </ul>
+
+  <p>Enter AWS Agents.</p>
+
+  <h2>What Are AWS Agents, Actually?</h2>
+
+  <p>Think of them as AI-powered teammates that never sleep. AWS launched two in 2026:</p>
+
+  <p><strong>AWS Security Agent</strong> is like having a penetration tester on staff. It doesn't just scan for known vulnerabilities—it actually tries to break into your application. It reads your code from GitHub, understands your architecture, and tests real attack scenarios. When it finds something, it generates a pull request with the fix.</p>
+
+  <p><strong>AWS DevOps Agent</strong> is your ops engineer. It watches CloudWatch metrics, reads logs, correlates events, and investigates issues automatically. When something breaks at 3 AM, it's already figured out the root cause by the time you wake up.</p>
+
+  <p>Both agents have a 2-month free trial. I'm using that to prove they're worth it.</p>
+
+  <h2>My Architecture (The Actual Setup)</h2>
+
+  <p>My portfolio is a pretty standard serverless stack:</p>
+
+  <p><strong>Frontend:</strong> React + TypeScript hosted on S3 with CloudFront. Nothing fancy, but it's fast and cheap.</p>
+
+  <p><strong>Backend:</strong> Four Lambda functions in Python 3.12. One handles the AI chatbot (using Cohere), one serves portfolio data, one manages admin uploads, and one tracks sessions. All behind API Gateway with Cognito authentication.</p>
+
+  <p><strong>Data:</strong> DynamoDB for sessions and analytics. S3 for content storage. Secrets Manager for API keys (because hardcoding secrets is for people who hate themselves).</p>
+
+  <p>The agents plug into this stack and just... work. Security Agent scans everything. DevOps Agent monitors everything. Both talk to GitHub and Slack to keep me informed.</p>
+
+  <h2>Setting Up Security Agent (The Real Steps)</h2>
+
+  <p>I'm not going to lie—the setup took me about 2 hours. But most of that was waiting for DNS propagation. Here's what actually matters:</p>
+
+  <p><strong>Step 1: Create an agent space.</strong> This is basically a container for all your security testing. One command in the AWS CLI:</p>
+
+  <pre><code>aws securityagent create-agent-space \
+  --name "ZolisaPortfolioSecurityAgent" \
+  --region us-east-1</code></pre>
+
+  <p><strong>Step 2: Verify your domain.</strong> AWS needs to know you actually own the site you're testing. Add a TXT record to your DNS. Wait 15 minutes. Verify. Done.</p>
+
+  <p><strong>Step 3: Connect GitHub.</strong> This is where it gets cool. The agent reads your actual code to understand what it's testing. OAuth flow through the console, grant repo access, and you're set.</p>
+
+  <p><strong>Step 4: Create IAM roles.</strong> The agent needs permissions to write logs, read secrets, and create network interfaces. Standard AWS security stuff.</p>
+
+  <p><strong>Step 5: Run your first test.</strong> Point it at your site, tell it to use automatic remediation, and let it run. Mine took 8.2 hours.</p>
+
+  <h2>What It Found (The Uncomfortable Truth)</h2>
+
+  <p>The agent found 12 vulnerabilities in my "secure" portfolio site. Three were critical:</p>
+
+  <p><strong>Weak Cognito password policy.</strong> I had it set to accept 8-character passwords with no complexity requirements. The agent tested brute force attacks and showed me exactly how fast it could crack them. It generated a CloudFormation update to require 12+ characters with complexity. I merged the PR.</p>
+
+  <p><strong>Hardcoded admin password in the client bundle.</strong> Yeah. I had an admin password in an environment variable that got bundled into the React app. Anyone could read it. The agent found it, showed me the security risk, and generated a PR to move authentication to Cognito. Embarrassing, but fixed.</p>
+
+  <p><strong>Using SSM Parameter Store instead of Secrets Manager.</strong> My Lambda functions were pulling API keys from Parameter Store, which doesn't have automatic rotation. The agent explained why this was risky and generated code to migrate to Secrets Manager. Done.</p>
+
+  <p>It also found CORS wildcards, missing Lambda encryption, and no WAF protection. All fixed with auto-generated PRs.</p>
+
+  <h2>The Results (Actual Numbers)</h2>
+
+  <p>Test duration: 8.2 task-hours<br>
+  Cost: $0 (free trial)<br>
+  Vulnerabilities found: 12<br>
+  Auto-fixed: 10 (83%)<br>
+  Manual review needed: 2</p>
+
+  <p>Compare that to manual penetration testing:<br>
+  Cost: $8,000<br>
+  Duration: 2 weeks<br>
+  Coverage: ~60%<br>
+  Remediation: All manual</p>
+
+  <p>The agent was 95% cheaper, 95% faster, and found 54% more issues. And it generated the fixes automatically.</p>
+
+  <h2>Setting Up DevOps Agent (Even Easier)</h2>
+
+  <p>The DevOps Agent setup was simpler because it just watches what's already there:</p>
+
+  <p><strong>Create agent space.</strong> Same as Security Agent.<br>
+  <strong>Create IAM roles.</strong> Read-only access to CloudWatch, logs, Lambda, API Gateway, DynamoDB.<br>
+  <strong>Connect services.</strong> Link your AWS account, GitHub repo, and Slack workspace.<br>
+  <strong>Configure metrics.</strong> Tell it what to watch (Lambda errors, API latency, DynamoDB throttles).</p>
+
+  <p>That's it. It starts monitoring immediately.</p>
+
+  <h2>What It Does (The Cool Part)</h2>
+
+  <p>Last week, my chatbot Lambda started throwing errors. The DevOps Agent:</p>
+
+  <ol>
+    <li>Detected the error spike in 45 seconds</li>
+    <li>Analyzed the logs and found "CohereAPIError: Rate limit exceeded"</li>
+    <li>Traced it to a single IP address (me, testing)</li>
+    <li>Identified the root cause: no per-user rate limiting</li>
+    <li>Suggested a fix: implement rate limiting and request queuing</li>
+    <li>Posted everything to Slack</li>
+  </ol>
+
+  <p>Total time from error to diagnosis: 2 minutes. Without the agent, I would have found out when users complained, spent 30 minutes digging through logs, and another hour figuring out the cause.</p>
+
+  <h2>Adding Monitoring (Because Why Not)</h2>
+
+  <p>While I was at it, I added Sentry and Datadog using my GitHub Student Pack (both free):</p>
+
+  <p><strong>Sentry</strong> tracks frontend and backend errors. Session replay shows me exactly what users experienced when something broke. It's like having a DVR for bugs.</p>
+
+  <p><strong>Datadog</strong> gives me APM tracing across all my Lambda functions. I can see exactly where time is spent, which functions are slow, and where bottlenecks are forming.</p>
+
+  <p>Both integrate with the DevOps Agent, so it can correlate errors in Sentry with metrics in Datadog and logs in CloudWatch. It's like having a detective that actually knows what it's doing.</p>
+
+  <h2>The Cost Reality</h2>
+
+  <p>During the free trial (2 months):<br>
+  Security Agent: $0<br>
+  DevOps Agent: $0<br>
+  Sentry (Student Pack): $0<br>
+  Datadog (Student Pack): $0<br>
+  Total: $0</p>
+
+  <p>After the trial:<br>
+  Security Agent: $50/hour (run monthly = ~$400)<br>
+  DevOps Agent: $0.50-$2 per investigation<br>
+  Sentry: Still $0 (Student Pack)<br>
+  Datadog: Still $0 (Student Pack)</p>
+
+  <p>Compare to traditional:<br>
+  Penetration testing: $8,000/year<br>
+  Ops monitoring: $150/hour × 10 hours/month = $18,000/year<br>
+  Sentry: $29/month = $348/year<br>
+  Datadog: $300/month = $3,600/year</p>
+
+  <p>Savings: ~$29,000/year. For a portfolio site.</p>
+
+  <h2>What I Learned</h2>
+
+  <p><strong>Autonomous agents are real.</strong> This isn't hype. The Security Agent found vulnerabilities I didn't know existed. The DevOps Agent diagnosed issues faster than I could.</p>
+
+  <p><strong>Context matters.</strong> The agents work better because they read my code, understand my architecture, and know what "normal" looks like. Generic tools can't do that.</p>
+
+  <p><strong>Auto-remediation is scary but good.</strong> Letting an AI generate PRs felt weird at first. But the fixes were correct, well-documented, and saved me hours.</p>
+
+  <p><strong>Free trials are generous.</strong> 200 task-hours per month for Security Agent is way more than I need. The DevOps Agent trial is unlimited. AWS wants you to try this.</p>
+
+  <p><strong>Student Pack is underrated.</strong> $3,948/year in free tools (Sentry + Datadog + GitHub Actions) makes professional monitoring accessible to everyone.</p>
+
+  <h2>Should You Do This?</h2>
+
+  <p>If you're running any kind of web application and you care about security or uptime, yes. The free trial alone is worth it just to see what the agents find.</p>
+
+  <p>If you're a student, absolutely yes. The combination of AWS Agents + GitHub Student Pack gives you enterprise-grade security and monitoring at zero cost. That's a resume builder.</p>
+
+  <p>If you're a professional, probably yes. The ROI is obvious. Even after the trial, $400/month for continuous security testing beats $8,000 for a one-time pen test.</p>
+
+  <h2>What's Next</h2>
+
+  <p>I'm going to keep running the agents through the trial period and document everything. I want to see:</p>
+
+  <ul>
+    <li>How many vulnerabilities it finds over time</li>
+    <li>How accurate the auto-remediation is</li>
+    <li>How useful the DevOps Agent investigations are</li>
+    <li>Whether it's worth paying for after the trial</li>
+  </ul>
+
+  <p>I'll write a follow-up post in 2 months with the results.</p>
+
+  <p>In the meantime, my portfolio site is more secure than it's ever been, monitors itself better than I ever could, and cost me nothing to set up.</p>
+
+  <p>That's pretty cool.</p>
+
+  <hr>
+
+  <p><em>Want to see the code? Check out my <a href="https://github.com/ZolisaSilolo/app-portfolio">GitHub repo</a>. The SAM templates, Lambda functions, and monitoring configs are all there.</em></p>
+
+  <p><em>Questions? Find me on <a href="https://linkedin.com/in/zolisasilolo">LinkedIn</a> or <a href="https://twitter.com/zolisasilolo">Twitter</a>.</em></p>
+
+  <p><em>Next post: "GitHub Student Pack: $3,948/Year in Free Tools (And How I Use Them)"</em></p>
+</article>
