@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, Tag, ArrowLeft, Share2 } from 'lucide-react';
@@ -7,6 +7,33 @@ import { getBlogPost } from '../data/blogPosts';
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getBlogPost(slug) : null;
+  const [htmlContent, setHtmlContent] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (post && post.content.endsWith('.html')) {
+      // Fetch HTML content
+      fetch(post.content)
+        .then(res => res.text())
+        .then(html => {
+          // Extract just the article content (remove <article> wrapper if present)
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const article = doc.querySelector('article');
+          setHtmlContent(article ? article.innerHTML : html);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('Error loading blog post:', err);
+          setHtmlContent('<p>Error loading blog post content.</p>');
+          setLoading(false);
+        });
+    } else if (post) {
+      // Use inline content (legacy support)
+      setHtmlContent(post.content);
+      setLoading(false);
+    }
+  }, [post]);
 
   if (!post) {
     return (
@@ -122,22 +149,18 @@ const BlogPost = () => {
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert prose-green max-w-none">
-            <div 
-              className="text-cyan-300 leading-relaxed"
-              dangerouslySetInnerHTML={{ 
-                __html: post.content
-                  .replace(/\n/g, '<br>')
-                  .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="w-full max-w-4xl mx-auto my-8 rounded-lg border border-green-400/30" />')
-                  .replace(/#{3}\s(.+)/g, '<h3 class="text-xl font-bold text-green-400 mt-8 mb-4">$1</h3>')
-                  .replace(/#{2}\s(.+)/g, '<h2 class="text-2xl font-bold text-green-400 mt-10 mb-6">$1</h2>')
-                  .replace(/#{1}\s(.+)/g, '<h1 class="text-3xl font-bold matrix-text mt-12 mb-8">$1</h1>')
-                  .replace(/\*\*(.+?)\*\*/g, '<strong class="text-green-400">$1</strong>')
-                  .replace(/\*(.+?)\*/g, '<em class="text-cyan-400">$1</em>')
-                  .replace(/`(.+?)`/g, '<code class="bg-black/50 text-green-300 px-2 py-1 rounded text-sm">$1</code>')
-                  .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="bg-black/70 border border-green-400/30 rounded-lg p-4 my-6 overflow-x-auto"><code class="text-green-300 text-sm">$2</code></pre>')
-              }}
-            />
+          <div className="prose prose-invert prose-green max-w-none blog-content">
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-400"></div>
+                <p className="text-cyan-300 mt-4">Loading content...</p>
+              </div>
+            ) : (
+              <div 
+                className="text-cyan-300 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: htmlContent }}
+              />
+            )}
           </div>
 
           {/* Article Footer */}

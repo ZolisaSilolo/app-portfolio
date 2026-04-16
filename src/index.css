@@ -483,3 +483,111 @@
   .dark .text-cyan-300 { color: rgb(var(--cyber-cyan)) !important; }
   .dark .text-blue-400 { color: rgb(var(--cyber-cyan)) !important; }
 }
+
+/* Blog Content Styling */
+.blog-content h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  color: var(--matrix-green);
+}
+
+.blog-content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--matrix-green);
+}
+
+.blog-content h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--matrix-green);
+}
+
+.blog-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  color: var(--matrix-cyan);
+}
+
+.blog-content p.lead {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.blog-content p.meta {
+  font-size: 0.875rem;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.blog-content ul, .blog-content ol {
+  margin-bottom: 1.5rem;
+  margin-left: 1.5rem;
+  color: var(--matrix-cyan);
+}
+
+.blog-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.blog-content strong {
+  font-weight: bold;
+  color: var(--matrix-green);
+}
+
+.blog-content em {
+  font-style: italic;
+}
+
+.blog-content code {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--matrix-green);
+}
+
+.blog-content pre {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.blog-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.blog-content img, .blog-content .hero-image {
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 255, 65, 0.3);
+}
+
+.blog-content a {
+  color: #00ff41;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.blog-content a:hover {
+  color: #00ffff;
+}
+
+.blog-content hr {
+  margin: 3rem 0;
+  border-color: rgba(0, 255, 65, 0.2);
+}
