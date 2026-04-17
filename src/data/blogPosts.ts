@@ -1,3 +1,5 @@
+import githubStudentPackProfessionalWorkflowContent from '../content/github-student-pack-professional-workflow.html?raw';
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -30,7 +32,7 @@ export const blogPosts: BlogPost[] = [
     id: 'github-student-pack-professional-workflow',
     title: 'GitHub Student Pack: $3,948/Year in Free Tools',
     excerpt: 'Building production-grade infrastructure with free tools. Learn how to leverage Sentry, Datadog, and GitHub Actions for professional development.',
-    content: '/blog/github-student-pack-professional-workflow.html',
+    content: githubStudentPackProfessionalWorkflowContent,
     date: '2026-04-16',
     readTime: 12,
     category: 'tech-musings',
