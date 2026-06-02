@@ -204,3 +204,9 @@ test-*.html
 
 # Amplify manual-deploy artifact
 app.zip
+
+
+# Local scan / audit artifacts
+audit*.txt
+checkov*.txt
+fix.txt
