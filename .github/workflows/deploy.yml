@@ -1,0 +1,75 @@
+name: Deploy (SAM + Amplify)
+
+on:
+  push:
+    branches: [new-react-client]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  STACK_NAME: portfolio-backend
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    outputs:
+      api_url: ${{ steps.out.outputs.api_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - run: sam build -t deployment/template.yaml
+      - run: >
+          sam deploy -t deployment/template.yaml
+          --stack-name "$STACK_NAME"
+          --capabilities CAPABILITY_IAM
+          --parameter-overrides Environment=prod
+          --resolve-s3 --no-confirm-changeset --no-fail-on-empty-changeset
+          --region "$AWS_REGION"
+      - id: out
+        run: |
+          URL=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" \
+            --query "Stacks[0].Outputs[?OutputKey=='PortfolioApiUrl'].OutputValue" --output text)
+          echo "api_url=${URL%/}" >> "$GITHUB_OUTPUT"
+
+  frontend:
+    needs: backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_API_BASE_URL: ${{ needs.backend.outputs.api_url }}
+          VITE_ADMIN_PASSWORD: ${{ secrets.VITE_ADMIN_PASSWORD }}
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Deploy to Amplify
+        env:
+          APP_ID: ${{ vars.AMPLIFY_APP_ID }}
+          BRANCH: new-react-client
+        run: |
+          (cd dist/client && zip -qr ../../app.zip .)
+          CREATE=$(aws amplify create-deployment --app-id "$APP_ID" --branch-name "$BRANCH")
+          JOB_ID=$(echo "$CREATE" | jq -r '.jobId')
+          UPLOAD=$(echo "$CREATE" | jq -r '.zipUploadUrl')
+          curl -sS -H "Content-Type: application/zip" --upload-file app.zip "$UPLOAD"
+          aws amplify start-deployment --app-id "$APP_ID" --branch-name "$BRANCH" --job-id "$JOB_ID"

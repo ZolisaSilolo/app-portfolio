@@ -12,10 +12,10 @@ Parameters:
       - prod
     Description: Environment name
 
-  CohereSecretName:
+  NvidiaSecretName:
     Type: String
-    Default: portfolio-cohere-api-key
-    Description: Name of the secret in AWS Secrets Manager containing Cohere API key
+    Default: portfolio-nvidia-api-key
+    Description: Name of the secret in AWS Secrets Manager containing the NVIDIA API key
 
 Globals:
   Function:
@@ -24,7 +24,7 @@ Globals:
     MemorySize: 256
     Environment:
       Variables:
-        COHERE_SECRET_NAME: !Ref CohereSecretName
+        NVIDIA_SECRET_NAME: !Ref NvidiaSecretName
         ENVIRONMENT: !Ref Environment
         SESSIONS_TABLE: !Ref SessionsTable
         USER_POOL_ID: !Ref UserPool
@@ -119,19 +119,11 @@ Resources:
     Properties:
       StageName: !Ref Environment
       TracingEnabled: true
-      CacheClusterEnabled: true
-      CacheClusterSize: '0.5'
       MethodSettings:
-        - ResourcePath: /portfolio
-          HttpMethod: GET
-          CachingEnabled: true
-          CacheTtlInSeconds: 300
-        - ResourcePath: /auth/guest
-          HttpMethod: POST
-          CachingEnabled: false
-        - ResourcePath: /chat
-          HttpMethod: POST
-          CachingEnabled: false
+        - ResourcePath: "/*"
+          HttpMethod: "*"
+          ThrottlingRateLimit: 50
+          ThrottlingBurstLimit: 100
       AccessLogSetting:
         DestinationArn: !GetAtt ApiAccessLogGroup.Arn
         Format: '{"requestId":"$context.requestId","ip":"$context.identity.sourceIp","caller":"$context.identity.caller","user":"$context.identity.user","requestTime":"$context.requestTime","httpMethod":"$context.httpMethod","resourcePath":"$context.resourcePath","status":"$context.status","protocol":"$context.protocol","responseLength":"$context.responseLength"}'
@@ -158,38 +150,6 @@ Resources:
               X-Frame-Options: '''DENY'''
               X-XSS-Protection: '''1; mode=block'''
               Strict-Transport-Security: '''max-age=31536000; includeSubDomains'''
-
-  # Usage Plan for rate limiting (FREE)
-  ApiUsagePlan:
-    Type: AWS::ApiGateway::UsagePlan
-    Properties:
-      UsagePlanName: !Sub ${AWS::StackName}-usage-plan
-      Description: Rate limiting for portfolio API
-      Throttle:
-        RateLimit: 100 # requests per second
-        BurstLimit: 200 # burst capacity
-      Quota:
-        Limit: 10000 # requests per day
-        Period: DAY
-      ApiStages:
-        - ApiId: !Ref PortfolioApi
-          Stage: !Ref Environment
-
-  # API Key for monitoring (FREE)
-  ApiKey:
-    Type: AWS::ApiGateway::ApiKey
-    Properties:
-      Name: !Sub ${AWS::StackName}-api-key
-      Description: API key for portfolio monitoring
-      Enabled: true
-
-  # Link usage plan to API key (FREE)
-  UsagePlanKey:
-    Type: AWS::ApiGateway::UsagePlanKey
-    Properties:
-      KeyId: !Ref ApiKey
-      KeyType: API_KEY
-      UsagePlanId: !Ref ApiUsagePlan
 
   # Auth Function for guest access
   AuthFunction:
@@ -258,7 +218,7 @@ Resources:
             - Effect: Allow
               Action:
                 - secretsmanager:GetSecretValue
-              Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${CohereSecretName}*
+              Resource: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${NvidiaSecretName}*
             - Effect: Allow
               Action:
                 - logs:CreateLogGroup
@@ -414,15 +374,3 @@ Outputs:
     Value: !Ref PortfolioApi
     Export:
       Name: !Sub ${AWS::StackName}-ApiId
-
-  UsagePlanId:
-    Description: API Gateway Usage Plan ID
-    Value: !Ref ApiUsagePlan
-    Export:
-      Name: !Sub ${AWS::StackName}-UsagePlan
-
-  ApiKeyId:
-    Description: API Gateway Key ID for monitoring
-    Value: !Ref ApiKey
-    Export:
-      Name: !Sub ${AWS::StackName}-ApiKey

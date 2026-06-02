@@ -201,3 +201,6 @@ $RECYCLE.BIN/
 # Temporary / ad-hoc test scripts (may contain env-specific identifiers)
 test-*.js
 test-*.html
+
+# Amplify manual-deploy artifact
+app.zip

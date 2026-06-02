@@ -1,4 +1,4 @@
-import githubStudentPackProfessionalWorkflowContent from '../content/github-student-pack-professional-workflow.html?raw';
+import githubStudentPackProfessionalWorkflowContent from '../content/github-student-pack-professional-workflow';
 
 export interface BlogPost {
   id: string;
