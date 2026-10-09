@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon, Home, User, Briefcase, MessageCircle, Terminal, BookOpen } from 'lucide-react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Header = () => {
@@ -9,78 +9,79 @@ const Header = () => {
   const location = useLocation();
 
   const navItems = [
-    { path: '/', label: 'HOME', icon: Home },
-    { path: '/blog', label: 'BLOG', icon: BookOpen },
-    { path: '/portfolio', label: 'PROJECTS', icon: Briefcase },
-    { path: '/chat', label: 'AI_BUDDY', icon: MessageCircle },
-    { path: '/about', label: 'ABOUT_ME', icon: User },
+    { path: '/', label: 'Home' },
+    { path: '/portfolio', label: 'Projects' },
+    { path: '/blog', label: 'Blog' },
+    { path: '/chat', label: 'AI Assistant' },
+    { path: '/about', label: 'About' },
   ];
 
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-50 matrix-card border-b retro-border backdrop-blur-sm">
-      <div className="max-w-6xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3 floating-animation">
-            <div className="w-10 h-10 matrix-card rounded-xl flex items-center justify-center glow-effect">
-              <Terminal className="w-5 h-5 text-green-400 project-icon-3d" />
+    <header className="sticky top-0 z-50 border-b border-divider backdrop-blur-md" style={{ background: 'rgba(var(--bg-primary), 0.8)' }}>
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex items-center justify-between h-14">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-7 h-7 rounded-md bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">Z</span>
             </div>
-            <span className="text-xl font-bold matrix-text font-mono">
-              &gt; ZOLISA_SILOLO.sys
+            <span className="font-semibold text-sm tracking-tight" style={{ color: 'rgb(var(--text-primary))' }}>
+              Zolisa Silolo
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            {navItems.map(({ path, label, icon: Icon }) => (
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map(({ path, label }) => (
               <Link
                 key={path}
                 to={path}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 font-mono text-sm ${
-                  isActive(path)
-                    ? 'matrix-card text-green-400 glow-effect retro-border'
-                    : 'hover:matrix-card text-green-300 hover:text-green-400'
-                }`}
+                className={`nav-link ${isActive(path) ? 'active' : ''}`}
               >
-                <Icon className="w-4 h-4 project-icon-3d" />
-                <span className="font-medium">[{label}]</span>
+                {label}
               </Link>
             ))}
-            
+
+            <div className="w-px h-5 mx-2" style={{ background: 'rgb(var(--border))' }} />
+
             <button
               onClick={toggleTheme}
-              className="p-3 rounded-xl hover:matrix-card transition-all duration-300 glow-effect"
+              className="btn-ghost p-2"
+              aria-label="Toggle theme"
             >
               {isDark ? (
-                <Sun className="w-5 h-5 project-icon-3d text-yellow-400" />
+                <Sun className="w-4 h-4" />
               ) : (
-                <Moon className="w-5 h-5 project-icon-3d text-green-400" />
+                <Moon className="w-4 h-4" />
               )}
             </button>
           </nav>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-3">
+          <div className="md:hidden flex items-center gap-1">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-xl hover:matrix-card transition-all duration-300"
+              className="btn-ghost p-2"
+              aria-label="Toggle theme"
             >
               {isDark ? (
-                <Sun className="w-5 h-5 project-icon-3d text-yellow-400" />
+                <Sun className="w-4 h-4" />
               ) : (
-                <Moon className="w-5 h-5 project-icon-3d text-green-400" />
+                <Moon className="w-4 h-4" />
               )}
             </button>
-            
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-xl hover:matrix-card transition-all duration-300"
+              className="btn-ghost p-2"
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6 project-icon-3d text-green-400" />
+                <X className="w-5 h-5" />
               ) : (
-                <Menu className="w-6 h-6 project-icon-3d text-green-400" />
+                <Menu className="w-5 h-5" />
               )}
             </button>
           </div>
@@ -88,21 +89,16 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 pb-4 border-t border-green-400/20 pt-4">
-            <div className="space-y-2">
-              {navItems.map(({ path, label, icon: Icon }) => (
+          <nav className="md:hidden py-4 border-t border-divider">
+            <div className="flex flex-col gap-1">
+              {navItems.map(({ path, label }) => (
                 <Link
                   key={path}
                   to={path}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 font-mono ${
-                    isActive(path)
-                      ? 'matrix-card text-green-400'
-                      : 'hover:matrix-card text-green-300 hover:text-green-400'
-                  }`}
+                  className={`nav-link ${isActive(path) ? 'active' : ''}`}
                 >
-                  <Icon className="w-5 h-5 project-icon-3d" />
-                  <span className="font-medium">[{label}]</span>
+                  {label}
                 </Link>
               ))}
             </div>

@@ -1,99 +1,115 @@
 import React from 'react';
-import { Heart, Github, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="relative overflow-hidden bg-gray-50/50 dark:bg-gray-900/50 border-t border-gray-200/20">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-cyan-50/20 to-sky-50/30 dark:from-blue-900/10 dark:via-cyan-900/5 dark:to-sky-900/10"></div>
-      
-      <div className="relative max-w-6xl mx-auto px-6 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+    <footer className="border-t border-divider mt-24" style={{ background: 'rgb(var(--bg-secondary))' }}>
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Brand */}
-          <div className="md:col-span-2 space-y-4">
-            <h3 className="text-2xl font-bold gradient-text">Zolisa Silolo</h3>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed max-w-md">
-              Cloud Solutions Architect & AI Engineer passionate about creating 
-              innovative digital experiences with cutting-edge technologies.
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-md bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">Z</span>
+              </div>
+              <span className="font-semibold text-sm" style={{ color: 'rgb(var(--text-primary))' }}>
+                Zolisa Silolo
+              </span>
+            </div>
+            <p className="text-sm text-secondary max-w-xs">
+              Cloud & AI Solutions Architect building scalable systems on AWS.
             </p>
-            <div className="flex items-center space-x-4">
-              <a 
-                href="https://github.com" 
-                className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
+            <div className="flex items-center gap-2">
+              <a
+                href="https://github.com/ZolisaSilolo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-box"
+                aria-label="GitHub"
               >
-                <Github className="w-5 h-5 icon-3d" />
+                <Github className="w-4 h-4" />
               </a>
-              <a 
-                href="https://linkedin.com" 
-                className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
+              <a
+                href="http://linkedin.com/in/lundi-zolisa-s-144922163"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-box"
+                aria-label="LinkedIn"
               >
-                <Linkedin className="w-5 h-5 icon-3d text-blue-600" />
+                <Linkedin className="w-4 h-4" />
               </a>
-              <a 
-                href="https://zolisasilolo.co.za" 
-                className="p-3 modern-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
+              <a
+                href="mailto:zolisasilolo@gmail.com"
+                className="icon-box"
+                aria-label="Email"
               >
-                <Mail className="w-5 h-5 icon-3d text-green-600" />
+                <Mail className="w-4 h-4" />
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900 dark:text-white">Quick Links</h4>
-            <div className="space-y-2">
-              {['Home', 'About', 'Portfolio', 'Chat'].map((link) => (
-                <a 
-                  key={link}
-                  href={`/${link.toLowerCase() === 'home' ? '' : link.toLowerCase()}`}
-                  className="block text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                >
-                  {link}
-                </a>
-              ))}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>
+              Navigate
+            </h4>
+            <div className="flex flex-col gap-2">
+              <Link to="/" className="text-sm text-secondary hover:text-accent transition-colors">
+                Home
+              </Link>
+              <Link to="/portfolio" className="text-sm text-secondary hover:text-accent transition-colors">
+                Projects
+              </Link>
+              <Link to="/blog" className="text-sm text-secondary hover:text-accent transition-colors">
+                Blog
+              </Link>
+              <Link to="/about" className="text-sm text-secondary hover:text-accent transition-colors">
+                About
+              </Link>
             </div>
           </div>
 
-          {/* Contact Info */}
-          <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900 dark:text-white">Get In Touch</h4>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                <MapPin className="w-4 h-4 icon-3d text-blue-600" />
-                <span className="text-sm">Johannesburg, South Africa</span>
+          {/* Contact */}
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>
+              Get in touch
+            </h4>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-sm text-secondary">
+                <MapPin className="w-4 h-4 text-muted" />
+                <span>Johannesburg, South Africa</span>
               </div>
-              <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                <Mail className="w-4 h-4 icon-3d text-green-600" />
-                <span className="text-sm">home:zolisasilolo.co.za</span>
-              </div>
-              <div className="flex items-center space-x-3 text-gray-600 dark:text-gray-300">
-                <Phone className="w-4 h-4 icon-3d text-cyan-600" />
-                <span className="text-sm">Available for consultation</span>
-              </div>
+              <a
+                href="mailto:zolisasilolo@gmail.com"
+                className="flex items-center gap-2 text-sm text-secondary hover:text-accent transition-colors"
+              >
+                <Mail className="w-4 h-4 text-muted" />
+                <span>zolisasilolo@gmail.com</span>
+              </a>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-gray-200/20">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
-              <span className="text-sm">© 2025 Zolisa Silolo. Built with</span>
-              <Heart className="w-4 h-4 icon-3d text-red-500" />
-              <span className="text-sm">using React & AWS</span>
-            </div>
-            
-            <div className="flex items-center space-x-6 text-sm text-gray-600 dark:text-gray-300">
-              <a href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-blue-600 transition-colors">Sitemap</a>
+        <div className="mt-12 pt-6 border-t border-divider">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-sm text-muted">
+              © {currentYear} Zolisa Silolo. Built with React & AWS.
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="text-sm text-muted hover:text-secondary transition-colors">
+                Privacy
+              </a>
+              <a href="#" className="text-sm text-muted hover:text-secondary transition-colors">
+                Terms
+              </a>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Background decoration */}
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-400/10 to-cyan-600/10 rounded-full blur-3xl"></div>
-      <div className="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-sky-400/10 to-blue-600/10 rounded-full blur-3xl"></div>
     </footer>
   );
 };

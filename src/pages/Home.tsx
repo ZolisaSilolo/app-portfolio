@@ -1,270 +1,185 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ArrowRight, Github, Linkedin, Mail, Terminal, Zap, Target, Brain, Cloud, Code, Cpu } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Brain, Cloud, Code, Cpu, ArrowUpRight } from 'lucide-react';
 
 const Home = () => {
-
   const skills = [
     {
       icon: Brain,
-      title: 'AI_SYSTEMS',
-      description: 'Machine Learning Operations and SageMaker expertise',
-      animationClass: 'fraud-detection',
+      title: 'AI Systems',
+      description: 'Machine Learning Operations and SageMaker expertise for production-grade AI workloads.',
       youtubeUrl: 'https://www.youtube.com/watch?v=ZGElhJmN_8o',
-      emoji: '🤖'
     },
     {
       icon: Cloud,
-      title: 'CLOUD_ARCH',
-      description: 'AWS cloud-native solutions and serverless architecture',
-      animationClass: 'cloud-infra',
+      title: 'Cloud Architecture',
+      description: 'AWS cloud-native solutions and serverless architecture at scale.',
       youtubeUrl: 'https://www.youtube.com/watch?v=1aTQI-Kqs2U',
-      emoji: '☁️'
     },
     {
       icon: Code,
-      title: 'DATA_SCI',
-      description: 'Cloud-native data science solutions and analytics',
-      animationClass: 'ai-efficiency',
+      title: 'Data Science',
+      description: 'Cloud-native data science solutions and analytics pipelines.',
       youtubeUrl: 'https://www.youtube.com/playlist?list=PLhr1KZpdzukfdjsOHZ-BazZt1iK1J8UUw',
-      emoji: '📊'
     },
     {
       icon: Cpu,
-      title: 'INFRA_CODE',
-      description: 'Infrastructure-as-Code and automation',
-      animationClass: 'predictive-maintenance',
+      title: 'Infrastructure as Code',
+      description: 'Infrastructure-as-Code and automation for repeatable deployments.',
       youtubeUrl: 'https://www.youtube.com/watch?v=rmXI_kd_owQ',
-      emoji: '⚙️'
-    }
+    },
+  ];
+
+  const stats = [
+    { label: 'AWS Certifications', value: '3x' },
+    { label: 'Specialty', value: 'MLOps' },
+    { label: 'Focus', value: 'Serverless' },
+    { label: 'Approach', value: 'Cloud-Native' },
   ];
 
   return (
-    <div className="min-h-screen matrix-grid">
+    <div className="min-h-screen">
       <Helmet>
-        <title>Lundi Zolisa Silolo - Portfolio</title>
+        <title>Lundi Zolisa Silolo — Cloud & AI Solutions Architect</title>
         <meta name="description" content="Cloud & AI Solutions Architect specializing in AWS serverless architectures and scalable system design." />
         <link rel="canonical" href="https://zolisasilolo.co.za" />
       </Helmet>
+
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 lg:py-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-green-900/10 via-cyan-900/5 to-green-900/10"></div>
-        
-        <div className="relative max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <div className="flex items-center space-x-2 text-green-400 font-mono">
-                  <Terminal className="w-5 h-5 project-icon-3d" />
-                  <span className="text-sm font-medium">[SYSTEM_INITIALIZED]</span>
-                </div>
-                
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight font-mono">
-                  <span className="matrix-text">&gt; LUNDI_ZOLISA</span>
-                  <br />
-                  <span className="text-green-400">&gt; SILOLO.exe</span>
-                </h1>
-                
-                <div className="flex items-center space-x-3 mt-4 p-3 matrix-card rounded-lg border border-green-400/30">
-                  <div className="text-2xl animate-pulse">🧠</div>
-                  <div>
-                    <Link to="/blog" className="text-cyan-400 hover:text-green-400 transition-colors font-mono text-sm">
-                      [THOUGHT_STREAM] → Exploring AI, distributed systems & the future of intelligence
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  to="/portfolio"
-                  className="group cyber-button px-8 py-4 rounded-xl font-mono font-medium transition-all duration-300 glow-effect"
-                >
-                  <span>ACCESS_PROJECTS</span>
-                  <ArrowRight className="w-5 h-5 project-icon-3d inline ml-2 group-hover:translate-x-1" />
-                </Link>
-                
-                <Link
-                  to="/chat"
-                  className="flex items-center space-x-2 matrix-card px-8 py-4 rounded-xl font-mono font-medium transition-all duration-300"
-                >
-                  <Zap className="w-5 h-5 project-icon-3d text-green-400" />
-                  <span className="text-green-400">AI_ASSISTANT</span>
-                </Link>
-              </div>
-
-              <div className="flex items-center space-x-6">
-                <a
-                  href="https://github.com/ZolisaSilolo"
-                  className="p-3 matrix-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
-                >
-                  <Github className="w-6 h-6 project-icon-3d text-green-400" />
-                </a>
-                <a
-                  href="http://linkedin.com/in/lundi-zolisa-s-144922163"
-                  className="p-3 matrix-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
-                >
-                  <Linkedin className="w-6 h-6 project-icon-3d text-cyan-400" />
-                </a>
-                <a
-                  href="mailto:zolisasilolo@gmail.com"
-                  className="p-3 matrix-card rounded-xl hover:scale-110 transition-all duration-300 glow-effect"
-                >
-                  <Mail className="w-6 h-6 project-icon-3d text-green-400" />
-                </a>
-              </div>
+      <section className="relative py-24 lg:py-32">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="max-w-3xl">
+            {/* Status badge */}
+            <div className="inline-flex items-center gap-2 mb-6">
+              <span className="badge">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+                Available for new projects
+              </span>
             </div>
 
-            <div className="relative">
-              <div className="relative z-10 matrix-card p-8 rounded-3xl floating-animation retro-border">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold font-mono text-green-400">
-                      [STATUS_REPORT]
-                    </h3>
-                    <Target className="w-5 h-5 project-icon-3d text-green-400" />
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold matrix-text font-mono hover:animate-spin transform-gpu transition-transform duration-500 cursor-pointer">AWS</div>
-                      <div className="text-sm text-green-300 font-mono hover:scale-110 transition-transform duration-300 cursor-pointer">3x_CERT</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold matrix-text font-mono">MLOPS</div>
-                      <div className="text-sm text-green-300 font-mono">SAGEMAKER</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold matrix-text font-mono">CLOUD</div>
-                      <div className="text-sm text-green-300 font-mono">NATIVE</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold matrix-text font-mono">DATA</div>
-                      <div className="text-sm text-green-300 font-mono">SCIENCE</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Matrix-style decorative elements */}
-              <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-green-400/10 to-cyan-400/5 rounded-full blur-3xl"></div>
-              <div className="absolute -bottom-4 -left-4 w-72 h-72 bg-gradient-to-br from-cyan-400/10 to-green-400/5 rounded-full blur-3xl"></div>
-              
-              {/* Scanning lines */}
-              <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
-              <div className="absolute bottom-0 right-0 w-0.5 h-full bg-gradient-to-t from-transparent via-cyan-400 to-transparent animate-pulse" style={{ animationDelay: '1s' }}></div>
+            {/* Headline */}
+            <h1 className="text-5xl lg:text-6xl font-bold tracking-tight mb-6" style={{ color: 'rgb(var(--text-primary))', letterSpacing: '-0.03em' }}>
+              Cloud & AI Solutions Architect
+            </h1>
+
+            <p className="text-xl text-secondary mb-8 leading-relaxed">
+              I design and build scalable, serverless systems on AWS.
+              Specializing in MLOps, cloud-native architectures, and data-driven applications.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-3 mb-12">
+              <Link to="/portfolio" className="btn-primary">
+                View Projects
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/chat" className="btn-secondary">
+                Chat with AI Assistant
+              </Link>
             </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-2">
+              <a
+                href="https://github.com/ZolisaSilolo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-box"
+                aria-label="GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </a>
+              <a
+                href="http://linkedin.com/in/lundi-zolisa-s-144922163"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-box"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+              <a
+                href="mailto:zolisasilolo@gmail.com"
+                className="icon-box"
+                aria-label="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20">
+            {stats.map((stat, index) => (
+              <div key={index} className="card p-6">
+                <div className="text-2xl font-bold mb-1" style={{ color: 'rgb(var(--text-primary))' }}>
+                  {stat.value}
+                </div>
+                <div className="text-sm text-muted">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 bg-gradient-to-b from-transparent to-green-900/5">
+      <section className="py-20 border-t border-divider">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold matrix-text mb-4 font-mono">
-              &gt; CORE_MODULES.load()
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold tracking-tight mb-3" style={{ color: 'rgb(var(--text-primary))', letterSpacing: '-0.02em' }}>
+              Core Expertise
             </h2>
-            <p className="text-xl text-green-300 font-mono">
-              [INITIALIZING...] Specializing in AWS cloud-native solutions and serverless architecture
+            <p className="text-lg text-secondary">
+              Specializing in AWS cloud-native solutions and serverless architecture
             </p>
           </div>
 
-          <div className="overflow-hidden">
-            <div className="flex animate-scroll space-x-6">
-              {/* First set of tiles */}
-              {skills.map((skill, index) => (
-                <div key={index} className="flex-shrink-0 w-80 matrix-card p-6 rounded-2xl text-center relative overflow-hidden">
-                  {/* Digital rain background - dark mode only */}
-                  <div className="absolute inset-0 opacity-20 dark:block hidden">
-                    <div className="matrix-rain-bg"></div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {skills.map((skill, index) => (
+              <a
+                key={index}
+                href={skill.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-interactive p-6 group"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="icon-box">
+                    <skill.icon className="w-5 h-5" />
                   </div>
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 matrix-card rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation glow-effect">
-                      <skill.icon className="w-8 h-8 text-green-400 project-icon-3d" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
-                      [{skill.title}]
-                    </h3>
-                    <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
-                    <a
-                      href={skill.youtubeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
-                    >
-                      {skill.emoji}
-                    </a>
-                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-accent transition-colors" />
                 </div>
-              ))}
-              {/* Duplicate set for seamless loop */}
-              {skills.map((skill, index) => (
-                <div key={`duplicate-${index}`} className="flex-shrink-0 w-80 matrix-card p-6 rounded-2xl text-center relative overflow-hidden">
-                  {/* Digital rain background - dark mode only */}
-                  <div className="absolute inset-0 opacity-20 dark:block hidden">
-                    <div className="matrix-rain-bg"></div>
-                  </div>
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 matrix-card rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation glow-effect">
-                      <skill.icon className="w-8 h-8 text-green-400 project-icon-3d" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-3 font-mono text-green-400">
-                      [{skill.title}]
-                    </h3>
-                    <p className="text-green-300 text-sm font-mono mb-4">{skill.description}</p>
-                    <a
-                      href={skill.youtubeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block w-full py-2 px-3 bg-green-400/10 hover:bg-green-400/20 border border-green-400/30 hover:border-green-400/50 text-green-400 text-xs rounded-lg transition-all duration-300 font-mono backdrop-blur-sm"
-                    >
-                      {skill.emoji}
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
+                <h3 className="text-lg font-semibold mb-2" style={{ color: 'rgb(var(--text-primary))' }}>
+                  {skill.title}
+                </h3>
+                <p className="text-sm text-secondary leading-relaxed">
+                  {skill.description}
+                </p>
+              </a>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <div className="matrix-card p-12 rounded-3xl relative overflow-hidden retro-border">
-            <div className="relative z-10">
-              <h2 className="text-4xl font-bold matrix-text mb-4 font-mono">
-                &gt; COLLABORATION.init()
-              </h2>
-              <p className="text-xl text-green-300 mb-8 font-mono">
-                [READY] Let's discuss your cloud architecture and data science needs
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="mailto:zolisasilolo@gmail.com" 
-                  className="cyber-button px-8 py-4 rounded-xl font-mono font-medium transition-all duration-300 glow-effect"
-                >
-                  ESTABLISH_CONNECTION
-                </a>
-                <Link 
-                  to="/chat" 
-                  className="matrix-card px-8 py-4 rounded-xl font-mono font-medium transition-all duration-300 text-green-400"
-                >
-                  ACTIVATE_AI_BUDDY
-                </Link>
-              </div>
-            </div>
-            
-            {/* Matrix rain effect simulation */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/10 to-cyan-400/5 rounded-full blur-2xl"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-br from-cyan-400/10 to-green-400/5 rounded-full blur-2xl"></div>
-            
-            {/* Scanning lines */}
-            <div className="absolute inset-0 rounded-3xl overflow-hidden">
-              <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-green-400/50 to-transparent animate-pulse"></div>
-              <div className="absolute top-3/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+      <section className="py-20 border-t border-divider">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="card p-12 text-center" style={{ background: 'linear-gradient(135deg, rgba(var(--accent), 0.05) 0%, transparent 100%)' }}>
+            <h2 className="text-3xl font-bold tracking-tight mb-3" style={{ color: 'rgb(var(--text-primary))', letterSpacing: '-0.02em' }}>
+              Let's work together
+            </h2>
+            <p className="text-lg text-secondary mb-8 max-w-2xl mx-auto">
+              Have a cloud architecture or AI project in mind? Let's discuss how we can build something great.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="mailto:zolisasilolo@gmail.com" className="btn-primary">
+                Get in touch
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <Link to="/about" className="btn-secondary">
+                Learn more about me
+              </Link>
             </div>
           </div>
         </div>
