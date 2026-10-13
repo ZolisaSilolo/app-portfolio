@@ -216,7 +216,7 @@ Resources:
       Environment:
         Variables:
           BEDROCK_MODEL_ID: us.amazon.nova-2-lite-v1:0
-          CORS_ORIGIN: https://zolisasilolo.co.za
+          CORS_ORIGIN: https://zolisasilolo.co.za,https://www.zolisasilolo.co.za
       Policies:
         - Statement:
             - Effect: Allow

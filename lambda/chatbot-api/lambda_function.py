@@ -7,7 +7,7 @@ from botocore.config import Config
 # Amazon Nova 2 Lite via US cross-region inference profile (low cost, fast).
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID", "us.amazon.nova-2-lite-v1:0")
 MESSAGE_MAX_LENGTH = 1000
-ALLOWED_ORIGIN = os.environ.get("CORS_ORIGIN", "*")
+ALLOWED_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGIN", "*").split(",") if o.strip()]
 
 PORTFOLIO_CONTEXT = """You are the portfolio assistant for Zolisa Silolo, a Cloud & AI Solutions Architect based in Johannesburg, South Africa (contact: zolisasilolo@gmail.com, GitHub: github.com/ZolisaSilolo).
 
@@ -19,28 +19,39 @@ Featured projects:
 5. Cloud Infrastructure with Disaster Recovery - custom VPC, Auto Scaling, Multi-AZ RDS, DynamoDB, S3 + CloudFront, Route 53, WAF, AWS Backup.
 6. Alexa Smart Home Skill and Industrial Predictive Maintenance (AWS IoT + SageMaker).
 
-Answer concisely (under 150 words), in a friendly professional tone, only about Zolisa's skills, projects, experience and how to collaborate. If you don't know something, say so and suggest contacting Zolisa directly."""
+Answer concisely (under 150 words) in plain text without markdown formatting, in a friendly professional tone, only about Zolisa's skills, projects, experience and how to collaborate. If you don't know something, say so and suggest contacting Zolisa directly."""
 
 _bedrock = boto3.client(
     "bedrock-runtime",
     config=Config(read_timeout=25, retries={"max_attempts": 2, "mode": "standard"}),
 )
 
-HEADERS = {
+BASE_HEADERS = {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
     "Access-Control-Allow-Headers": "Content-Type,Authorization",
     "Access-Control-Allow-Methods": "OPTIONS,POST",
+    "Vary": "Origin",
 }
 
 
-def _resp(status, body):
-    return {"statusCode": status, "headers": HEADERS, "body": json.dumps(body)}
+def _headers(event):
+    req_headers = {k.lower(): v for k, v in (event.get("headers") or {}).items()}
+    origin = req_headers.get("origin", "")
+    if "*" in ALLOWED_ORIGINS:
+        allow = "*"
+    else:
+        allow = origin if origin in ALLOWED_ORIGINS else ALLOWED_ORIGINS[0]
+    return {**BASE_HEADERS, "Access-Control-Allow-Origin": allow}
 
 
 def lambda_handler(event, context):
+    headers = _headers(event)
+
+    def _resp(status, body):
+        return {"statusCode": status, "headers": headers, "body": json.dumps(body)}
+
     if event.get("httpMethod") == "OPTIONS":
-        return {"statusCode": 200, "headers": HEADERS, "body": ""}
+        return {"statusCode": 200, "headers": headers, "body": ""}
 
     try:
         body = json.loads(event.get("body") or "{}")
