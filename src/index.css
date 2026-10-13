@@ -372,9 +372,8 @@
   .light .text-cyan-400 { color: rgb(var(--accent)) !important; }
   .light .text-cyan-300 { color: rgb(var(--text-secondary)) !important; }
 
-  /* Hide legacy matrix gimmicks */
-  .matrix-rain-bg,
-  .matrix-grid {
+  /* Hide legacy matrix gimmicks (decorative only - never hide page containers) */
+  .matrix-rain-bg {
     display: none !important;
   }
 }

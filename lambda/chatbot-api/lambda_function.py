@@ -1,87 +1,67 @@
 import json
 import os
+
 import boto3
-import requests
+from botocore.config import Config
 
-NVIDIA_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-MODEL = "nvidia/nemotron-mini-4b-instruct"
-SECRET_NAME = os.environ.get("NVIDIA_SECRET_NAME", "portfolio-nvidia-api-key")
+# Amazon Nova 2 Lite via US cross-region inference profile (low cost, fast).
+MODEL_ID = os.environ.get("BEDROCK_MODEL_ID", "us.amazon.nova-2-lite-v1:0")
+MESSAGE_MAX_LENGTH = 1000
+ALLOWED_ORIGIN = os.environ.get("CORS_ORIGIN", "*")
 
-PORTFOLIO_CONTEXT = """I am an AI assistant for a portfolio showcasing AWS and cloud engineering projects:
+PORTFOLIO_CONTEXT = """You are the portfolio assistant for Zolisa Silolo, a Cloud & AI Solutions Architect based in Johannesburg, South Africa (contact: zolisasilolo@gmail.com, GitHub: github.com/ZolisaSilolo).
 
-1. Simple AWS Fraud Detection Pipeline - MLOps project with Lambda, Kinesis, SageMaker
-2. Awesome Environment With Backup & Disaster Recovery - AWS architecture with VPC, RDS, CloudFront
-3. Just Serverless Efficiency (JSE) - Cloud-native vector store with Cohere API
-4. Alexa Smart Home Skill - Voice control using Lambda and Alexa Skills Kit
-5. Industrial Predictive Maintenance - ML-powered maintenance with AWS IoT and SageMaker
+Featured projects:
+1. Serverless Portfolio System - React/TypeScript frontend on AWS Amplify, Lambda + API Gateway backend, Amazon Bedrock chatbot, CI/CD with GitHub Actions, CloudFormation/SAM.
+2. AI Data Analytics Agent - Amazon Bedrock, SageMaker and Pandas automating exploratory data analysis (70% faster analysis).
+3. Fraud Detection System - SageMaker anomaly detection with Kinesis, Lambda, DynamoDB, SNS (92% accuracy, 35% fewer false positives).
+4. JustServerlessEfficiency (JSE) - Intelligent document processing with Lambda, Step Functions and Bedrock (60% less manual processing).
+5. Cloud Infrastructure with Disaster Recovery - custom VPC, Auto Scaling, Multi-AZ RDS, DynamoDB, S3 + CloudFront, Route 53, WAF, AWS Backup.
+6. Alexa Smart Home Skill and Industrial Predictive Maintenance (AWS IoT + SageMaker).
 
-The portfolio demonstrates expertise in AWS services, serverless architecture, machine learning, and cloud-native development."""
+Answer concisely (under 150 words), in a friendly professional tone, only about Zolisa's skills, projects, experience and how to collaborate. If you don't know something, say so and suggest contacting Zolisa directly."""
 
-_api_key = None
+_bedrock = boto3.client(
+    "bedrock-runtime",
+    config=Config(read_timeout=25, retries={"max_attempts": 2, "mode": "standard"}),
+)
+
+HEADERS = {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
+    "Access-Control-Allow-Headers": "Content-Type,Authorization",
+    "Access-Control-Allow-Methods": "OPTIONS,POST",
+}
 
 
-def _get_api_key():
-    global _api_key
-    if not _api_key:
-        secret = boto3.client("secretsmanager").get_secret_value(SecretId=SECRET_NAME)["SecretString"]
-        try:
-            _api_key = json.loads(secret).get("NVIDIA_API_KEY", secret)
-        except json.JSONDecodeError:
-            _api_key = secret
-    return _api_key
+def _resp(status, body):
+    return {"statusCode": status, "headers": HEADERS, "body": json.dumps(body)}
 
 
 def lambda_handler(event, context):
-    headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-    }
-
-    if event.get('httpMethod') == 'OPTIONS':
-        return {'statusCode': 200, 'headers': headers, 'body': ''}
+    if event.get("httpMethod") == "OPTIONS":
+        return {"statusCode": 200, "headers": HEADERS, "body": ""}
 
     try:
-        body = json.loads(event.get('body', '{}'))
-        message = body.get('message', '')
+        body = json.loads(event.get("body") or "{}")
+    except json.JSONDecodeError:
+        return _resp(400, {"success": False, "error": "Invalid JSON"})
 
-        if not message or not isinstance(message, str):
-            return {
-                'statusCode': 400,
-                'headers': headers,
-                'body': json.dumps({'success': False, 'error': 'Invalid message format'})
-            }
+    message = body.get("message")
+    if not isinstance(message, str) or not message.strip():
+        return _resp(400, {"success": False, "error": "Invalid message format"})
+    if len(message) > MESSAGE_MAX_LENGTH:
+        return _resp(400, {"success": False, "error": "Message too long"})
 
-        resp = requests.post(
-            NVIDIA_URL,
-            headers={'Authorization': f'Bearer {_get_api_key()}', 'Content-Type': 'application/json'},
-            json={
-                'model': MODEL,
-                'messages': [
-                    {'role': 'system', 'content': PORTFOLIO_CONTEXT},
-                    {'role': 'user', 'content': message}
-                ],
-                'temperature': 0.2,
-                'top_p': 0.7,
-                'max_tokens': 1024,
-                'stream': False
-            },
-            timeout=25
+    try:
+        result = _bedrock.converse(
+            modelId=MODEL_ID,
+            system=[{"text": PORTFOLIO_CONTEXT}],
+            messages=[{"role": "user", "content": [{"text": message.strip()}]}],
+            inferenceConfig={"maxTokens": 400, "temperature": 0.3, "topP": 0.9},
         )
-        resp.raise_for_status()
-        text = resp.json()['choices'][0]['message']['content']
-
-        return {
-            'statusCode': 200,
-            'headers': headers,
-            'body': json.dumps({'success': True, 'data': {'response': text}})
-        }
-
-    except Exception as e:
-        print(f"Chat API error: {e}")
-        return {
-            'statusCode': 500,
-            'headers': headers,
-            'body': json.dumps({'success': False, 'error': 'Internal server error'})
-        }
+        text = result["output"]["message"]["content"][0]["text"]
+        return _resp(200, {"success": True, "data": {"response": text}})
+    except Exception as e:  # noqa: BLE001 - log and return generic error
+        print(f"Bedrock error: {e}")
+        return _resp(502, {"success": False, "error": "Chat service unavailable"})

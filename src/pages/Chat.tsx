@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Sparkles, Zap } from 'lucide-react';
+import { Send, Bot, User } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
 
 const Chat = () => {
@@ -7,167 +7,155 @@ const Chat = () => {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [messages, isLoading]);
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
     sendMessage(input);
     setInput('');
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
   };
 
+  const suggestions = [
+    'Tell me about your AWS experience',
+    'What projects have you worked on?',
+    'How can we collaborate?',
+  ];
+
   return (
     <div className="py-20">
       <div className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Sparkles className="w-6 h-6 icon-3d text-blue-600" />
-            <h1 className="text-4xl font-bold gradient-text">Portfolio Assistant</h1>
-            <Sparkles className="w-6 h-6 icon-3d text-cyan-600" />
-          </div>
-          <p className="text-xl text-gray-600 dark:text-gray-300">
-            Ask me anything about my projects, skills, or experience!
+        {/* Header */}
+        <div className="mb-10">
+          <h1
+            className="text-4xl lg:text-5xl font-bold tracking-tight mb-4"
+            style={{ color: 'rgb(var(--text-primary))', letterSpacing: '-0.03em' }}
+          >
+            AI Assistant
+          </h1>
+          <p className="text-lg text-secondary">
+            Ask me anything about my projects, skills, or experience.
           </p>
         </div>
-        
-        <div className="modern-card rounded-3xl overflow-hidden h-[600px] flex flex-col">
-          {/* Chat Header */}
-          <div className="p-6 border-b border-gray-200/20 bg-gradient-to-r from-blue-500/5 to-cyan-500/5">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center glow-effect">
-                <Bot className="w-5 h-5 text-white icon-3d" />
-              </div>
-              <div>
-                <h3 className="font-semibold">Portfolio Assistant</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Online • Powered by AI
-                </p>
-              </div>
-              <div className="ml-auto">
-                <Zap className="w-5 h-5 icon-3d text-yellow-500" />
-              </div>
+
+        <div className="card overflow-hidden h-[600px] flex flex-col">
+          {/* Chat header */}
+          <div className="px-6 py-4 flex items-center gap-3 border-b border-divider">
+            <div className="icon-box">
+              <Bot className="w-5 h-5" aria-hidden="true" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-sm" style={{ color: 'rgb(var(--text-primary))' }}>
+                Portfolio Assistant
+              </h2>
+              <p className="text-xs text-muted flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                Online · Powered by Amazon Bedrock
+              </p>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-6">
+          <div className="flex-1 p-6 overflow-y-auto space-y-5" role="log" aria-live="polite">
             {messages.map((message) => (
               <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
-                <div className={`flex items-start space-x-3 max-w-xs lg:max-w-md ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    message.isUser 
-                      ? 'bg-gradient-to-br from-blue-500 to-cyan-600 glow-effect' 
-                      : 'bg-gradient-to-br from-gray-500 to-gray-600'
-                  }`}>
-                    {message.isUser ? (
-                      <User className="w-4 h-4 text-white icon-3d" />
-                    ) : (
-                      <Bot className="w-4 h-4 text-white icon-3d" />
-                    )}
+                <div className={`flex items-start gap-3 max-w-[85%] ${message.isUser ? 'flex-row-reverse' : ''}`}>
+                  <div
+                    className="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: message.isUser ? 'rgb(var(--accent))' : 'rgb(var(--bg-tertiary))',
+                      border: '1px solid rgb(var(--border))',
+                      color: message.isUser ? '#fff' : 'rgb(var(--text-secondary))',
+                    }}
+                  >
+                    {message.isUser ? <User className="w-4 h-4" aria-hidden="true" /> : <Bot className="w-4 h-4" aria-hidden="true" />}
                   </div>
-                  
-                  <div className={`px-4 py-3 rounded-2xl ${
-                    message.isUser 
-                      ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white' 
-                      : 'modern-card'
-                  }`}>
-                    <p className="text-sm leading-relaxed">{message.text}</p>
-                    <p className="text-xs opacity-70 mt-1">
+                  <div
+                    className="px-4 py-3 rounded-xl"
+                    style={
+                      message.isUser
+                        ? { background: 'rgb(var(--accent))', color: '#fff' }
+                        : {
+                            background: 'rgb(var(--bg-tertiary))',
+                            color: 'rgb(var(--text-primary))',
+                            border: '1px solid rgb(var(--border))',
+                          }
+                    }
+                  >
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                    <p className="text-xs mt-1 opacity-75">
                       {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                 </div>
               </div>
             ))}
-            
+
             {isLoading && (
-              <div className="flex justify-start">
-                <div className="flex items-start space-x-3 max-w-xs lg:max-w-md">
-                  <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-white icon-3d" />
-                  </div>
-                  <div className="modern-card px-4 py-3 rounded-2xl">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    </div>
-                  </div>
+              <div className="flex justify-start" aria-label="Assistant is typing">
+                <div
+                  className="px-4 py-3 rounded-xl flex gap-1"
+                  style={{ background: 'rgb(var(--bg-tertiary))', border: '1px solid rgb(var(--border))' }}
+                >
+                  {[0, 0.15, 0.3].map((d) => (
+                    <span
+                      key={d}
+                      className="w-2 h-2 rounded-full animate-bounce"
+                      style={{ background: 'rgb(var(--text-muted))', animationDelay: `${d}s` }}
+                    />
+                  ))}
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
-          
-          {/* Input Area */}
-          <div className="p-6 border-t border-gray-200/20 bg-gradient-to-r from-blue-500/5 to-cyan-500/5">
-            <div className="flex items-end space-x-4">
-              <div className="flex-1 relative">
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Ask about my projects, skills, or experience..."
-                  className="w-full px-4 py-3 pr-12 modern-card rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all duration-300"
-                  rows={1}
-                  style={{ minHeight: '48px', maxHeight: '120px' }}
-                />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <Sparkles className="w-4 h-4 icon-3d text-blue-600" />
-                </div>
-              </div>
-              
+
+          {/* Input */}
+          <div className="p-4 border-t border-divider">
+            <div className="flex items-end gap-3">
+              <label htmlFor="chat-input" className="sr-only">Message</label>
+              <textarea
+                id="chat-input"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask about my projects, skills, or experience..."
+                maxLength={1000}
+                rows={1}
+                className="flex-1 px-4 py-3 rounded-lg resize-none text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                style={{
+                  minHeight: '48px',
+                  maxHeight: '120px',
+                  background: 'rgb(var(--bg-primary))',
+                  color: 'rgb(var(--text-primary))',
+                  border: '1px solid rgb(var(--border))',
+                }}
+              />
               <button
                 onClick={handleSend}
                 disabled={isLoading || !input.trim()}
-                className="p-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 glow-effect"
+                className="btn-primary h-12 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Send message"
               >
-                <Send className="w-5 h-5 icon-3d" />
+                <Send className="w-4 h-4" aria-hidden="true" />
               </button>
-            </div>
-            
-            <div className="flex items-center justify-center mt-4 space-x-4 text-xs text-gray-500 dark:text-gray-400">
-              <span>Powered by AI</span>
-              <span>•</span>
-              <span>Real-time responses</span>
-              <span>•</span>
-              <span>Portfolio context aware</span>
             </div>
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <div className="mt-8 grid md:grid-cols-3 gap-4">
-          {[
-            { text: "Tell me about your AWS experience", icon: "☁️" },
-            { text: "What projects have you worked on?", icon: "🚀" },
-            { text: "How can we collaborate?", icon: "🤝" }
-          ].map((action, index) => (
-            <button
-              key={index}
-              onClick={() => setInput(action.text)}
-              className="modern-card p-4 rounded-xl text-left hover:scale-105 transition-all duration-300 group"
-            >
-              <div className="flex items-center space-x-3">
-                <span className="text-2xl floating-animation" style={{ animationDelay: `${index * 0.2}s` }}>
-                  {action.icon}
-                </span>
-                <span className="text-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-600 transition-colors">
-                  {action.text}
-                </span>
-              </div>
+        {/* Suggestions */}
+        <div className="mt-6 grid md:grid-cols-3 gap-3">
+          {suggestions.map((text) => (
+            <button key={text} onClick={() => setInput(text)} className="card-interactive p-4 text-left text-sm text-secondary">
+              {text}
             </button>
           ))}
         </div>
