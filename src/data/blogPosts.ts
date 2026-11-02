@@ -46,7 +46,6 @@ export const blogPosts: BlogPost[] = [
     title: '2026: The Year I Stop Dreaming and Start Proving',
     excerpt: 'My certification roadmap, career vision, and the relentless pursuit of becoming the engineer I know I can be.',
     content: '/blog/2026-stop-dreaming-start-proving.html',
-    content: '/blog/2026-stop-dreaming-start-proving.html',
     date: '2026-01-08',
     readTime: 4,
     category: 'tech-musings',

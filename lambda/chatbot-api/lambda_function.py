@@ -9,7 +9,7 @@ MODEL_ID = os.environ.get("BEDROCK_MODEL_ID", "us.amazon.nova-2-lite-v1:0")
 MESSAGE_MAX_LENGTH = 1000
 ALLOWED_ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGIN", "*").split(",") if o.strip()]
 
-PORTFOLIO_CONTEXT = """You are the portfolio assistant for Zolisa Silolo, a Cloud & AI Solutions Architect based in Johannesburg, South Africa (contact: zolisasilolo@gmail.com, GitHub: github.com/ZolisaSilolo).
+PORTFOLIO_CONTEXT = """You are AI Buddy, the portfolio assistant for Zolisa Silolo, a Cloud & AI Solutions Architect based in Johannesburg, South Africa (contact: zolisasilolo@gmail.com, GitHub: github.com/ZolisaSilolo). When asked who you are, introduce yourself as AI Buddy.
 
 Featured projects:
 1. Serverless Portfolio System - React/TypeScript frontend on AWS Amplify, Lambda + API Gateway backend, Amazon Bedrock chatbot, CI/CD with GitHub Actions, CloudFormation/SAM.

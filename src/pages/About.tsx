@@ -1,4 +1,5 @@
-import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { PageScenery } from '../components/PageScenery';
 import { Award, MapPin, Mail, Linkedin, Github, ExternalLink, Briefcase } from 'lucide-react';
 
 const About = () => {
@@ -95,52 +96,62 @@ const About = () => {
   ];
 
   return (
-    <div className="py-20">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="py-10 sm:py-16 lg:py-20 relative isolate overflow-hidden min-h-screen">
+      <Helmet>
+        <title>About &amp; Experience | Lundi Zolisa Silolo — Cloud &amp; AI Architect</title>
+        <meta
+          name="description"
+          content="AWS Certified Solutions Architect &amp; AI Practitioner with experience designing serverless systems, MLOps, and big data architectures."
+        />
+        <link rel="canonical" href="https://zolisasilolo.co.za/about" />
+      </Helmet>
+
+      {/* Themed page-length background photos */}
+      <PageScenery top={{ src: '/about-tablemountain.jpg', tone: 'day', position: 'center 55%' }} bottom={{ src: '/about-blyde.jpg', tone: 'day' }} />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero Section */}
-        <div className="mb-20">
-          <div className="inline-flex items-center gap-2 mb-6">
-            <span className="badge">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+        <div className="mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 mb-4 sm:mb-6">
+            <span className="badge px-3.5 py-1 text-xs font-medium tracking-wide">
               Available for opportunities
             </span>
           </div>
 
-          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight mb-4" style={{ color: 'rgb(var(--text-primary))', letterSpacing: '-0.03em' }}>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-zinc-900 dark:text-zinc-50" style={{ letterSpacing: '-0.03em' }}>
             Lundi Zolisa Silolo
           </h1>
-          <p className="text-xl text-secondary mb-8 max-w-3xl leading-relaxed">
-            Cloud & AI Solutions Architect with hands-on experience designing secure, scalable architectures
+          <p className="text-base sm:text-xl text-zinc-700 dark:text-zinc-400 mb-8 max-w-3xl leading-relaxed">
+            Cloud &amp; AI Solutions Architect with hands-on experience designing secure, scalable architectures
             and driving AI-powered innovation on AWS.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-4 max-w-4xl">
-            <div className="card p-6">
+          <div className="grid sm:grid-cols-2 gap-4 max-w-4xl">
+            <div className="bento-card p-5 sm:p-6">
               <div className="flex items-start gap-4">
                 <div className="icon-box flex-shrink-0">
                   <Award className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1" style={{ color: 'rgb(var(--text-primary))' }}>
-                    Cloud & Serverless
+                  <h3 className="font-semibold mb-1 text-zinc-900 dark:text-zinc-100">
+                    Cloud &amp; Serverless
                   </h3>
-                  <p className="text-sm text-secondary">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
                     AWS, Serverless Architectures, Cloud Security, Infrastructure-as-Code
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="card p-6">
+            <div className="bento-card p-5 sm:p-6">
               <div className="flex items-start gap-4">
                 <div className="icon-box flex-shrink-0">
                   <Briefcase className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1" style={{ color: 'rgb(var(--text-primary))' }}>
-                    Data & AI
+                  <h3 className="font-semibold mb-1 text-zinc-900 dark:text-zinc-100">
+                    Data &amp; AI
                   </h3>
-                  <p className="text-sm text-secondary">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
                     Big Data Solutions, Analytics, SageMaker, Bedrock, MLOps
                   </p>
                 </div>
@@ -152,30 +163,30 @@ const About = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Profile Sidebar */}
           <div className="lg:col-span-1">
-            <div className="card p-6 sticky top-20">
-              <div className="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden border-2" style={{ borderColor: 'rgb(var(--border))' }}>
+            <div className="bento-card p-6 sticky top-20">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full mx-auto mb-5 overflow-hidden border-2 border-divider shadow-md">
                 <img src="/profile.jpg" alt="Lundi Zolisa Silolo" className="w-full h-full object-cover" />
               </div>
 
-              <h2 className="text-xl font-bold text-center mb-1" style={{ color: 'rgb(var(--text-primary))' }}>
+              <h2 className="text-xl font-bold text-center mb-1 text-zinc-900 dark:text-zinc-100">
                 Lundi Zolisa Silolo
               </h2>
-              <p className="text-sm text-secondary text-center mb-6">
-                AWS Certified Cloud & Data Professional
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 text-center mb-5">
+                AWS Certified Cloud &amp; Data Professional
               </p>
 
               <div className="space-y-3 mb-6 pb-6 border-b border-divider">
-                <div className="flex items-center gap-2 text-sm text-secondary">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
                   <MapPin className="w-4 h-4 text-muted flex-shrink-0" />
                   <span>Johannesburg, South Africa</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-secondary">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
                   <Mail className="w-4 h-4 text-muted flex-shrink-0" />
-                  <a href="mailto:zolisasilolo@gmail.com" className="hover:text-accent transition-colors">
+                  <a href="mailto:zolisasilolo@gmail.com" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors break-all">
                     zolisasilolo@gmail.com
                   </a>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-secondary">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
                   <Award className="w-4 h-4 text-muted flex-shrink-0" />
                   <span>AWS Solutions Architect Associate</span>
                 </div>
@@ -198,34 +209,34 @@ const About = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Professional Experience */}
-            <div className="card p-8">
-              <h3 className="text-2xl font-bold mb-6" style={{ color: 'rgb(var(--text-primary))' }}>
+            <div className="bento-card p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-zinc-900 dark:text-zinc-100">
                 Professional Experience
               </h3>
 
-              <div className="border-l-2 pl-6 pb-2" style={{ borderColor: 'rgb(var(--accent))' }}>
-                <div className="flex items-start justify-between mb-2">
-                  <h4 className="text-lg font-semibold" style={{ color: 'rgb(var(--text-primary))' }}>
+              <div className="border-l-2 border-cyan-500 pl-4 sm:pl-6 pb-2">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-2 gap-1">
+                  <h4 className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                     AWS Professional Services Intern
                   </h4>
-                  <span className="text-sm text-muted">2025</span>
+                  <span className="text-xs font-mono text-muted">2025</span>
                 </div>
-                <p className="text-sm text-secondary mb-4">Amazon Web Services • Johannesburg, South Africa</p>
-                <ul className="space-y-2 text-sm text-secondary">
+                <p className="text-xs sm:text-sm text-cyan-600 dark:text-cyan-400 mb-4 font-medium">Amazon Web Services • Johannesburg, South Africa</p>
+                <ul className="space-y-2.5 text-xs sm:text-sm text-zinc-700 dark:text-zinc-400">
                   <li className="flex gap-2">
-                    <span className="text-accent mt-1.5">•</span>
+                    <span className="text-cyan-500 mt-1">•</span>
                     <span>Designed and deployed MLOps pipelines using Amazon SageMaker and Bedrock for AI/ML workflows</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-accent mt-1.5">•</span>
+                    <span className="text-cyan-500 mt-1">•</span>
                     <span>Automated cloud-native solutions with AWS Lambda, Step Functions, and Infrastructure-as-Code</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-accent mt-1.5">•</span>
+                    <span className="text-cyan-500 mt-1">•</span>
                     <span>Supported workshops for C-level executives on big data, AI/ML strategy, and cloud transformation</span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-accent mt-1.5">•</span>
+                    <span className="text-cyan-500 mt-1">•</span>
                     <span>Enhanced client satisfaction by optimizing solution delivery pipelines and addressing technical bottlenecks</span>
                   </li>
                 </ul>
@@ -233,19 +244,19 @@ const About = () => {
             </div>
 
             {/* Technical Expertise */}
-            <div className="card p-8">
-              <h3 className="text-2xl font-bold mb-6" style={{ color: 'rgb(var(--text-primary))' }}>
+            <div className="bento-card p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-zinc-900 dark:text-zinc-100">
                 Technical Expertise
               </h3>
-              <div className="grid gap-6">
+              <div className="grid sm:grid-cols-2 gap-6">
                 {skillCategories.map((category, index) => (
                   <div key={index}>
-                    <h4 className="text-base font-semibold mb-3 text-accent">
+                    <h4 className="text-sm sm:text-base font-semibold mb-3 text-cyan-600 dark:text-cyan-400">
                       {category.title}
                     </h4>
                     <div className="grid gap-1.5">
                       {category.skills.map((skill, skillIndex) => (
-                        <div key={skillIndex} className="text-sm text-secondary flex gap-2">
+                        <div key={skillIndex} className="text-xs sm:text-sm text-zinc-700 dark:text-zinc-400 flex gap-2">
                           <span className="text-muted">•</span>
                           <span>{skill}</span>
                         </div>
@@ -257,30 +268,30 @@ const About = () => {
             </div>
 
             {/* Certifications */}
-            <div className="card p-8">
-              <h3 className="text-2xl font-bold mb-6" style={{ color: 'rgb(var(--text-primary))' }}>
+            <div className="bento-card p-6 sm:p-8">
+              <h3 className="text-xl sm:text-2xl font-bold mb-6 text-zinc-900 dark:text-zinc-100">
                 Certifications
               </h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {certifications.map((cert, index) => (
                   <a
                     key={index}
                     href={cert.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="card-interactive p-4 text-center group"
+                    className="card-interactive p-3.5 sm:p-4 text-center group block"
                   >
                     {cert.image ? (
-                      <div className="w-16 h-16 mx-auto mb-3 rounded-lg overflow-hidden border" style={{ borderColor: 'rgb(var(--border))' }}>
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-3 rounded-lg overflow-hidden border border-divider">
                         <img src={cert.image} alt={cert.title} className="w-full h-full object-cover" />
                       </div>
                     ) : (
-                      <div className="text-4xl mb-3">{cert.icon}</div>
+                      <div className="text-3xl sm:text-4xl mb-3">{cert.icon}</div>
                     )}
-                    <h4 className="font-medium text-xs mb-2 leading-tight" style={{ color: 'rgb(var(--text-primary))' }}>
+                    <h4 className="font-medium text-[11px] sm:text-xs mb-2 leading-snug text-zinc-900 dark:text-zinc-100 line-clamp-2">
                       {cert.title}
                     </h4>
-                    <div className="flex items-center justify-center gap-1 text-xs text-muted group-hover:text-accent transition-colors">
+                    <div className="flex items-center justify-center gap-1 text-[11px] text-muted group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                       <span>View Badge</span>
                       <ExternalLink className="w-3 h-3" />
                     </div>
@@ -290,15 +301,15 @@ const About = () => {
             </div>
 
             {/* Personal Note */}
-            <div className="card p-8" style={{ background: 'linear-gradient(135deg, rgba(var(--accent), 0.05) 0%, transparent 100%)' }}>
-              <h3 className="text-xl font-bold mb-3" style={{ color: 'rgb(var(--text-primary))' }}>
-                Let's connect
+            <div className="bento-card p-6 sm:p-8 bg-gradient-to-br from-cyan-500/5 to-transparent">
+              <h3 className="text-lg sm:text-xl font-bold mb-2 text-zinc-900 dark:text-zinc-100">
+                Let&apos;s connect
               </h3>
-              <p className="text-secondary mb-4">
-                I'm always interested in hearing about new projects and opportunities in cloud architecture and AI/ML.
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mb-4 max-w-lg">
+                I&apos;m always interested in hearing about new projects and opportunities in cloud architecture and AI/ML.
               </p>
-              <a href="mailto:zolisasilolo@gmail.com" className="btn-primary inline-flex">
-                <Mail className="w-4 h-4" />
+              <a href="mailto:zolisasilolo@gmail.com" className="btn-primary inline-flex text-xs sm:text-sm">
+                <Mail className="w-4 h-4 mr-1.5" />
                 Get in touch
               </a>
             </div>

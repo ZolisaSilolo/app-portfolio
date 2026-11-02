@@ -1,4 +1,5 @@
-import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import { PageScenery } from '../components/PageScenery';
 import { ExternalLink, Github, Shield, Cloud, Zap, Home, Wrench, ArrowUpRight } from 'lucide-react';
 import { projects } from '../data/projects';
 
@@ -41,7 +42,18 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="py-20">
+    <div className="py-20 relative isolate overflow-hidden min-h-screen">
+      <Helmet>
+        <title>Architectural Projects &amp; Case Studies | Lundi Zolisa Silolo</title>
+        <meta
+          name="description"
+          content="Featured projects showcasing AWS serverless architectures, real-time SageMaker MLOps, and automated cloud systems."
+        />
+        <link rel="canonical" href="https://zolisasilolo.co.za/portfolio" />
+      </Helmet>
+
+      {/* Themed page-length background photos */}
+      <PageScenery top={{ src: '/portfolio-bridge.jpg', tone: 'day', position: 'center 35%' }} bottom={{ src: '/portfolio-lake.jpg', tone: 'day' }} />
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <div className="mb-16">
@@ -56,29 +68,27 @@ const Portfolio = () => {
         {/* Projects Grid */}
         <div className="space-y-6">
           {projects.map((project, index) => (
-            <div key={index} className="card p-8">
-              <div className="grid lg:grid-cols-12 gap-6">
+            <div key={index} className="bento-card p-5 sm:p-8 transition-all duration-300">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-6">
                 {/* Icon */}
-                <div className="lg:col-span-1">
-                  <div className="icon-box">
-                    {getProjectIcon(project.title)}
-                  </div>
+                <div className="icon-box shrink-0">
+                  {getProjectIcon(project.title)}
                 </div>
 
                 {/* Content */}
-                <div className="lg:col-span-11 space-y-4">
+                <div className="flex-1 space-y-4">
                   <div>
-                    <h3 className="text-xl font-semibold mb-2" style={{ color: 'rgb(var(--text-primary))' }}>
+                    <h3 className="text-lg sm:text-xl font-semibold mb-2 text-zinc-900 dark:text-zinc-100">
                       {project.title}
                     </h3>
-                    <p className="text-secondary leading-relaxed">
+                    <p className="text-sm text-zinc-700 dark:text-zinc-400 leading-relaxed">
                       {project.description}
                     </p>
                   </div>
 
                   {/* Technologies */}
                   <div>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {project.technologies.map((tech) => {
                         const docUrl = awsDocsLinks[tech];
                         const isAWS = !!docUrl;
@@ -104,11 +114,11 @@ const Portfolio = () => {
                   </div>
 
                   {/* Links */}
-                  <div className="flex items-center gap-3 pt-2">
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
                     {project.repo_url && (
                       <a
                         href={project.repo_url}
-                        className="btn-secondary text-sm"
+                        className="btn-secondary text-xs sm:text-sm"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -119,7 +129,7 @@ const Portfolio = () => {
                     {project.live_url && (
                       <a
                         href={project.live_url}
-                        className="btn-primary text-sm"
+                        className="btn-primary text-xs sm:text-sm"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -135,22 +145,21 @@ const Portfolio = () => {
         </div>
 
         {/* CTA */}
-        <div className="mt-16 card p-12 text-center">
-          <h3 className="text-2xl font-bold mb-3" style={{ color: 'rgb(var(--text-primary))' }}>
+        <div className="mt-16 bento-card p-8 sm:p-12 text-center">
+          <h3 className="text-xl sm:text-2xl font-bold mb-3 text-zinc-900 dark:text-zinc-100">
             Explore more on GitHub
           </h3>
-          <p className="text-secondary mb-6">
+          <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 mb-6 max-w-lg mx-auto">
             Check out my other projects, contributions, and open-source work.
           </p>
           <a
             href="https://github.com/ZolisaSilolo"
-            className="btn-primary inline-flex"
+            className="btn-primary inline-flex text-xs sm:text-sm"
             target="_blank"
             rel="noopener noreferrer"
           >
             <Github className="w-4 h-4" />
-            Visit GitHub Profile
-            <ArrowUpRight className="w-4 h-4" />
+            <span>Visit GitHub Profile</span>
           </a>
         </div>
       </div>

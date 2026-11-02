@@ -242,7 +242,7 @@ jobs:
 
 - Edit `src/pages/About.tsx` for your information
 - Update `src/data/projects.ts` with your projects
-- Modify `lambda/chatbot-api/lambda_function.py` for your AI assistant context
+- Modify `lambda/chatbot-api/lambda_function.py` for the AI Buddy assistant context
 
 ### 6.2 Styling
 

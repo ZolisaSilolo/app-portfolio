@@ -12,7 +12,7 @@ export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Hello! I\'m your portfolio assistant. Ask me about projects, skills, or experience.',
+      text: 'Hello! I\'m AI Buddy. Ask me about projects, skills, or experience.',
       isUser: false,
       timestamp: new Date()
     }
@@ -57,5 +57,16 @@ export const useChat = () => {
     }
   };
 
-  return { messages, isLoading, sendMessage };
+  const resetChat = () => {
+    setMessages([
+      {
+        id: Date.now().toString(),
+        text: 'Hello! I\'m AI Buddy. Ask me about projects, skills, or experience.',
+        isUser: false,
+        timestamp: new Date()
+      }
+    ]);
+  };
+
+  return { messages, isLoading, sendMessage, resetChat };
 };

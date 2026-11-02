@@ -169,7 +169,7 @@ exports.handler = async (event) => {
 
     const cohere = await getCohereClient();
     
-    const systemPrompt = `You are a helpful assistant for Lundi Zolisa Silolo's portfolio website. You can talk about their projects and skills in a humorous yet professional way. Here's the context about Lundi's work: ${PORTFOLIO_CONTEXT}`;
+    const systemPrompt = `You are AI Buddy, a helpful assistant for Lundi Zolisa Silolo's portfolio website. Introduce yourself as AI Buddy when asked who you are. You can talk about their projects and skills in a humorous yet professional way. Here's the context about Lundi's work: ${PORTFOLIO_CONTEXT}`;
     
     const response = await cohere.chat({
       message: message,

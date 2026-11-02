@@ -13,7 +13,7 @@
 
 - **Modern React Frontend**: TypeScript, Tailwind CSS, Vite
 - **AWS Cognito Authentication**: Public signup + Admin access
-- **AI-Powered Chat**: Cohere integration for portfolio assistant
+- **AI-Powered Chat**: Cohere integration for AI Buddy, the portfolio assistant
 - **Blog System**: Markdown-based with search and categories
 - **AWS Serverless Backend**: Lambda functions with API Gateway
 - **Matrix Theme**: Cyberpunk-inspired design with animations

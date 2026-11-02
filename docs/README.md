@@ -27,7 +27,7 @@ Welcome to the Matrix Portfolio documentation!
 ## Key Features
 
 - **🎨 Matrix Theme**: Cyberpunk-inspired design with animations
-- **🤖 AI Assistant**: Cohere-powered chatbot for portfolio interaction
+- **🤖 AI Buddy**: Cohere-powered chatbot for portfolio interaction
 - **📱 Responsive**: Mobile-first design that works on all devices
 - **🔒 Secure**: AWS best practices with proper IAM and secret management
 - **🚀 Fast**: Optimized build with Vite and modern React patterns

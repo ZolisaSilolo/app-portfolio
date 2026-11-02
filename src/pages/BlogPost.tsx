@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { PageScenery } from '../components/PageScenery';
 import { Calendar, Clock, Tag, ArrowLeft, Share2 } from 'lucide-react';
 import { getBlogPost } from '../data/blogPosts';
 
@@ -12,11 +13,9 @@ const BlogPost = () => {
 
   useEffect(() => {
     if (post && post.content.endsWith('.html')) {
-      // Fetch HTML content
       fetch(post.content)
         .then(res => res.text())
         .then(html => {
-          // Extract just the article content (remove <article> wrapper if present)
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
           const article = doc.querySelector('article');
@@ -29,7 +28,6 @@ const BlogPost = () => {
           setLoading(false);
         });
     } else if (post) {
-      // Use inline content (legacy support)
       setHtmlContent(post.content);
       setLoading(false);
     }
@@ -37,17 +35,17 @@ const BlogPost = () => {
 
   if (!post) {
     return (
-      <div className="py-20 text-center">
+      <div className="py-24 text-center">
         <Helmet>
-          <title>Post Not Found | Lundi Zolisa Silolo</title>
+          <title>Article Not Found | Lundi Zolisa Silolo</title>
           <meta name="robots" content="noindex" />
         </Helmet>
         <div className="max-w-2xl mx-auto px-6">
-          <h1 className="text-4xl font-bold matrix-text mb-4">404: Post Not Found</h1>
-          <p className="text-cyan-300 mb-8">The thought you're looking for doesn't exist in this reality.</p>
-          <Link to="/blog" className="inline-flex items-center space-x-2 text-green-400 hover:text-green-300">
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Thought Stream</span>
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">404: Article Not Found</h1>
+          <p className="text-zinc-600 dark:text-zinc-400 mb-8">The publication you are looking for does not exist or has been moved.</p>
+          <Link to="/blog" className="btn-primary text-sm">
+            <ArrowLeft className="w-4 h-4 mr-1.5" />
+            <span>Return to Engineering Log</span>
           </Link>
         </div>
       </div>
@@ -60,15 +58,14 @@ const BlogPost = () => {
         title: post.title,
         text: post.excerpt,
         url: window.location.href,
-      });
+      }).catch(() => {});
     } else {
       navigator.clipboard.writeText(window.location.href);
-      // You could add a toast notification here
     }
   };
 
   return (
-    <div className="py-20">
+    <div className="py-20 lg:py-24 relative isolate overflow-hidden min-h-screen scenery-reading">
       <Helmet>
         <title>{post.title} | Lundi Zolisa Silolo</title>
         <meta name="description" content={post.excerpt} />
@@ -79,113 +76,116 @@ const BlogPost = () => {
         <meta property="article:author" content={post.author} />
         <link rel="canonical" href={`https://zolisasilolo.co.za/blog/${slug}`} />
       </Helmet>
+
+      {/* Themed page-length background photos */}
+      <PageScenery top={{ src: '/blog-milkyway.jpg', tone: 'night', position: 'center 40%' }} bottom={{ src: '/blog-ridge.jpg', tone: 'day' }} />
+
+      {/* Top Ambient Cyan Glow */}
+      <div className="absolute inset-0 pointer-events-none select-none overflow-hidden -z-10">
+        <div className="ambient-light-beam" />
+      </div>
+
       <div className="max-w-4xl mx-auto px-6">
-        {/* Back Button */}
+        {/* Back Link */}
         <Link 
           to="/blog" 
-          className="inline-flex items-center space-x-2 text-green-400 hover:text-green-300 mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 mb-8 transition-colors font-medium group"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Thought Stream</span>
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+          <span>Back to all publications</span>
         </Link>
 
-        {/* Article Header */}
-        <article className="matrix-card p-8 rounded-2xl">
-          <header className="mb-8">
-            <div className="flex items-center space-x-2 mb-4">
-              <span className="px-3 py-1 bg-green-400/10 text-green-400 text-sm rounded-full border border-green-400/30">
+        {/* Article Glass Container */}
+        <article className="bento-card p-6 sm:p-10 rounded-2xl shadow-xl">
+          <header className="mb-10 pb-8 border-b border-divider/60">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="metric-badge">
                 {post.category.replace('-', ' ').toUpperCase()}
               </span>
             </div>
             
-            <h1 className="text-4xl font-bold matrix-text mb-4 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-4 leading-tight">
               {post.title}
             </h1>
             
-            <p className="text-xl text-cyan-300 mb-6 leading-relaxed">
+            <p className="text-lg sm:text-xl text-zinc-700 dark:text-zinc-400 mb-6 leading-relaxed font-normal">
               {post.excerpt}
             </p>
             
-            <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-green-300">
-              <div className="flex items-center space-x-6">
-                <div className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4" />
+            <div className="flex flex-wrap items-center justify-between gap-4 text-xs text-muted font-mono">
+              <div className="flex flex-wrap items-center gap-5">
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-zinc-400" />
                   <span>{new Date(post.date).toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
                   })}</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4" />
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-zinc-400" />
                   <span>{post.readTime} min read</span>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <span>By {post.author}</span>
+                <div>
+                  <span>Author: {post.author}</span>
                 </div>
               </div>
               
               <button 
                 onClick={handleShare}
-                className="flex items-center space-x-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+                className="btn-secondary !py-1.5 !px-3 text-xs flex items-center gap-1.5"
+                title="Share article link"
               >
-                <Share2 className="w-4 h-4" />
+                <Share2 className="w-3.5 h-3.5" />
                 <span>Share</span>
               </button>
             </div>
             
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mt-6">
+            <div className="flex flex-wrap gap-1.5 mt-6">
               {post.tags.map(tag => (
                 <span 
                   key={tag} 
-                  className="flex items-center space-x-1 px-2 py-1 bg-green-400/10 text-green-400 text-xs rounded-full border border-green-400/30"
+                  className="tech-tag text-xs"
                 >
-                  <Tag className="w-3 h-3" />
-                  <span>#{tag}</span>
+                  <Tag className="w-3 h-3 mr-1 opacity-70" />
+                  #{tag}
                 </span>
               ))}
             </div>
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert prose-green max-w-none blog-content">
+          <div className="blog-content">
             {loading ? (
-              <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-400"></div>
-                <p className="text-cyan-300 mt-4">Loading content...</p>
+              <div className="text-center py-16">
+                <div className="w-8 h-8 rounded-full border-2 border-cyan-500/20 border-t-cyan-500 animate-spin mx-auto" />
+                <p className="text-xs text-muted mt-4 font-mono">Loading content...</p>
               </div>
             ) : (
               <div 
-                className="text-cyan-300 leading-relaxed"
+                className="leading-relaxed text-zinc-700 dark:text-zinc-300"
                 dangerouslySetInnerHTML={{ __html: htmlContent }}
               />
             )}
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-12 pt-8 border-t border-green-400/20">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-green-300">
-                <p>Thanks for reading! Share your thoughts and let's discuss.</p>
-              </div>
+          <footer className="mt-14 pt-8 border-t border-divider/60">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-xs text-muted font-mono">
+                Published by Zolisa Silolo • Cloud &amp; AI Architect
+              </p>
               <button 
                 onClick={handleShare}
-                className="px-4 py-2 bg-green-400/10 text-green-400 rounded-lg border border-green-400/30 hover:bg-green-400/20 transition-colors"
+                className="btn-primary text-xs"
               >
-                Share This Post
+                <Share2 className="w-3.5 h-3.5 mr-1.5" />
+                Share Publication
               </button>
             </div>
           </footer>
         </article>
-
-        {/* Related Posts Section - You can implement this later */}
-        <div className="mt-16">
-          <h3 className="text-2xl font-bold matrix-text mb-8">More Thoughts</h3>
-          <div className="matrix-card p-6 rounded-xl text-center">
-            <p className="text-cyan-300">More related posts coming soon...</p>
-          </div>
-        </div>
       </div>
     </div>
   );

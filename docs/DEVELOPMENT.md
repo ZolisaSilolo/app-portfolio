@@ -47,7 +47,7 @@ src/
 │   ├── Home.tsx        # Landing page
 │   ├── About.tsx       # About page
 │   ├── Portfolio.tsx   # Projects showcase
-│   └── Chat.tsx        # AI assistant
+│   └── Chat.tsx        # AI Buddy (chat assistant)
 ├── contexts/           # React contexts
 │   └── ThemeContext.tsx # Dark/light theme
 ├── services/           # API services
@@ -174,7 +174,7 @@ npm run test:coverage
 
 ```bash
 # Format: type(scope): description
-feat(chat): add AI assistant functionality
+feat(chat): add AI Buddy chat functionality
 fix(theme): resolve dark mode toggle issue
 docs(readme): update deployment instructions
 style(ui): improve mobile responsiveness
